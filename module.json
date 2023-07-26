@@ -1,0 +1,25 @@
+{
+  "id": "simple-settlements",
+  "title": "Simple Settlements",
+  "version": "0.1",
+  "compatibility": {
+    "minimum": "11",
+    "verified": "11"
+  },
+  "authors": [
+    {
+      "name": "Makenfloi",
+      "url": "",
+      "discord": ""
+    }
+  ],
+  "esmodules": [
+    "scripts/main.js"
+  ],
+  "documentTypes": {
+    "Item": {
+      "building": {},
+      "resource": {}
+    }
+  }
+}
