@@ -1,16 +1,14 @@
 {
   "id": "simple-settlements",
   "title": "Simple Settlements",
-  "version": "0.1",
+  "version": "0.3",
   "compatibility": {
     "minimum": "11",
     "verified": "11"
   },
   "authors": [
     {
-      "name": "Makenfloi",
-      "url": "",
-      "discord": ""
+      "name": "Makenfloi"
     }
   ],
   "esmodules": [
@@ -18,8 +16,12 @@
   ],
   "documentTypes": {
     "Item": {
-      "building": {},
-      "resource": {}
+      "resource": {
+        "quantity": 0
+      }
+    },
+    "Actor": {
+      "building": {}
     }
   }
 }

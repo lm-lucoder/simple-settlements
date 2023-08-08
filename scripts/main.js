@@ -13,10 +13,10 @@ Hooks.once("init", async function () {
 
 function assignAndRegisterAll() {
 	/* Building Assign */
-	Object.assign(CONFIG.Item.dataModels, {
+	Object.assign(CONFIG.Actor.dataModels, {
 		"simple-settlements.building": BuildingData,
 	});
-	Items.registerSheet("building", BuildingSheet, {
+	Actors.registerSheet("building", BuildingSheet, {
 		types: ["simple-settlements.building"],
 		makeDefault: true,
 	});

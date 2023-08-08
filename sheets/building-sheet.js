@@ -1,4 +1,4 @@
-class BuildingSheet extends ItemSheet {
+class BuildingSheet extends ActorSheet {
     get template(){
         const path = "modules/simple-settlements/templates"
         return `${path}/building-sheet.html`
