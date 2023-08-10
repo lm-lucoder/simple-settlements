@@ -17,6 +17,7 @@
   "documentTypes": {
     "Item": {
       "resource": {
+        "htmlFields": ["description"],
         "quantity": 0
       }
     },

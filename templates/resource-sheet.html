@@ -17,12 +17,15 @@
 
     {{!-- Description Tab --}}
     <div class="tab" data-group="primary" data-tab="description">
-      <h3>Please render 1</h3>
+      <h3>Please render 1, again</h3>
+      {{editor system.description target="system.description" rollData=rollData button=false owner=owner editable=editable}}
+      <!-- {{editor biographyHTML target="system.description" button=false editable=editable engine="prosemirror" collaborate=false}} -->
     </div>
 
     {{!-- Attributes Tab --}}
     <div class="tab attributes" data-group="primary" data-tab="attributes">
-      <h3>Please render 2</h3>
+      <label for="quantity">Quantity: </label>
+      <input name="system.quantity" type="text" value="{{item.system.quantity}}" placeholder="0"/>
     </div>
   </section>
 </form>
