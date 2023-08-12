@@ -25,7 +25,8 @@
       }
     },
     "Actor": {
-      "building": {}
+      "building": {},
+      "settlement": {}
     }
   }
 }

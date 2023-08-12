@@ -2,6 +2,8 @@ import BuildingData from "../datamodels/building.js";
 import ResourceData from "../datamodels/resource.js";
 import BuildingSheet from "../sheets/building-sheet.js";
 import ResourceSheet from "../sheets/resource-sheet.js";
+import SettlementData from "../datamodels/settlement.js";
+import SettlementSheet from "../sheets/settlement-sheet.js";
 
 Hooks.once("init", async function () {
 	assignAndRegisterAll();
@@ -20,6 +22,14 @@ function assignAndRegisterAll() {
 	});
 	Actors.registerSheet("building", BuildingSheet, {
 		types: ["simple-settlements.building"],
+		makeDefault: true,
+	});
+	/* Settlement Assign */
+	Object.assign(CONFIG.Actor.dataModels, {
+		"simple-settlements.settlement": SettlementData,
+	});
+	Actors.registerSheet("settlement", SettlementSheet, {
+		types: ["simple-settlements.settlement"],
 		makeDefault: true,
 	});
 	/* Resource Assign */
