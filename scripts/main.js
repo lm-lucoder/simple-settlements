@@ -10,6 +10,18 @@ Hooks.once("init", async function () {
 	loadHandleBarTemplates();
 });
 
+Hooks.on("dropActorSheetData", (...args) => {
+	const targetDocument = args[0]
+	const originDocument = game.actors.get(args[2].uuid.replace("Actor.", ""))
+
+	const data = {
+		target: targetDocument,
+		origin: originDocument
+	}
+	
+	targetDocument.system._handleBuildingDrop(data)
+});
+
 /* Hooks.once('ready', async function() {
 
 }); */

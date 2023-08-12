@@ -20,7 +20,7 @@ class ResourceSheet extends ItemSheet {
 	async getData(options) {
 		const context = super.getData(options);
 		await this._prepareDescriptionData(context)
-		console.log(context)
+		// console.log(context)
 		return context;
 	}
 	activateListeners(html) {

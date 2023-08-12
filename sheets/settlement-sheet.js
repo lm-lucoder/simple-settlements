@@ -24,7 +24,8 @@ class SettlementSheet extends ActorSheet {
 	}
 
 	activateListeners(html) {
-
+		
+		  
 	}
 	async _prepareDescriptionData(context){
 		context.description = await TextEditor.enrichHTML(

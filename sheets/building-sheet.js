@@ -22,7 +22,7 @@ class BuildingSheet extends ActorSheet {
 		const context = super.getData()
 		this._prepareResources(context)
 		await this._prepareDescriptionData(context)
-		console.log(context)
+		// console.log(context)
 		return context
 	}
 
