@@ -6,6 +6,9 @@
     "minimum": "11",
     "verified": "11"
   },
+  "styles": [
+    "css/building.css", "css/resource.css"
+  ],
   "authors": [
     {
       "name": "Makenfloi"

@@ -19,15 +19,15 @@ class ResourceSheet extends ItemSheet {
 	}
 	async getData(options) {
 		const context = super.getData(options);
-		(context.description = await TextEditor.enrichHTML(
+		context.description = await TextEditor.enrichHTML(
 			this.object.system.description,
 			{
 				async: true,
 				secrets: this.object.isOwner,
 				relativeTo: this.object,
 			}
-		)),
-		console.log(context);
+		);
+		console.log(context)
 		return context;
 	}
 	activateListeners(html) {

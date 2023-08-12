@@ -16,16 +16,17 @@
   <section class="sheet-body">
 
     {{!-- Description Tab --}}
-    <div class="tab" data-group="primary" data-tab="description">
-      <h3>Please render 1, again</h3>
-      {{editor system.description target="system.description" rollData=rollData button=false owner=owner editable=editable}}
-      <!-- {{editor biographyHTML target="system.description" button=false editable=editable engine="prosemirror" collaborate=false}} -->
+    <div class="tab description" data-group="primary" data-tab="description">
+      {{editor description target="system.description" button=true owner=owner editable=editable}}
     </div>
 
     {{!-- Attributes Tab --}}
     <div class="tab attributes" data-group="primary" data-tab="attributes">
-      <label for="quantity">Quantity: </label>
+      <label for="system.quantity">Quantity: </label>
       <input name="system.quantity" type="text" value="{{item.system.quantity}}" placeholder="0"/>
+
+      <label for="system.isStatic">Is Static: </label>
+      <input name="system.isStatic" type="checkbox" {{checked data.system.isStatic }}/>
     </div>
   </section>
 </form>

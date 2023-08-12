@@ -5,11 +5,13 @@ import ResourceSheet from "../sheets/resource-sheet.js";
 
 Hooks.once("init", async function () {
 	assignAndRegisterAll();
+	loadHandleBarTemplates();
 });
 
 /* Hooks.once('ready', async function() {
 
 }); */
+
 
 function assignAndRegisterAll() {
 	/* Building Assign */
@@ -28,4 +30,13 @@ function assignAndRegisterAll() {
 		types: ["simple-settlements.resource"],
 		makeDefault: true,
 	});
+}
+
+async function loadHandleBarTemplates()
+{
+  // register templates parts
+  const templatePaths = [
+    "modules/simple-settlements/templates/parts/building-resources-manager.html"
+  ];
+  return loadTemplates( templatePaths );
 }
