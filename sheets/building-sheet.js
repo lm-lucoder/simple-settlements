@@ -17,11 +17,12 @@ class BuildingSheet extends ActorSheet {
         const path = "modules/simple-settlements/templates"
         return `${path}/building-sheet.html`
     }
-	getData(){
+	async getData(){
 		// console.log(this);
 		const context = super.getData()
 		this._prepareResources(context)
-		// console.log(context)
+		await this._prepareDescriptionData(context)
+		console.log(context)
 		return context
 	}
 
@@ -82,6 +83,17 @@ class BuildingSheet extends ActorSheet {
 
 	_prepareResources(context){
 		context.resources = this.actor.system.resources
+	}
+
+	async _prepareDescriptionData(context){
+		context.description = await TextEditor.enrichHTML(
+			this.object.system.description,
+			{
+				async: true,
+				secrets: this.object.isOwner,
+				relativeTo: this.object,
+			}
+		);
 	}
 }
 

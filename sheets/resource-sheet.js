@@ -19,14 +19,7 @@ class ResourceSheet extends ItemSheet {
 	}
 	async getData(options) {
 		const context = super.getData(options);
-		context.description = await TextEditor.enrichHTML(
-			this.object.system.description,
-			{
-				async: true,
-				secrets: this.object.isOwner,
-				relativeTo: this.object,
-			}
-		);
+		await this._prepareDescriptionData(context)
 		console.log(context)
 		return context;
 	}
@@ -37,6 +30,17 @@ class ResourceSheet extends ItemSheet {
 		if (!this.options.editable) return;
 
 		// Roll handlers, click handlers, etc. would go here.
+	}
+
+	async _prepareDescriptionData(context){
+		context.description = await TextEditor.enrichHTML(
+			this.object.system.description,
+			{
+				async: true,
+				secrets: this.object.isOwner,
+				relativeTo: this.object,
+			}
+		);
 	}
 }
 

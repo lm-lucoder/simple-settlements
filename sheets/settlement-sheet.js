@@ -17,13 +17,24 @@ class SettlementSheet extends ActorSheet {
         const path = "modules/simple-settlements/templates"
         return `${path}/settlement-sheet.html`
     }
-	getData(){
+	async getData(){
 		const context = super.getData()
+		await this._prepareDescriptionData(context)
 		return context
 	}
 
 	activateListeners(html) {
 
+	}
+	async _prepareDescriptionData(context){
+		context.description = await TextEditor.enrichHTML(
+			this.object.system.description,
+			{
+				async: true,
+				secrets: this.object.isOwner,
+				relativeTo: this.object,
+			}
+		);
 	}
 }
 
