@@ -1,0 +1,31 @@
+{{!-- This template is a fallback for when items don't have more specific templates. --}}
+{{!-- Generally, you'll want to make more specific templates when possible. --}}
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}"/>
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="buildings">Buildings</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+
+    {{!-- Description Tab --}}
+    <div class="tab description" data-group="primary" data-tab="description">
+      <h2>Pfv</h2>
+    </div>
+
+    {{!-- buildings Tab --}}
+    <div class="tab buildings" data-group="primary" data-tab="buildings">
+      {{!-- As you add new fields, add them in here! --}}
+      {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager.html"}}
+    </div>
+  </section>
+</form>

@@ -36,7 +36,8 @@ async function loadHandleBarTemplates()
 {
   // register templates parts
   const templatePaths = [
-    "modules/simple-settlements/templates/parts/building-resources-manager.html"
+    "modules/simple-settlements/templates/parts/building-resources-manager.html",
+	"modules/simple-settlements/templates/parts/settlement-buildings-manager.html"
   ];
   return loadTemplates( templatePaths );
 }
