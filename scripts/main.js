@@ -11,21 +11,23 @@ Hooks.once("init", async function () {
 });
 
 Hooks.on("dropActorSheetData", (...args) => {
-	const targetDocument = args[0]
-	const originDocument = game.actors.get(args[2].uuid.replace("Actor.", ""))
+	const targetDocument = args[0];
+	const originDocument = game.actors.get(args[2].uuid.replace("Actor.", ""));
 
 	const data = {
 		target: targetDocument,
-		origin: originDocument
+		origin: originDocument,
+	};
+	if (
+		data.origin.type == "simple-settlements.building" && data.target.type == "simple-settlements.settlement"
+	) {
+		targetDocument.system._handleBuildingDrop(data);
 	}
-	
-	targetDocument.system._handleBuildingDrop(data)
 });
 
 /* Hooks.once('ready', async function() {
 
 }); */
-
 
 function assignAndRegisterAll() {
 	/* Building Assign */
@@ -54,12 +56,12 @@ function assignAndRegisterAll() {
 	});
 }
 
-async function loadHandleBarTemplates()
-{
-  // register templates parts
-  const templatePaths = [
-    "modules/simple-settlements/templates/parts/building-resources-manager.html",
-	"modules/simple-settlements/templates/parts/settlement-buildings-manager.html"
-  ];
-  return loadTemplates( templatePaths );
+async function loadHandleBarTemplates() {
+	// register templates parts
+	const templatePaths = [
+		"modules/simple-settlements/templates/parts/building-resources-manager.html",
+		"modules/simple-settlements/templates/parts/settlement-buildings-manager.html",
+		// "modules/simple-settlements/templates/parts/settlement-buildings-manager-card-details.html"
+	];
+	return loadTemplates(templatePaths);
 }

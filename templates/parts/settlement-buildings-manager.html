@@ -1,0 +1,41 @@
+<div class="settlement-building-manager">
+    <ol class="buildings-list">
+      {{#each buildings as |building id|}}
+        <li class="building-card {{#if building.isInactive}}building-inactive{{/if}}" data-building-id="{{building._id}}">
+          <div class="building-description">
+            <div class="building-image">
+              <img {{#if building.isInactive}}class="innactive"{{/if}} src="{{building.img}}" title="{{building.name}}" />
+            </div>
+            <div class="building-info">
+              <h4 class="building-name">{{building.name}}</h4>
+              <div class="isInactive-container">
+                  <label>Inactive</label>
+                  <input class="isInactiveCheckbox" type="checkbox" {{checked building.isInactive}}/>
+              </div>
+            </div>
+          </div>
+          <ol class="building-resources-container">
+            {{#unless building.isInactive}}
+              {{#each building.system.resources as |item id|}}
+                  <li class="settlement-building-resource-card" data-item-id="{{item._id}}">
+                      <div class="item-description">
+                          <div class="item-image">
+                              <img src="{{item.img}}" title="{{item.name}}" />
+                          </div>
+                          <h4 class="item-name">{{item.name}}</h4>
+                          <span class="item-value">
+                              {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}}
+                          </span>
+                      </div>
+                  </li>
+              {{/each}}
+            {{/unless}}
+          </ol>
+          <div class="item-controls">
+            <a class="item-control item-see" title="Visualize Building"><i class="fa-solid fa-eye"></i></a>
+            <a class="item-control item-remove" title="Remove Building"><i class="fa-solid fa-x"></i></a>
+          </div>
+        </li>
+      {{/each}}
+    </ol>
+  </div>

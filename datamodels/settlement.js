@@ -10,16 +10,18 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 		};
 	}
 	prepareDerivedData() {
-    this.buildings = this._getAllBuildings()
+    let buildings = this._getAllBuildings()
+    buildings = this._registerInactiveBuildings(buildings)
+    console.log("preparing derived data")
+    console.log(buildings)
+    this.buildings = buildings
   }
 
 	_handleBuildingDrop({ origin, target }) {
-    
     if (
       origin.type === "simple-settlements.building" &&
 			target.type === "simple-settlements.settlement"
       ) {
-      console.log({ origin, target})
 			this._registerBuilding({ origin, target });
 		}
 	}
@@ -29,23 +31,44 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     target.setFlag('simple-settlements', 'buildings', {[origin.id]: origin.id});
 	}
 
-	_getAllBuildingsId() {
+	_getAllBuildingsIds() {
     return Object.values(this.parent.flags["simple-settlements"]?.buildings) || []
   }
 
   _getAllBuildings(){
-    const buildingsIds = this._getAllBuildingsId();
+    const buildingsIds = this._getAllBuildingsIds();
     const buildings = buildingsIds.map((id) => game.actors.get(id)).filter((element) => element !== undefined);
     return buildings
   }
 
+  _registerInactiveBuildings(buildings){
+    const innactiveBuildingsIds = this._getAllInactiveBuildingsIds()
+    buildings.forEach((building, i) => {
+      if (innactiveBuildingsIds.includes(building.id)) {
+        building.isInactive = true
+      } else {
+        building.isInactive = false
+      }
+    })
+    return buildings
+  }
+
+  _getAllInactiveBuildingsIds() {
+    const inactiveBuildingsObj = this.parent.getFlag("simple-settlements", "inactiveBuildings");
+    return Object.values(inactiveBuildingsObj)
+  }
+
 	_deleteBuildingRegister(id) {
-    this.parent.unsetFlag("simple-settlements", id)
+    this.parent.unsetFlag("simple-settlements", `buildings.${id}`)
   }
 
   _renderBuilding(id) {
     game.actors.get(id).render(true)
   }
+
+  /* _fillBuildingsWithIsInactiveOptions(){
+    
+  } */
 }
 
 export default SettlementData;
