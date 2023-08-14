@@ -16,8 +16,6 @@ class ResourceData extends foundry.abstract.TypeDataModel {
       }
       
       _prepareResourceDetails(){
-        this.details = {}
-        this.details.quantityIsPositive = this.quantity > 0
       }
 }
 

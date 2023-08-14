@@ -16,7 +16,7 @@
     flex-grow: 1;
 }
 .buildings-list .building-card.building-inactive{
-    background-color: #969696;
+    background-color: #75757544;
 }
 
 .buildings-list .building-card .building-description{

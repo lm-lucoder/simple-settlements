@@ -9,7 +9,9 @@
             <div class="building-info">
               <h4 class="building-name">{{building.name}}</h4>
               <div class="isInactive-container">
+                {{#if building.isInactive}}
                   <label>Inactive Building</label>
+                {{/if}}
               </div>
             </div>
           </div>
@@ -23,8 +25,7 @@
                           </div>
                           <h4 class="item-name">{{item.name}}</h4>
                           <span class="item-value">
-                              <!-- {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}} -->
-                              {{multiplyReturningString item.system.quantity building.quantity item.system.isStatic}}
+                              {{multiplyToString item.system.quantity building.quantity item.system.isStatic}}
                           </span>
                       </div>
                   </li>

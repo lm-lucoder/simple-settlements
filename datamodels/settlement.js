@@ -10,27 +10,53 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 		};
 	}
 	prepareDerivedData() {
+    this._prepareBuildingsData()
+    this._prepareResourcesIncome()
+  }
+  
+  _prepareBuildingsData(){
     let buildings = this._getAllBuildings()
+  
     this._registerInactiveBuildings(buildings)
-    this.buildings = buildings
+  
+    this.buildings = buildings  
   }
 
-	_handleBuildingDrop({ origin }) {
+  _prepareResourcesIncome(){
+    const resourcesIncomeData = {}
+    const buildings = this._getAllBuildings() 
+    buildings.forEach(building => {
+      const resources = building.system._filterItemsResources(building.items.contents)
+      resources.forEach(resource => {
+        if (resourcesIncomeData[resource.name]) {
+          resourcesIncomeData[resource.name].quantity += (resource.system.quantity * building.quantity)
+        } else {
+          resourcesIncomeData[resource.name] = {
+            quantity: (resource.system.quantity * building.quantity),
+            data: resource
+          }
+        }
+      })
+    })
+    this.income = resourcesIncomeData
+  }
+
+	_handleBuildingDrop(building) {
     if (
-      origin.type === "simple-settlements.building" &&
+      building.type === "simple-settlements.building" &&
 			this.parent.type === "simple-settlements.settlement"
       ) {
-			this._registerBuilding({ origin });
+			this._registerBuilding(building);
 		}
 	}
 
-	_registerBuilding({ origin }) {
-    if (this.parent.getFlag("simple-settlements", `buildings.${origin.id}`)) {
-      this.parent.setFlag('simple-settlements', `buildings.${origin.id}.quantity` , origin.quantity + 1);
+	_registerBuilding(building) {
+    if (this.parent.getFlag("simple-settlements", `buildings.${building.id}`)) {
+      this.parent.setFlag('simple-settlements', `buildings.${building.id}.quantity` , building.quantity + 1);
       return
     }
-    this.parent.setFlag('simple-settlements', 'buildings', {[origin.id]: {
-      id: origin.id,
+    this.parent.setFlag('simple-settlements', 'buildings', {[building.id]: {
+      id: building.id,
       quantity: 1
     }});
 	}
@@ -39,14 +65,6 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     return Object.keys(this.parent.flags["simple-settlements"]?.buildings) || []
   }
 
-  /* _getAllBuildings(){
-    const buildingsIds = this._getAllBuildingsIds();
-    const buildings = buildingsIds.map((id) => game.actors.get(id)).filter((element) => element !== undefined);
-    buildings.forEach((building, i) => {
-
-    })
-    return buildings
-  } */
   _getAllBuildings(){
     const buildingsData = Object.values(this.parent.flags["simple-settlements"]?.buildings || {})
 
@@ -61,17 +79,6 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     return buildings
   }
 
-  /* _registerInactiveBuildings(buildings){
-    const innactiveBuildingsIds = this._getAllInactiveBuildingsIds()
-    buildings.forEach((building, i) => {
-      if (innactiveBuildingsIds.includes(building.id)) {
-        building.isInactive = true
-      } else {
-        building.isInactive = false
-      }
-    })
-    return buildings
-  } */
   _registerInactiveBuildings(buildings){
     buildings.forEach((building)=>{
       if (building.quantity > 0) {
@@ -81,12 +88,6 @@ class SettlementData extends foundry.abstract.TypeDataModel {
       }
     })
   }
-
-  /* _getAllInactiveBuildingsIds() {
-    const inactiveBuildingsObj = this.parent.getFlag("simple-settlements", "inactiveBuildings");
-    return Object.values(inactiveBuildingsObj)
-  } */
-
 	_deleteBuildingRegister(id) {
     this.parent.unsetFlag("simple-settlements", `buildings.${id}`)
   }
@@ -95,9 +96,6 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     game.actors.get(id).render(true)
   }
 
-  /* _fillBuildingsWithIsInactiveOptions(){
-    
-  } */
 }
 
 export default SettlementData;

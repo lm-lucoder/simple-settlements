@@ -11,12 +11,12 @@ class BuildingData extends foundry.abstract.TypeDataModel {
         // console.log(this.parent.items.contents)
 
         const items = this.parent.items.contents
-        const resources = this._getResources(items)
+        const resources = this._filterItemsResources(items)
 
         this.resources = resources
       }
 
-      _getResources(items){
+      _filterItemsResources(items){
         const resources = []
     
         for (let i of items) {

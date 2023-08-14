@@ -16,15 +16,21 @@ Hooks.on("dropActorSheetData", (...args) => {
 	const originDocument = game.actors.get(args[2].uuid.replace("Actor.", ""));
 
 	const data = {
-		target: targetDocument,
-		origin: originDocument,
+		settlement: targetDocument,
+		building: originDocument,
 	};
 	if (
-		data.origin.type == "simple-settlements.building" && data.target.type == "simple-settlements.settlement"
+		data.building.type == "simple-settlements.building" && data.settlement.type == "simple-settlements.settlement"
 	) {
-		targetDocument.system._handleBuildingDrop(data);
+		targetDocument.system._handleBuildingDrop(data.building);
 	}
 });
+
+Hooks.on("getActorSheetHeaderButtons", (app,button)=>{
+	console.log("Renderizou ator header")
+	console.log(app)
+	console.log(button)
+})
 
 /* Hooks.once('ready', async function() {
 
@@ -71,9 +77,9 @@ function addHandlebarsCustomHelpers(){
 	Handlebars.registerHelper('multiply', function (number, multiplier) {
 		return number * multiplier;
 	});
-	Handlebars.registerHelper('multiplyReturningString', function (number, multiplier, isBasicMultiply) {
+	Handlebars.registerHelper('multiplyToString', function (number, multiplier, isNotReturningString) {
 		const result = number * multiplier;
-		if (isBasicMultiply) {
+		if (isNotReturningString) {
 			return result
 		}
 		if (result > 0) {
