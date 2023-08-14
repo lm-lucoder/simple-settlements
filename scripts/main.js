@@ -8,6 +8,7 @@ import SettlementSheet from "../sheets/settlement-sheet.js";
 Hooks.once("init", async function () {
 	assignAndRegisterAll();
 	loadHandleBarTemplates();
+	addHandlebarsCustomHelpers()
 });
 
 Hooks.on("dropActorSheetData", (...args) => {
@@ -64,4 +65,23 @@ async function loadHandleBarTemplates() {
 		// "modules/simple-settlements/templates/parts/settlement-buildings-manager-card-details.html"
 	];
 	return loadTemplates(templatePaths);
+}
+
+function addHandlebarsCustomHelpers(){
+	Handlebars.registerHelper('multiply', function (number, multiplier) {
+		return number * multiplier;
+	});
+	Handlebars.registerHelper('multiplyReturningString', function (number, multiplier, isBasicMultiply) {
+		const result = number * multiplier;
+		if (isBasicMultiply) {
+			return result
+		}
+		if (result > 0) {
+			return `+${result}`
+		}
+		if (result < 0) {
+			return String(result)
+		}
+		return String(result)
+	});
 }

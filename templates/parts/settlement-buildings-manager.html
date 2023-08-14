@@ -9,8 +9,7 @@
             <div class="building-info">
               <h4 class="building-name">{{building.name}}</h4>
               <div class="isInactive-container">
-                  <label>Inactive</label>
-                  <input class="isInactiveCheckbox" type="checkbox" {{checked building.isInactive}}/>
+                  <label>Inactive Building</label>
               </div>
             </div>
           </div>
@@ -24,7 +23,8 @@
                           </div>
                           <h4 class="item-name">{{item.name}}</h4>
                           <span class="item-value">
-                              {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}}
+                              <!-- {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}} -->
+                              {{multiplyReturningString item.system.quantity building.quantity item.system.isStatic}}
                           </span>
                       </div>
                   </li>
@@ -34,6 +34,12 @@
           <div class="item-controls">
             <a class="item-control item-see" title="Visualize Building"><i class="fa-solid fa-eye"></i></a>
             <a class="item-control item-remove" title="Remove Building"><i class="fa-solid fa-x"></i></a>
+            <div class="item-amount-control">
+              <label>Quantity</label>
+              <a class="quantity-control quantity-control-up"><i class="fa-solid fa-up"></i></a>
+              <span class="item-amount">{{building.quantity}}</span>
+              <a class="quantity-control quantity-control-down"><i class="fa-solid fa-down"></i></a>
+            </div>
           </div>
         </li>
       {{/each}}

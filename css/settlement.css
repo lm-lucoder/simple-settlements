@@ -40,10 +40,10 @@
     font-size: 18px;
 }
 
-.buildings-list .building-card .building-description .building-info .isInactive-container{
+/* .buildings-list .building-card .building-description .building-info .isInactive-container{
     display: flex;
     align-items: center;
-}
+} */
 
 .buildings-list .building-card .building-resources-container{
     list-style: none;
@@ -62,6 +62,18 @@
     margin-top: 5px;
     padding-top: 5px;
     text-align: center;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+.buildings-list .building-card .item-controls .item-amount-control{
+    padding-left: 6px;
+    border-left: 1px solid #999683;
+}
+.buildings-list .building-card .item-controls .item-amount-control input{
+    width: 50px;
+    height: 20px
 }
 
 .settlement-building-resource-card{
