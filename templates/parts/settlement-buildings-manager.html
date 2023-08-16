@@ -1,7 +1,7 @@
 <div class="settlement-building-manager">
-    <ol class="buildings-list">
+    <ol class="buildings-list items">
       {{#each buildings as |building id|}}
-        <li class="building-card {{#if building.isInactive}}building-inactive{{/if}}" data-building-id="{{building._id}}">
+        <li class="building-card {{#if building.isInactive}}building-inactive{{/if}} item" data-building-id="{{building._id}}">
           <div class="building-description">
             <div class="building-image">
               <img {{#if building.isInactive}}class="innactive"{{/if}} src="{{building.img}}" title="{{building.name}}" />

@@ -22,11 +22,22 @@
 
     {{!-- Attributes Tab --}}
     <div class="tab attributes" data-group="primary" data-tab="attributes">
-      <label for="system.quantity">Quantity: </label>
-      <input name="system.quantity" type="text" value="{{item.system.quantity}}" placeholder="0"/>
-
-      <label for="system.isStatic">Is Static: </label>
-      <input name="system.isStatic" type="checkbox" {{checked data.system.isStatic }}/>
+      <div class="resource-attributes-container">
+        <div class="quantity-container divisor">
+          <label for="system.quantity">Quantity: </label>
+          <input name="system.quantity" type="text" value="{{item.system.quantity}}" placeholder="0"/>
+        </div>
+  
+        <div class="is-istatic-container divisor">
+          <label for="system.isStatic">Is Static: </label>
+          <input name="system.isStatic" type="checkbox" {{checked data.system.isStatic }}/>
+        </div>
+  
+        <div class="category-container divisor">
+          <label for="system.category">Category: </label>
+          <input name="system.category" type="text" value="{{item.system.category}}"/>
+        </div>
+      </div>
     </div>
   </section>
 </form>

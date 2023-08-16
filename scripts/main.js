@@ -6,6 +6,7 @@ import SettlementData from "../datamodels/settlement.js";
 import SettlementSheet from "../sheets/settlement-sheet.js";
 
 Hooks.once("init", async function () {
+	console.log("INICIOU")
 	assignAndRegisterAll();
 	loadHandleBarTemplates();
 	addHandlebarsCustomHelpers()
@@ -26,11 +27,11 @@ Hooks.on("dropActorSheetData", (...args) => {
 	}
 });
 
-Hooks.on("getActorSheetHeaderButtons", (app,button)=>{
-	console.log("Renderizou ator header")
-	console.log(app)
-	console.log(button)
-})
+/* Hooks.on("getActorSheetHeaderButtons", (app,button)=>{
+	// console.log("Renderizou ator header")
+	// console.log(app)
+	// console.log(button)
+}) */
 
 /* Hooks.once('ready', async function() {
 

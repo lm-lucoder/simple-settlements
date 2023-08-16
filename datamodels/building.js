@@ -6,14 +6,27 @@ class BuildingData extends foundry.abstract.TypeDataModel {
         };
       }
       prepareDerivedData() {
-        // console.log(this)
-        // console.log(this.parent)
-        // console.log(this.parent.items.contents)
-
         const items = this.parent.items.contents
         const resources = this._filterItemsResources(items)
+        const categories = this._prepareResourcesCategories(resources)
 
         this.resources = resources
+        this.categories = categories
+      }
+
+      _prepareResourcesCategories(resources){
+        const categories = {}
+        resources.forEach(resource => {
+          if (categories[resource.system.category]) {
+            categories[resource.system.category].resources.push(resource)
+          } else {
+            categories[resource.system.category] = {
+              name: resource.system.category,
+              resources: [resource]
+            }
+          }
+        });
+        return categories
       }
 
       _filterItemsResources(items){

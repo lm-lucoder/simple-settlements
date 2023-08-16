@@ -21,6 +21,7 @@ class BuildingSheet extends ActorSheet {
 		// console.log(this);
 		const context = super.getData()
 		this._prepareResources(context)
+		this._prepareResourcesCategories(context)
 		await this._prepareDescriptionData(context)
 		// console.log(context)
 		return context
@@ -83,6 +84,10 @@ class BuildingSheet extends ActorSheet {
 
 	_prepareResources(context){
 		context.resources = this.actor.system.resources
+	}
+
+	_prepareResourcesCategories(context){
+		context.categories = this.actor.system.categories
 	}
 
 	async _prepareDescriptionData(context){

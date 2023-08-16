@@ -25,20 +25,11 @@ class SettlementSheet extends ActorSheet {
 		context.buildings = context.actor.system.buildings;
 
 		console.log(context);
-		// console.log("preparing sheet data");
 
 		return context;
 	}
 
 	activateListeners(html) {
-		/* html.find(".isInactiveCheckbox").change((ev) => {
-			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
-			if (ev.target.checked) {
-				this._registerInactiveBuilding(buildingId);
-			} else {
-				this._unregisterInactiveBuilding(buildingId);
-			}
-		}); */
 
 		html.find(".item-see").click((ev)=>{
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
@@ -72,11 +63,6 @@ class SettlementSheet extends ActorSheet {
 	}
 
 	_addQuantityToBuilding(buildingId){
-		/* const actualQuantity = this.object.getFlag('simple-settlements', `buildingsQuantity.${buildingId}`) || 1
-		this.object.setFlag('simple-settlements', 'buildingsQuantity', {[buildingId]: {
-			quantity: (actualQuantity + 1),
-			id: buildingId
-		}}); */
 		const building = this._getBuildingById(buildingId);
 		if (building) {
 			this.object.setFlag('simple-settlements', `buildings.${building.id}.quantity` , building.quantity + 1);
@@ -84,11 +70,6 @@ class SettlementSheet extends ActorSheet {
 
 	}
 	_removeQuantityToBuilding(buildingId){
-		/* const actualQuantity = this.object.getFlag('simple-settlements', `buildingsQuantity.${buildingId}`) || 1
-		this.object.setFlag('simple-settlements', 'buildingsQuantity', {[buildingId]: {
-			quantity: (actualQuantity - 1),
-			id: buildingId
-		}}); */
 		const building = this._getBuildingById(buildingId);
 		if (building) {
 			if (building.quantity > 0) {
@@ -98,14 +79,6 @@ class SettlementSheet extends ActorSheet {
 			}
 		}
 	}
-
-	/* _registerInactiveBuilding(buildingId) {
-		this.object.setFlag('simple-settlements', 'inactiveBuildings', {[buildingId]: buildingId});
-	}
-	
-	_unregisterInactiveBuilding(buildingId) {
-		this.object.unsetFlag("simple-settlements", `inactiveBuildings.${buildingId}`)
-	} */
 
 	_getBuildingById(id){
 		const buildings = this.object.system.buildings;

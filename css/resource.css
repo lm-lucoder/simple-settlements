@@ -1,0 +1,9 @@
+.resource-attributes-container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px
+}
+.resource-attributes-container .is-istatic-container{
+    display: flex;
+    align-items: center;
+}

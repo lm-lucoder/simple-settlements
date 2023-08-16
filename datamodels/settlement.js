@@ -10,8 +10,17 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 		};
 	}
 	prepareDerivedData() {
+    // const items = this.parent.items.contents
+    // const resources = this._filterItemsResources(items)
+    // const categorizedResources = this._buildResourcesHierarchy(resources)
+    // const categories = this._prepareResourcesCategories(staticResources)
+
     this._prepareBuildingsData()
-    this._prepareResourcesIncome()
+    this._prepareIncome()
+
+    // this.resources = resources
+    // this.categorizedResources = categorizedResources
+    // this.categories = categories
   }
   
   _prepareBuildingsData(){
@@ -22,7 +31,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     this.buildings = buildings  
   }
 
-  _prepareResourcesIncome(){
+  _prepareIncome(){
     const resourcesIncomeData = {}
     const buildings = this._getAllBuildings() 
     buildings.forEach(building => {
@@ -95,6 +104,64 @@ class SettlementData extends foundry.abstract.TypeDataModel {
   _renderBuilding(id) {
     game.actors.get(id).render(true)
   }
+
+  _filterItemsResources(items){
+    const resources = []
+
+    for (let i of items) {
+      i.img = i.img || DEFAULT_TOKEN;
+      // Append to resources.
+      if (i.type === "simple-settlements.resource") {
+        resources.push(i);
+      }
+      // resources.push(i);
+    }
+
+    return resources
+  }
+  _buildResourcesHierarchy(resources){
+    const resourcesByHierarchy = {
+      static: {},
+      nonStatic: {}
+    }
+    resources.forEach(resource => {
+     if (resource.isStatic) {
+      if (resourcesByHierarchy.static[resource.system.category]) {
+        resourcesByHierarchy.static[resource.system.category].resources.push(resource)
+      } else {
+        resourcesByHierarchy.static[resource.system.category] = {
+          name: resource.system.category,
+          resources: [resource]
+        }
+      }
+     } else {
+      if (resourcesByHierarchy.nonStatic[resource.system.category]) {
+        resourcesByHierarchy.nonStatic[resource.system.category].resources.push(resource)
+      } else {
+        resourcesByHierarchy.nonStatic[resource.system.category] = {
+          name: resource.system.category,
+          resources: [resource]
+        }
+      }
+     }
+    })
+    return resourcesByHierarchy
+  }
+
+  /* _prepareResourcesCategories(resources){
+    const categories = {}
+    resources.forEach(resource => {
+      if (categories[resource.system.category]) {
+        categories[resource.system.category].resources.push(resource)
+      } else {
+        categories[resource.system.category] = {
+          name: resource.system.category,
+          resources: [resource]
+        }
+      }
+    });
+    return categories
+  } */
 
 }
 
