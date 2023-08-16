@@ -8,7 +8,7 @@ class SettlementSheet extends ActorSheet {
 				{
 					navSelector: ".sheet-tabs",
 					contentSelector: ".sheet-body",
-					initial: "description",
+					initial: "buildings",
 				},
 			],
 		});
@@ -30,6 +30,18 @@ class SettlementSheet extends ActorSheet {
 	}
 
 	activateListeners(html) {
+		html.find(".item-edit").click((ev) => {
+			const li = $(ev.currentTarget).parents(".item");
+			const item = this.actor.items.get(li.data("itemId"));
+			item.sheet.render(true);
+		});
+
+		html.find(".item-delete").click((ev) => {
+			const li = $(ev.currentTarget).parents(".item");
+			const item = this.actor.items.get(li.data("itemId"));
+			item.delete();
+			li.slideUp(200, () => this.render(false));
+		});
 
 		html.find(".item-see").click((ev)=>{
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;

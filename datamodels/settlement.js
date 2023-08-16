@@ -10,16 +10,16 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 		};
 	}
 	prepareDerivedData() {
-    // const items = this.parent.items.contents
-    // const resources = this._filterItemsResources(items)
-    // const categorizedResources = this._buildResourcesHierarchy(resources)
+    const items = this.parent.items.contents
+    const resources = this._filterItemsResources(items)
+    const categorizedResources = this._buildResourcesHierarchy(resources)
     // const categories = this._prepareResourcesCategories(staticResources)
 
     this._prepareBuildingsData()
     this._prepareIncome()
 
-    // this.resources = resources
-    // this.categorizedResources = categorizedResources
+    this.resources = resources
+    this.categorizedResources = categorizedResources
     // this.categories = categories
   }
   
@@ -147,7 +147,10 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     })
     return resourcesByHierarchy
   }
-
+  _handleResourceDrop(resource){
+    /* console.log("DROPOU")
+    console.log(resource) */
+  }
   /* _prepareResourcesCategories(resources){
     const categories = {}
     resources.forEach(resource => {

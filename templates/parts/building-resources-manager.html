@@ -1,6 +1,6 @@
 <div class="building-resources-manager">
   <a class="item-control item-create" title="Create item" data-type="simple-settlements.resource"><i class="fas fa-plus"></i> Add resource</a>
-  {{#each categories as |category id|}}
+  {{#each categories as |category|}}
     <h3>{{#if category.name}}{{category.name}}{{else}}Without Category{{/if}}</h3>
       <ol class="items-list items-resources-list items">
           {{#each category.resources as |item id|}}

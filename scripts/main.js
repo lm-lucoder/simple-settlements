@@ -13,18 +13,30 @@ Hooks.once("init", async function () {
 });
 
 Hooks.on("dropActorSheetData", (...args) => {
-	const targetDocument = args[0];
-	const originDocument = game.actors.get(args[2].uuid.replace("Actor.", ""));
-
-	const data = {
-		settlement: targetDocument,
-		building: originDocument,
-	};
-	if (
-		data.building.type == "simple-settlements.building" && data.settlement.type == "simple-settlements.settlement"
-	) {
-		targetDocument.system._handleBuildingDrop(data.building);
+	const origin = args[2]
+	const target = args[0]
+	console.log(args)
+	if (target.type === "simple-settlements.settlement" && origin.type === "Actor") {
+		const building = game.actors.get(args[2].uuid.replace("Actor.", ""));
+		if (!building.type === "simple-settlements.building") {
+			return
+		}
+		const data = {
+			settlement: target,
+			building: building,
+		};
+		console.log(data)
+		data.settlement.system._handleBuildingDrop(data.building);
 	}
+	/* if (origin.type === "Item") {
+		const resource = game.items.get(origin.uuid.replace("Item.", ""));
+		if (!resource.type === "simple-settlements.resource" || !target.type === "simple-settlements.settlement" || !target.type === "simple-settlements.building" ) {
+			return
+		}
+		if (target.system._handleResourceDrop) {
+			target.system._handleResourceDrop(resource)
+		}
+	} */
 });
 
 /* Hooks.on("getActorSheetHeaderButtons", (app,button)=>{
