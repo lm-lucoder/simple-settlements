@@ -81,12 +81,17 @@ async function loadHandleBarTemplates() {
 	const templatePaths = [
 		"modules/simple-settlements/templates/parts/building-resources-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-buildings-manager.html",
-		// "modules/simple-settlements/templates/parts/settlement-buildings-manager-card-details.html"
+		"modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html",
+		"modules/simple-settlements/templates/parts/settlement-resources-static-storage.html",
+		"modules/simple-settlements/templates/parts/settlement-resources-income.html"
 	];
 	return loadTemplates(templatePaths);
 }
 
 function addHandlebarsCustomHelpers(){
+	Handlebars.registerHelper('sum', function (one, two) {
+		return one + two;
+	});
 	Handlebars.registerHelper('multiply', function (number, multiplier) {
 		return number * multiplier;
 	});

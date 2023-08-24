@@ -1,0 +1,37 @@
+.resource-small-income-card{
+    padding: 5px;
+    border: 1px solid #B5B3A4;
+    border-radius: 3px;
+}
+
+.resource-small-income-card .card-info{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid #B5B3A4;
+    margin-bottom: 3px;
+}
+.resource-small-income-card .card-info .card-image img{
+    width: 25px;
+}
+.resource-small-income-card .card-info .card-title{
+    font-size: 18px;
+}
+
+
+.resource-small-income-card .card-description{
+    display: flex;
+    gap: 5px;
+    justify-content: space-between;
+}
+.resource-small-income-card .card-description .card-description-section{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 3px 6px;
+    flex-grow: 1;
+    border: 1px solid #B5B3A4;
+    border-radius: 2px;
+}

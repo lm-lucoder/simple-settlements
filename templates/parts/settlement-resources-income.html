@@ -1,0 +1,49 @@
+<div class="static-resource-log">
+    {{#each actor.system.income.static as |category|}}
+        <h3>{{category.name}}</h3>
+        <ol class="resource-income-list">
+            {{#each category.resources as |resource|}}
+                <li class="resource-small-income-card">
+                    <div class="card-info">
+                        <div class="card-image">
+                            <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
+                        </div>
+                        <span class="card-title">{{resource.data.name}}</span>
+                    </div>
+                    <div class="card-description">
+                        <div class="card-description-section">
+                            <span>{{sum resource.income resource.stored}}</span>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    {{/each}}
+</div>
+<div class="nonStatic-resource-log">
+    {{#each actor.system.income.nonStatic as |category|}}
+        <h3>{{category.name}}</h3>
+        <ol class="resource-income-list">
+            {{#each category.resources as |resource|}}
+                <li class="resource-small-income-card">
+                    <div class="card-info">
+                        <div class="card-image">
+                            <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
+                        </div>
+                        <span class="card-title">{{resource.data.name}}</span>
+                    </div>
+                    <div class="card-description">
+                        <div class="card-description-section">
+                            <span class="card-description-title"><i class="fa-solid fa-plus"></i> :</span>
+                            <span>{{resource.income}}</span>
+                        </div>
+                        <div class="card-description-section">
+                            <span class="card-description-title"><i class="fa-solid fa-box"></i> :</span>
+                            <span>{{resource.stored}}</span>
+                        </div>
+                    </div>
+                </li>
+            {{/each}}
+        </ol>
+    {{/each}}
+</div>

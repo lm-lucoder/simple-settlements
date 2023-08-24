@@ -13,14 +13,13 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const items = this.parent.items.contents
     const resources = this._filterItemsResources(items)
     const categorizedResources = this._buildResourcesHierarchy(resources)
-    // const categories = this._prepareResourcesCategories(staticResources)
+    const buildings = this._prepareBuildingsData()
+    const income = this._prepareIncome(buildings, resources)
 
-    this._prepareBuildingsData()
-    this._prepareIncome()
-
+    this.buildings = buildings
     this.resources = resources
     this.categorizedResources = categorizedResources
-    // this.categories = categories
+    this.income = income
   }
   
   _prepareBuildingsData(){
@@ -28,12 +27,11 @@ class SettlementData extends foundry.abstract.TypeDataModel {
   
     this._registerInactiveBuildings(buildings)
   
-    this.buildings = buildings  
+    return buildings  
   }
 
-  _prepareIncome(){
+  _prepareIncome(buildings, resources){
     const resourcesIncomeData = {}
-    const buildings = this._getAllBuildings() 
     buildings.forEach(building => {
       const resources = building.system._filterItemsResources(building.items.contents)
       resources.forEach(resource => {
@@ -41,13 +39,46 @@ class SettlementData extends foundry.abstract.TypeDataModel {
           resourcesIncomeData[resource.name].quantity += (resource.system.quantity * building.quantity)
         } else {
           resourcesIncomeData[resource.name] = {
-            quantity: (resource.system.quantity * building.quantity),
+            income: (resource.system.quantity * building.quantity),
             data: resource
           }
         }
       })
     })
-    this.income = resourcesIncomeData
+    const resourceIncomeDataByHierarchy = {
+      static: {},
+      nonStatic: {}
+    }
+    Object.values(resourcesIncomeData).forEach(resourceIncome => {
+      const resourceIncomeFormat = getResourceIncomeFormat({resources, resourceIncome})
+      if (resourceIncome.data.system.isStatic) {
+        if (resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category]) {
+          resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category].resources.push(resourceIncomeFormat)
+        } else {
+          resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category] = {
+            name: resourceIncome.data.system.category,
+            resources: [resourceIncomeFormat]
+          }
+        }
+      } else {
+        if (resourceIncomeDataByHierarchy.nonStatic[resourceIncome.data.system.category]) {
+          resourceIncomeDataByHierarchy.nonStatic[resourceIncome.data.system.category].resources.push(resourceIncomeFormat)
+        } else {
+          resourceIncomeDataByHierarchy.nonStatic[resourceIncome.data.system.category] = {
+            name: resourceIncome.data.system.category,
+            resources: [resourceIncomeFormat]
+          }
+        }
+      }
+    })
+    
+    function getResourceIncomeFormat({resources, resourceIncome}){
+      const storedResource = resources.find(resource => resource.name === resourceIncome.data.name)
+      resourceIncome.stored = storedResource.system.quantity || 0
+      return resourceIncome
+    }
+    
+    return resourceIncomeDataByHierarchy
   }
 
 	_handleBuildingDrop(building) {
@@ -125,7 +156,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
       nonStatic: {}
     }
     resources.forEach(resource => {
-     if (resource.isStatic) {
+     if (resource.system.isStatic) {
       if (resourcesByHierarchy.static[resource.system.category]) {
         resourcesByHierarchy.static[resource.system.category].resources.push(resource)
       } else {
@@ -147,24 +178,6 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     })
     return resourcesByHierarchy
   }
-  _handleResourceDrop(resource){
-    /* console.log("DROPOU")
-    console.log(resource) */
-  }
-  /* _prepareResourcesCategories(resources){
-    const categories = {}
-    resources.forEach(resource => {
-      if (categories[resource.system.category]) {
-        categories[resource.system.category].resources.push(resource)
-      } else {
-        categories[resource.system.category] = {
-          name: resource.system.category,
-          resources: [resource]
-        }
-      }
-    });
-    return categories
-  } */
 
 }
 

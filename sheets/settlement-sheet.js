@@ -10,6 +10,11 @@ class SettlementSheet extends ActorSheet {
 					contentSelector: ".sheet-body",
 					initial: "buildings",
 				},
+				{
+					navSelector: ".resources-tabs",
+					contentSelector: ".resources-container",
+					initial: "storage",
+				},
 			],
 		});
 	}

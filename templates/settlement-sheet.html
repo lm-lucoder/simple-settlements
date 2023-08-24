@@ -31,35 +31,17 @@
 
     <div class="tab resources" data-group="primary" data-tab="resources">
       {{!-- As you add new fields, add them in here! --}}
+      <nav class="resources-tabs tabs" data-group="secondary">
+        <a class="item" data-tab="income">Income</a>
+        <a class="item" data-tab="storage">Storage</a>
+      </nav>
       <div class="resources-container">
-        <div class="resources-income-log"></div>
-        <div class="resources-static-storage"></div>
-        <div class="resources-non-static-storage">
-          <h2>Storage</h2>
-          {{#each actor.system.categorizedResources.nonStatic as |category|}}
-            <h3>{{#if category.name}}{{category.name}}{{else}}Without Category{{/if}}</h3>
-            <ol class="items-list items-resources-list items">
-              {{#each category.resources as |item id|}}
-                <li class="item item-resource-card" data-item-id="{{item._id}}">
-                  <div class="item-description">
-                    <div class="item-image">
-                      <a class="rollable" data-roll-type="item"><img src="{{item.img}}" title="{{item.name}}" /></a>
-                    </div>
-                    <div class="item-info">
-                      <h4 class="item-name">{{item.name}}</h4>
-                      <span class="item-value">
-                        {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}}
-                      </span>
-                    </div>
-                  </div>
-                  <div class="item-controls">
-                    <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-                    <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-                  </div>
-                </li>
-              {{/each}}
-            </ol>
-          {{/each}}
+        <div class="tab resources-income-log" data-group="secondary" data-tab="income">
+          {{> "modules/simple-settlements/templates/parts/settlement-resources-income.html"}}
+        </div>
+        <div class="tab resources-storage" data-group="secondary" data-tab="storage">
+          {{> "modules/simple-settlements/templates/parts/settlement-resources-static-storage.html"}}
+          {{> "modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html"}}
         </div>
       </div>
     </div>

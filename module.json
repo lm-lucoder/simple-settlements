@@ -7,7 +7,7 @@
     "verified": "11"
   },
   "styles": [
-    "css/building.css", "css/resource.css", "css/settlement.css"
+    "css/building.css", "css/resource.css", "css/settlement.css", "css/resource-card.css", "css/resource-small-card.css"
   ],
   "authors": [
     {
