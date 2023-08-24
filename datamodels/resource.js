@@ -5,7 +5,8 @@ class ResourceData extends foundry.abstract.TypeDataModel {
           quantity: new fields.NumberField({ integer: true, required: false, nullable: true, initial: 0}),
           description: new fields.HTMLField({required: false, blank: false, initial: "<p></p>"}),
           category: new fields.StringField({required: false, initial: ""}),
-          isStatic: new fields.BooleanField({required: false, initial: false})
+          isStatic: new fields.BooleanField({required: false, initial: false}),
+          isImportant: new fields.BooleanField({required: false, initial: false}),
         };
       }
       prepareDerivedData() {

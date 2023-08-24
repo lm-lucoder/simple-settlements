@@ -3,7 +3,18 @@
     flex-direction: column;
     gap: 5px
 }
-.resource-attributes-container .is-istatic-container{
+.resource-attributes-container .divisor{
+    border-top: 1px solid #999683;
+    border-bottom: 1px solid #999683;
+    padding: 3px 0;
+}
+.resource-attributes-container .divisor div{
     display: flex;
     align-items: center;
+}
+.resource-attributes-container .divisor label{
+    font-weight: bold;
+}
+.resource-attributes-container .divisor p{
+    margin: 0;
 }

@@ -36,6 +36,9 @@ class SettlementSheet extends ActorSheet {
 	activateListeners(html) {
 		super.activateListeners(html);
 
+		// Everything below here is only needed if the sheet is editable
+		if (!this.options.editable) return;
+
 		html.find(".time-passage").click((ev) => {
 			this.object.system._passTime()
 		});
@@ -56,7 +59,6 @@ class SettlementSheet extends ActorSheet {
 		html.find(".item-see").click((ev)=>{
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			game.actors.get(buildingId).sheet.render(true)
-			// console.log(ev)
 
 		})
 		html.find(".item-remove").click((ev)=>{

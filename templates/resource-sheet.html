@@ -28,9 +28,20 @@
           <input name="system.quantity" type="text" value="{{item.system.quantity}}" placeholder="0"/>
         </div>
   
-        <div class="is-istatic-container divisor">
-          <label for="system.isStatic">Is Static: </label>
-          <input name="system.isStatic" type="checkbox" {{checked data.system.isStatic }}/>
+        <div class="is-static-container divisor">
+          <div>
+            <label for="system.isStatic">Is Static: </label>
+            <input name="system.isStatic" type="checkbox" {{checked data.system.isStatic }}/>
+          </div>
+          <p>Static Items does not stack into the storage, they are just a sum of all incoming and stored resources</p>
+        </div>
+
+        <div class="is-important-container divisor">
+          <div>
+            <label for="system.isImportant">Is Important: </label>
+            <input name="system.isImportant" type="checkbox" {{checked data.system.isImportant }}/>
+          </div>
+          <p>Important Items will show in the settlement's header log.</p>
         </div>
   
         <div class="category-container divisor">
