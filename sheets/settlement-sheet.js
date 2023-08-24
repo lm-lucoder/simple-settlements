@@ -13,7 +13,7 @@ class SettlementSheet extends ActorSheet {
 				{
 					navSelector: ".resources-tabs",
 					contentSelector: ".resources-container",
-					initial: "storage",
+					initial: "income",
 				},
 			],
 		});
@@ -23,18 +23,23 @@ class SettlementSheet extends ActorSheet {
 		return `${path}/settlement-sheet.html`;
 	}
 	async getData() {
-		const context = super.getData();
+		const context = await super.getData();
+		context.buildings = context.actor.system.buildings;
+		
+		console.log(context);
 
 		await this._prepareDescriptionData(context);
-
-		context.buildings = context.actor.system.buildings;
-
-		console.log(context);
 
 		return context;
 	}
 
 	activateListeners(html) {
+		super.activateListeners(html);
+
+		html.find(".time-passage").click((ev) => {
+			this.object.system._passTime()
+		});
+
 		html.find(".item-edit").click((ev) => {
 			const li = $(ev.currentTarget).parents(".item");
 			const item = this.actor.items.get(li.data("itemId"));
@@ -68,7 +73,7 @@ class SettlementSheet extends ActorSheet {
 			this._removeQuantityToBuilding(buildingId)
 		})
 	}
-	async _prepareDescriptionData(context) {
+	async _prepareDescriptionData(context){
 		context.description = await TextEditor.enrichHTML(
 			this.object.system.description,
 			{

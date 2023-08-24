@@ -2,11 +2,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 	static defineSchema() {
 		const fields = foundry.data.fields;
 		return {
-			description: new fields.HTMLField({
-				required: false,
-				blank: false,
-				initial: "<p></p>",
-			}),
+			description: new fields.HTMLField({required: false, blank: false, initial: "<p></p>"}),
 		};
 	}
 	prepareDerivedData() {
@@ -29,14 +25,15 @@ class SettlementData extends foundry.abstract.TypeDataModel {
   
     return buildings  
   }
-
   _prepareIncome(buildings, resources){
+    // Prepare all the income from the buildings
     const resourcesIncomeData = {}
     buildings.forEach(building => {
+      // if (building.isInactive) return;
       const resources = building.system._filterItemsResources(building.items.contents)
       resources.forEach(resource => {
         if (resourcesIncomeData[resource.name]) {
-          resourcesIncomeData[resource.name].quantity += (resource.system.quantity * building.quantity)
+          resourcesIncomeData[resource.name].income += (resource.system.quantity * building.quantity)
         } else {
           resourcesIncomeData[resource.name] = {
             income: (resource.system.quantity * building.quantity),
@@ -45,13 +42,24 @@ class SettlementData extends foundry.abstract.TypeDataModel {
         }
       })
     })
+    // Add stored resources as 0 income on the income data, for better rendering purposes
+    resources.forEach(resource => {
+      if (!resourcesIncomeData[resource.name]) {
+        resourcesIncomeData[resource.name] = {
+          income: 0,
+          data: resource
+        }
+      }
+    })
+    // Format the income result into categorized data
     const resourceIncomeDataByHierarchy = {
       static: {},
-      nonStatic: {}
+      nonStatic: {},
+      all: resourcesIncomeData
     }
     Object.values(resourcesIncomeData).forEach(resourceIncome => {
       const resourceIncomeFormat = getResourceIncomeFormat({resources, resourceIncome})
-      if (resourceIncome.data.system.isStatic) {
+      if (resourceIncome.data?.system.isStatic) {
         if (resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category]) {
           resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category].resources.push(resourceIncomeFormat)
         } else {
@@ -74,7 +82,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     
     function getResourceIncomeFormat({resources, resourceIncome}){
       const storedResource = resources.find(resource => resource.name === resourceIncome.data.name)
-      resourceIncome.stored = storedResource.system.quantity || 0
+      resourceIncome.stored = storedResource?.system.quantity || 0
       return resourceIncome
     }
     
@@ -177,6 +185,30 @@ class SettlementData extends foundry.abstract.TypeDataModel {
      }
     })
     return resourcesByHierarchy
+  }
+
+  async _passTime(){
+    const toUpdate = []
+    const toCreate = []
+    const incomeItems = Object.values(this.income.all).filter(resource => !resource.data.system.isStatic)
+    console.log(incomeItems)
+    incomeItems.forEach(income => {
+      const existingResource = this.parent.system.resources.find(resource => resource.name === income.data.name)
+      if (existingResource) {
+        toUpdate.push({_id: existingResource.id, system: {quantity: income.income + existingResource.system.quantity}})
+      } else {
+        toCreate.push({name: income.data.name, img: income.data.img, type: income.data.type, system: {...income.data.system, quantity: income.income}})
+      }
+      // console.log(income)
+    })
+    console.log("toUpdate", toUpdate)
+    console.log("toCreate", toCreate)
+    if (toUpdate.length > 0) {
+      await Item.updateDocuments(toUpdate, {parent: this.parent})
+    }
+    if (toCreate.length > 0) {
+      await Item.createDocuments(toCreate, {parent: this.parent})
+    }
   }
 
 }
