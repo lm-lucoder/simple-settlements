@@ -211,6 +211,15 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     }
   }
 
+  getStaticIncome(){
+    const income = this.income;
+    return Object.values(income.all).filter(resource => resource.data.system.isStatic)
+  }
+  getNonStaticIncome(){
+    const income = this.income;
+    return Object.values(income.all).filter(resource => !resource.data.system.isStatic)
+  }
+
 }
 
 export default SettlementData;

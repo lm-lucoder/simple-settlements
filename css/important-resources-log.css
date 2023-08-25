@@ -1,0 +1,30 @@
+.important-resources-log-list{
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.important-log-card{
+    border: 1px solid #999683;
+    background-color: #b5b3a45d;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 4px;
+}
+.important-log-card .card-info{
+    display: flex;
+    align-items: center;
+    gap: 3px;
+}
+.important-log-card .card-info .card-image{
+    display: flex;
+    align-items: center;
+}
+.important-log-card .card-info .card-image img{
+    width: 20px;
+    border-radius: 3px;
+}

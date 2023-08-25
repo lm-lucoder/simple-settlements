@@ -1,36 +1,39 @@
 {
-  "id": "simple-settlements",
-  "title": "Simple Settlements",
-  "version": "0.3",
-  "compatibility": {
-    "minimum": "11",
-    "verified": "11"
-  },
-  "styles": [
-    "css/building.css", "css/resource.css", "css/settlement.css", "css/resource-card.css", "css/resource-small-card.css"
-  ],
-  "authors": [
-    {
-      "name": "Makenfloi"
-    }
-  ],
-  "esmodules": [
-    "scripts/main.js"
-  ],
-  "documentTypes": {
-    "Item": {
-      "resource": {
-        "htmlFields": ["description"],
-        "quantity": 0
-      }
-    },
-    "Actor": {
-      "building": {
-        "htmlFields": ["description"]
-      },
-      "settlement": {
-        "htmlFields": ["description"]
-      }
-    }
-  }
+	"id": "simple-settlements",
+	"title": "Simple Settlements",
+	"version": "0.3",
+	"compatibility": {
+		"minimum": "11",
+		"verified": "11"
+	},
+	"styles": [
+		"css/building.css",
+		"css/resource.css",
+		"css/settlement.css",
+		"css/resource-card.css",
+		"css/resource-small-card.css",
+		"css/important-resources-log.css"
+	],
+	"authors": [
+		{
+			"name": "Makenfloi"
+		}
+	],
+	"esmodules": ["scripts/main.js"],
+	"documentTypes": {
+		"Item": {
+			"resource": {
+				"htmlFields": ["description"],
+				"quantity": 0
+			}
+		},
+		"Actor": {
+			"building": {
+				"htmlFields": ["description"]
+			},
+			"settlement": {
+				"htmlFields": ["description"]
+			}
+		}
+	}
 }

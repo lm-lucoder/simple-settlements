@@ -1,0 +1,26 @@
+<div class="important-resources-log-container">
+    <ol class="important-resources-log-list">
+        {{#each importantIncome.static as |resource|}}
+            <li class="important-log-card">
+                <div class="card-info">
+                    <div class="card-image">
+                        <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
+                    </div>
+                    <span> : </span>
+                </div>
+                <span>{{sum resource.income resource.stored}}</span>
+            </li>
+        {{/each}}
+        {{#each importantIncome.nonStatic as |resource|}}
+            <li class="important-log-card">
+                <div class="card-info">
+                    <div class="card-image">
+                        <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
+                    </div>
+                    <span> : </span>
+                </div>
+                <span>{{resource.stored}} + {{resource.income}}</span>
+            </li>
+        {{/each}}
+    </ol>
+</div>

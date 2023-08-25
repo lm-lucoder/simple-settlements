@@ -83,7 +83,8 @@ async function loadHandleBarTemplates() {
 		"modules/simple-settlements/templates/parts/settlement-buildings-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-static-storage.html",
-		"modules/simple-settlements/templates/parts/settlement-resources-income.html"
+		"modules/simple-settlements/templates/parts/settlement-resources-income.html",
+		"modules/simple-settlements/templates/parts/settlement-important-resources-income.html"
 	];
 	return loadTemplates(templatePaths);
 }

@@ -24,7 +24,9 @@ class SettlementSheet extends ActorSheet {
 	}
 	async getData() {
 		const context = await super.getData();
+
 		context.buildings = context.actor.system.buildings;
+		context.importantIncome = this._buildImportantIncome()
 		
 		console.log(context);
 
@@ -108,6 +110,20 @@ class SettlementSheet extends ActorSheet {
 		const buildings = this.object.system.buildings;
 		const building = buildings.find(building => building.id === id);
 		return building 
+	}
+
+	_buildImportantIncome(){
+		const staticIncome = this.object.system.getStaticIncome()
+		const nonStaticIncome = this.object.system.getNonStaticIncome()
+
+		const importantStaticIncome = staticIncome.filter(resource => resource.data.system.isImportant)
+		const importantNonStaticIncome = nonStaticIncome.filter(resource => resource.data.system.isImportant)
+
+		const formattedIncome = {
+			static: importantStaticIncome,
+			nonStatic: importantNonStaticIncome
+		}
+		return formattedIncome
 	}
 
 }
