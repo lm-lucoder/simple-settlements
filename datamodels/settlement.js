@@ -30,7 +30,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const resourcesIncomeData = {}
     buildings.forEach(building => {
       // if (building.isInactive) return;
-      const resources = building.system._filterItemsResources(building.items.contents)
+      const {resources} = building.system._filterItems(building.items.contents)
       resources.forEach(resource => {
         if (resourcesIncomeData[resource.name]) {
           resourcesIncomeData[resource.name].income += (resource.system.quantity * building.quantity)

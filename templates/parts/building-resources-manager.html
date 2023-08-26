@@ -2,7 +2,7 @@
   <a class="item-control item-create" title="Create item" data-type="simple-settlements.resource"><i class="fas fa-plus"></i> Add resource</a>
   {{#each categories as |category|}}
     <h3>{{#if category.name}}{{category.name}}{{else}}Without Category{{/if}}</h3>
-      <ol class="items-list items-resources-list items">
+      <ol class="item-list items-resources-list items">
           {{#each category.resources as |item id|}}
             <li class="item item-resource-card" data-item-id="{{item._id}}">
               <div class="item-description">
@@ -25,27 +25,3 @@
         </ol>
   {{/each}}
 </div>
-<!-- <div class="building-resources-manager">
-  <a class="item-control item-create" title="Create item" data-type="simple-settlements.resource"><i class="fas fa-plus"></i> Add resource</a>
-  <ol class="items-list items-resources-list items">
-    {{#each resources as |item id|}}
-      <li class="item item-resource-card" data-item-id="{{item._id}}">
-        <div class="item-description">
-          <div class="item-image">
-            <a class="rollable" data-roll-type="item"><img src="{{item.img}}" title="{{item.name}}" /></a>
-          </div>
-          <div class="item-info">
-            <h4 class="item-name">{{item.name}}</h4>
-            <span class="item-value">
-              {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}}
-            </span>
-          </div>
-        </div>
-        <div class="item-controls">
-          <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>
-          <a class="item-control item-delete" title="Delete Item"><i class="fas fa-trash"></i></a>
-        </div>
-      </li>
-    {{/each}}
-  </ol>
-</div> -->

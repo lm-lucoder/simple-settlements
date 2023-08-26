@@ -11,10 +11,11 @@ class BuildingData extends foundry.abstract.TypeDataModel {
       }
       prepareDerivedData() {
         const items = this.parent.items.contents
-        const resources = this._filterItemsResources(items)
+        const {resources, features} = this._filterItems(items)
         const categories = this._prepareResourcesCategories(resources)
 
         this.resources = resources
+        this.features = features
         this.categories = categories
       }
 
@@ -33,8 +34,9 @@ class BuildingData extends foundry.abstract.TypeDataModel {
         return categories
       }
 
-      _filterItemsResources(items){
+      _filterItems(items){
         const resources = []
+        const features = []
     
         for (let i of items) {
           i.img = i.img || DEFAULT_TOKEN;
@@ -42,10 +44,13 @@ class BuildingData extends foundry.abstract.TypeDataModel {
           if (i.type === "simple-settlements.resource") {
             resources.push(i);
           }
+          if (i.type === "simple-settlements.feature") {
+            features.push(i);
+          }
           // resources.push(i);
         }
     
-        return resources
+        return {resources, features}
       }
       /* async addFeature({title, description}){
         const features = this.parent.system.features
@@ -85,6 +90,3 @@ class BuildingData extends foundry.abstract.TypeDataModel {
 }
 
 export default BuildingData
-
-// game.actors.get("RBVKhr7AFPEcWtB8").update({system: {features: [{title: "TESTE 2", description: "<h2>testeeeee</h2>", atoa: "atoa"}]}}); console.log(game.actors.get("RBVKhr7AFPEcWtB8").system.features)
-// Actor.update

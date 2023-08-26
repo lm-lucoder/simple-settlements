@@ -1,0 +1,52 @@
+.features-cards-list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #383838;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.feature-card{
+    padding: 5px;
+    border: 1px solid #383838;
+    background-color: #89898965;
+    border-radius: 3px;
+}
+
+.feature-card .feature-details .card-title {
+    border-bottom:#383838;
+    font-size: 16px;
+
+}
+.feature-card .feature-details .card-description {
+    font-size: 12px;
+}
+
+.feature-chat-card{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.feature-chat-card .card-info{
+    margin: 0;
+    border: none;
+    border-bottom: #a7a59c 1px solid;
+    width: 100%;
+    padding: 6px 0 10px;
+}
+.feature-chat-card .card-info h2{
+    margin: 0;
+    border: none;
+}
+.feature-chat-card .card-info .building-reference{
+    color: #4D4C45;
+    font-style: italic;
+    font-size: 12px;
+}
+.feature-chat-card .feature-description{
+    color: #383838;
+}

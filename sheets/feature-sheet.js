@@ -17,12 +17,14 @@ class FeatureSheet extends ItemSheet {
 		const path = "modules/simple-settlements/templates";
 		return `${path}/feature-sheet.html`;
 	}
-	async getData(options) {
-		const context = super.getData(options);
-		await this._prepareDescriptionData(context)
+	async getData() {
+		const context = super.getData();
 
-		console.log(context)
+		const description = await this._prepareDescriptionData()
+
+		context.description = description
         
+		console.log(context)
 		return context;
 	}
 	activateListeners(html) {
@@ -34,8 +36,8 @@ class FeatureSheet extends ItemSheet {
 		// Roll handlers, click handlers, etc. would go here.
 	}
 
-	async _prepareDescriptionData(context){
-		context.description = await TextEditor.enrichHTML(
+	async _prepareDescriptionData(){
+		return await TextEditor.enrichHTML(
 			this.object.system.description,
 			{
 				async: true,
