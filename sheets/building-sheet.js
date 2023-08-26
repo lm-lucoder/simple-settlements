@@ -23,7 +23,8 @@ class BuildingSheet extends ActorSheet {
 		this._prepareResources(context)
 		this._prepareResourcesCategories(context)
 		await this._prepareDescriptionData(context)
-		// console.log(context)
+		// await this._prepareFeaturesData(context)
+		console.log(context)
 		return context
 	}
 
@@ -100,6 +101,28 @@ class BuildingSheet extends ActorSheet {
 			}
 		);
 	}
+
+	/* async _prepareFeaturesData(context){
+		const features = this.object.system.features
+		const enrichedFeatures = []
+		for (let i = 0; i < features.length; i++) {
+			const element = features[i];
+			const description = await TextEditor.enrichHTML(
+				element.description,
+				{
+					async: true,
+					secrets: this.object.isOwner,
+					relativeTo: this.object,
+				}
+			);
+			enrichedFeatures.push({
+				title: element.title,
+				description: description,
+				index: i
+			})
+		}
+		context.features = enrichedFeatures;
+	} */
 }
 
 export default BuildingSheet

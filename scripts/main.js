@@ -1,9 +1,11 @@
 import BuildingData from "../datamodels/building.js";
-import ResourceData from "../datamodels/resource.js";
 import BuildingSheet from "../sheets/building-sheet.js";
-import ResourceSheet from "../sheets/resource-sheet.js";
 import SettlementData from "../datamodels/settlement.js";
 import SettlementSheet from "../sheets/settlement-sheet.js";
+import ResourceData from "../datamodels/resource.js";
+import ResourceSheet from "../sheets/resource-sheet.js";
+import FeatureData from "../datamodels/feature.js";
+import FeatureSheet from "../sheets/feature-sheet.js";
 
 Hooks.once("init", async function () {
 	console.log("INICIOU")
@@ -74,12 +76,21 @@ function assignAndRegisterAll() {
 		types: ["simple-settlements.resource"],
 		makeDefault: true,
 	});
+	/* Feature Assign */
+	Object.assign(CONFIG.Item.dataModels, {
+		"simple-settlements.feature": FeatureData,
+	});
+	Items.registerSheet("feature", FeatureSheet, {
+		types: ["simple-settlements.feature"],
+		makeDefault: true,
+	});
 }
 
 async function loadHandleBarTemplates() {
 	// register templates parts
 	const templatePaths = [
 		"modules/simple-settlements/templates/parts/building-resources-manager.html",
+		"modules/simple-settlements/templates/parts/building-features-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-buildings-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-static-storage.html",

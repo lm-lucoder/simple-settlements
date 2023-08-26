@@ -25,6 +25,9 @@
 			"resource": {
 				"htmlFields": ["description"],
 				"quantity": 0
+			},
+			"feature": {
+				"htmlFields": ["description"]
 			}
 		},
 		"Actor": {
