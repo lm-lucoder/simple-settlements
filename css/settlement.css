@@ -1,3 +1,7 @@
+.simple-settlements-settlement .tabs{
+    flex-wrap: wrap;
+}
+
 .settlement-sheet-header .header-fields {
     display: flex;
 }

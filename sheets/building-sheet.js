@@ -22,14 +22,17 @@ class BuildingSheet extends ActorSheet {
 		const context = super.getData()
 
 		const description = await this._prepareDescriptionData()
-		// await this._prepareFeaturesData(context)
-		
+		const features = this.object.system.features
+
+		// this._enrichFeatures(features)
+		this.checkAndReRenderParentSettlements()
+
 		context.resources = this.actor.system.resources
 		context.categories = this.actor.system.categories
 		context.description = description
-		context.features = this.object.system.features
+		context.features = features
 		
-		console.log(context)
+		// console.log(context)
 		return context
 	}
 
@@ -128,22 +131,29 @@ class BuildingSheet extends ActorSheet {
 	/* prepareFeaturesData(){
 		const features = this.actor.system.features
 	} */
-	async _prepareFeaturesData(){
-		const features = this.object.system.features
-		for (let i = 0; i < features.length; i++) {
-			const feature = features[i];
-			const description = await TextEditor.enrichHTML(
-				feature.system.description,
-				{
-					async: true,
-					secrets: this.object.isOwner,
-					relativeTo: this.object,
-				}
-			);
-			feature.system.description	= description;
-		}
-		return features;
-	}
+	/* async _enrichFeatures(features){
+        for (let i = 0; i < features.length; i++) {
+          const feature = features[i];
+          const description = await TextEditor.enrichHTML(
+            feature.system.description,
+            {
+              async: true,
+              secrets: this.parent.isOwner,
+              relativeTo: this.parent,
+            }
+          );
+          feature.system.description	= description;
+        }
+      } */
+
+	checkAndReRenderParentSettlements(){
+        const settlements = game.actors.contents.filter(actor => actor.type === "simple-settlements.settlement")
+        settlements.forEach(settlement => {
+          if (settlement.sheet.rendered) {
+            settlement.sheet.render()
+          }
+        })
+      }
 }
 
 export default BuildingSheet

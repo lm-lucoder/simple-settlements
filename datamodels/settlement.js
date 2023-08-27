@@ -198,7 +198,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const toUpdate = []
     const toCreate = []
     const incomeItems = Object.values(this.income.all).filter(resource => !resource.data.system.isStatic)
-    console.log(incomeItems)
+    // console.log(incomeItems)
     incomeItems.forEach(income => {
       const existingResource = this.parent.system.resources.find(resource => resource.name === income.data.name)
       if (existingResource) {
@@ -208,8 +208,8 @@ class SettlementData extends foundry.abstract.TypeDataModel {
       }
       // console.log(income)
     })
-    console.log("toUpdate", toUpdate)
-    console.log("toCreate", toCreate)
+    // console.log("toUpdate", toUpdate)
+    // console.log("toCreate", toCreate)
     if (toUpdate.length > 0) {
       await Item.updateDocuments(toUpdate, {parent: this.parent})
     }

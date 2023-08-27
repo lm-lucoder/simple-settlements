@@ -8,7 +8,7 @@ class SettlementSheet extends ActorSheet {
 				{
 					navSelector: ".sheet-tabs",
 					contentSelector: ".sheet-body",
-					initial: "buildings",
+					initial: "features",
 				},
 				{
 					navSelector: ".resources-tabs",
@@ -65,6 +65,11 @@ class SettlementSheet extends ActorSheet {
 			li.slideUp(200, () => this.render(false));
 		});
 
+		html.find(".feature-item-see").click((ev)=>{
+			const buildingId = ev.currentTarget.closest(".feature-card").attributes["data-building-id"].value;
+			game.actors.get(buildingId).sheet.render(true)
+
+		})
 		html.find(".item-see").click((ev)=>{
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			game.actors.get(buildingId).sheet.render(true)
@@ -164,7 +169,6 @@ class SettlementSheet extends ActorSheet {
 		const features = []
 
 		buildings.forEach(building => {
-		  console.log(building.system)
 		  building.system.features.forEach(feature => {
 			features.push(feature)
 		  })

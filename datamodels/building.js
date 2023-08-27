@@ -13,8 +13,9 @@ class BuildingData extends foundry.abstract.TypeDataModel {
         const items = this.parent.items.contents
         const {resources, features} = this._filterItems(items)
         const categories = this._prepareResourcesCategories(resources)
-        
+
         this._enrichFeatures(features)
+        // this.checkAndReRenderParentSettlements()
 
         this.resources = resources
         this.features = features
@@ -68,7 +69,16 @@ class BuildingData extends foundry.abstract.TypeDataModel {
           );
           feature.system.description	= description;
         }
-        return features;
+      }
+
+      checkAndReRenderParentSettlements(){
+        const settlements = game.actors.contents.filter(actor => actor.type === "simple-settlements.settlement")
+        console.log(settlements)
+        settlements.forEach(settlement => {
+          if (settlement.sheet.rendered) {
+            settlement.sheet.render()
+          }
+        })
       }
 }
 

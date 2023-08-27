@@ -1,5 +1,5 @@
-<div class="settlement-features-manager">
-    <a class="item-control item-create" title="Create item" data-type="simple-settlements.feature"><i class="fas fa-plus"></i> Add feature</a>
+<div class="settlement-features-manager features-manager">
+    <a class="item-control item-create feature-create-button" title="Create item" data-type="simple-settlements.feature"><i class="fas fa-plus"></i> Add feature</a>
     <ol class="item-list features-cards-list settlement-features-cards-list">
       {{#each features as |feature|}}
           <li class="item feature-card" data-item-id="{{feature._id}}">
@@ -17,10 +17,17 @@
           </li>
       {{/each}}
     </ol>
-    <h2>teste</h2>
-    <ol class="settlement-buildings-features-cards-list">
+    <h2>Buildings Features:</h2>
+    <ol class="features-cards-list settlement-buildings-features-cards-list">
         {{#each buildingsFeatures as |buildingFeature|}}
-          <li class="item feature-card" data-item-id="{{buildingFeature._id}}">
+          <li class="item feature-card" data-building-id="{{buildingFeature.parent.id}}">
+            <div class="from-info">
+              <a class="item-control feature-item-see" title="Visualize Building">
+                <i class="fa-solid fa-eye"></i>
+                <span class="from-name">From: {{buildingFeature.parent.name}}</span>
+              </a>
+              <img class="from-img" src="{{actor.img}}" title="{{actor.name}}"/>
+            </div>
             <div class="feature-details">
               <h2 class="card-title">{{buildingFeature.name}}</h2>
               <div class="card-description">
