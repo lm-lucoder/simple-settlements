@@ -84,6 +84,12 @@ async function loadHandleBarTemplates() {
 }
 
 function addHandlebarsCustomHelpers(){
+	Handlebars.registerHelper('arrayLenghtHigherThan', function (array, number) {
+		if (array.length > number) {
+			return true
+		}
+		return false
+	});
 	Handlebars.registerHelper('sum', function (one, two) {
 		return one + two;
 	});

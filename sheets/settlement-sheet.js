@@ -27,9 +27,12 @@ class SettlementSheet extends ActorSheet {
 
 		const buildings = this.object.system.buildings
 		const features = this.object.system.features
+		const buildingsFeatures = this._getBuildingsFeatures(buildings)
+		const importantIncome = this._buildImportantIncome()
 
-		context.importantIncome = this._buildImportantIncome()
-		context.buildingsFeatures = this._getBuildingsFeatures(buildings)
+		context.importantIncome = importantIncome
+		context.buildingsFeatures = buildingsFeatures
+		context.buildingsFeaturesIsNotEmpty = buildingsFeatures.length > 0
 		context.features = features
 		context.buildings = buildings
 		

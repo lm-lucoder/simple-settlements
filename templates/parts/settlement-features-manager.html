@@ -17,24 +17,26 @@
           </li>
       {{/each}}
     </ol>
-    <h2>Buildings Features:</h2>
-    <ol class="features-cards-list settlement-buildings-features-cards-list">
-        {{#each buildingsFeatures as |buildingFeature|}}
-          <li class="item feature-card" data-building-id="{{buildingFeature.parent.id}}">
-            <div class="from-info">
-              <a class="item-control feature-item-see" title="Visualize Building">
-                <i class="fa-solid fa-eye"></i>
-                <span class="from-name">From: {{buildingFeature.parent.name}}</span>
-              </a>
-              <img class="from-img" src="{{actor.img}}" title="{{actor.name}}"/>
-            </div>
-            <div class="feature-details">
-              <h2 class="card-title">{{buildingFeature.name}}</h2>
-              <div class="card-description">
-                {{{buildingFeature.system.description}}}
+    {{#if buildingsFeaturesIsNotEmpty}}
+      <h2>Buildings Features:</h2>
+      <ol class="features-cards-list settlement-buildings-features-cards-list">
+          {{#each buildingsFeatures as |buildingFeature|}}
+            <li class="item feature-card" data-building-id="{{buildingFeature.parent.id}}">
+              <div class="from-info">
+                <a class="item-control feature-item-see" title="Visualize Building">
+                  <i class="fa-solid fa-eye"></i>
+                  <span class="from-name">From: {{buildingFeature.parent.name}}</span>
+                </a>
+                <img class="from-img" src="{{actor.img}}" title="{{actor.name}}"/>
               </div>
-            </div>
-          </li>
-        {{/each}}
-    </ol>
+              <div class="feature-details">
+                <h2 class="card-title">{{buildingFeature.name}}</h2>
+                <div class="card-description">
+                  {{{buildingFeature.system.description}}}
+                </div>
+              </div>
+            </li>
+          {{/each}}
+      </ol>
+    {{/if}}
 </div>
