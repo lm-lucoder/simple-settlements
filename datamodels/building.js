@@ -13,6 +13,8 @@ class BuildingData extends foundry.abstract.TypeDataModel {
         const items = this.parent.items.contents
         const {resources, features} = this._filterItems(items)
         const categories = this._prepareResourcesCategories(resources)
+        
+        this._enrichFeatures(features)
 
         this.resources = resources
         this.features = features
@@ -52,41 +54,22 @@ class BuildingData extends foundry.abstract.TypeDataModel {
     
         return {resources, features}
       }
-      /* async addFeature({title, description}){
-        const features = this.parent.system.features
-        features.push({title, description})
 
-        await this.parent.update({system: {features : [
-          ...features
-        ]}})
-        console.log(features)
+      async _enrichFeatures(features){
+        for (let i = 0; i < features.length; i++) {
+          const feature = features[i];
+          const description = await TextEditor.enrichHTML(
+            feature.system.description,
+            {
+              async: true,
+              secrets: this.parent.isOwner,
+              relativeTo: this.parent,
+            }
+          );
+          feature.system.description	= description;
+        }
+        return features;
       }
-      async updateFeature({title, newTitle, description}){
-        const features = this.parent.system.features
-        
-        const updatingFeature = features.find(feature => feature.title === title)
-        const updatingFeatureIndex = features.findIndex(feature => feature.title === title)
-
-        if (newTitle) updatingFeature.title = newTitle
-        if (description) updatingFeature.description = description
-
-        features.splice(updatingFeatureIndex, 1, updatingFeature)
-
-        await this.parent.update({system: {features : [
-          ...features
-        ]}})
-        console.log(features)
-      }
-      async deleteFeature({title}){
-        const features = this.parent.system.features
-        const deletingFeatureIndex = features.findIndex(feature => feature.title === title)
-        features.splice(deletingFeatureIndex, 1)
-
-        await this.parent.update({system: {features : [
-          ...features
-        ]}})
-        console.log(features)
-      } */
 }
 
 export default BuildingData

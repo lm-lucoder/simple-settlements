@@ -27,7 +27,7 @@ class BuildingSheet extends ActorSheet {
 		context.resources = this.actor.system.resources
 		context.categories = this.actor.system.categories
 		context.description = description
-		context.features = await this._prepareFeaturesData()
+		context.features = this.object.system.features
 		
 		console.log(context)
 		return context

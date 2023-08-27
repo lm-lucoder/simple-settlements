@@ -25,8 +25,13 @@ class SettlementSheet extends ActorSheet {
 	async getData() {
 		const context = await super.getData();
 
-		context.buildings = context.actor.system.buildings;
+		const buildings = this.object.system.buildings
+		const features = this.object.system.features
+
 		context.importantIncome = this._buildImportantIncome()
+		context.buildingsFeatures = this._getBuildingsFeatures(buildings)
+		context.features = features
+		context.buildings = buildings
 		
 		console.log(context);
 
@@ -44,6 +49,8 @@ class SettlementSheet extends ActorSheet {
 		html.find(".time-passage").click((ev) => {
 			this.object.system._passTime()
 		});
+
+		html.find(".item-create").click(this._onItemCreate.bind(this));
 
 		html.find(".item-edit").click((ev) => {
 			const li = $(ev.currentTarget).parents(".item");
@@ -125,6 +132,45 @@ class SettlementSheet extends ActorSheet {
 		}
 		return formattedIncome
 	}
+
+	async _onItemCreate(event) {
+		event.preventDefault();
+		const header = event.currentTarget;
+		// Get the type of item to create.
+		const type = header.dataset.type;
+		// Grab any data associated with this control.
+		const data = duplicate(header.dataset);
+		// Initialize a default name.
+		const name = `New ${type.replace("simple-settlements.", "")}`;
+		// Prepare the item object.
+		const itemData = {
+			name: name,
+			type: type,
+			system: data,
+		};
+		// Remove the type from the dataset since it's in the itemData.type prop.
+		delete itemData.system["type"];
+
+		// console.log(Item)
+		// console.log(Item.create)
+		// console.log(event)
+		// console.log(event.currentTarget)
+
+		// Finally, create the item!
+		return await Item.create(itemData, { parent: this.actor });
+	}
+
+	_getBuildingsFeatures(buildings){
+		const features = []
+
+		buildings.forEach(building => {
+		  console.log(building.system)
+		  building.system.features.forEach(feature => {
+			features.push(feature)
+		  })
+		})
+		return features
+	  }
 
 }
 

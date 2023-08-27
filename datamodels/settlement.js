@@ -7,15 +7,18 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 	}
 	prepareDerivedData() {
     const items = this.parent.items.contents
-    const resources = this._filterItemsResources(items)
+    const {resources, features} = this._filterItems(items)
     const categorizedResources = this._buildResourcesHierarchy(resources)
     const buildings = this._prepareBuildingsData()
     const income = this._prepareIncome(buildings, resources)
+    // const buildingsFeatures = this._getBuildingsFeatures(buildings)
 
     this.buildings = buildings
     this.resources = resources
     this.categorizedResources = categorizedResources
     this.income = income
+    this.features = features
+    // this.buildingsFeatures = buildingsFeatures
   }
   
   _prepareBuildingsData(){
@@ -144,8 +147,9 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     game.actors.get(id).render(true)
   }
 
-  _filterItemsResources(items){
+  _filterItems(items){
     const resources = []
+    const features = []
 
     for (let i of items) {
       i.img = i.img || DEFAULT_TOKEN;
@@ -153,10 +157,13 @@ class SettlementData extends foundry.abstract.TypeDataModel {
       if (i.type === "simple-settlements.resource") {
         resources.push(i);
       }
+      if (i.type === "simple-settlements.feature") {
+        features.push(i);
+      }
       // resources.push(i);
     }
 
-    return resources
+    return {resources, features}
   }
   _buildResourcesHierarchy(resources){
     const resourcesByHierarchy = {
@@ -219,6 +226,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const income = this.income;
     return Object.values(income.all).filter(resource => !resource.data.system.isStatic)
   }
+
 
 }
 

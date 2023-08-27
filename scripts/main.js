@@ -30,26 +30,8 @@ Hooks.on("dropActorSheetData", (...args) => {
 		console.log(data)
 		data.settlement.system._handleBuildingDrop(data.building);
 	}
-	/* if (origin.type === "Item") {
-		const resource = game.items.get(origin.uuid.replace("Item.", ""));
-		if (!resource.type === "simple-settlements.resource" || !target.type === "simple-settlements.settlement" || !target.type === "simple-settlements.building" ) {
-			return
-		}
-		if (target.system._handleResourceDrop) {
-			target.system._handleResourceDrop(resource)
-		}
-	} */
 });
 
-/* Hooks.on("getActorSheetHeaderButtons", (app,button)=>{
-	// console.log("Renderizou ator header")
-	// console.log(app)
-	// console.log(button)
-}) */
-
-/* Hooks.once('ready', async function() {
-
-}); */
 
 function assignAndRegisterAll() {
 	/* Building Assign */
@@ -91,6 +73,7 @@ async function loadHandleBarTemplates() {
 	const templatePaths = [
 		"modules/simple-settlements/templates/parts/building-resources-manager.html",
 		"modules/simple-settlements/templates/parts/building-features-manager.html",
+		"modules/simple-settlements/templates/parts/settlement-features-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-buildings-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-static-storage.html",
