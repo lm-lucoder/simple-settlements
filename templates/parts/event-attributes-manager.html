@@ -1,0 +1,24 @@
+<div class="event-attributes-manager">
+    <div class="nature-divisor divisor">
+        <label>Event nature:</label>
+        <div class="form-fields">
+            {{radioBoxes natureChoices.groupName natureChoices.choices checked=natureChoices.chosen}}
+        </div>
+    </div>
+      
+    <div class="opening-divisor divisor">
+        <label for="system.opening">Opening: </label>
+        <input name="system.opening" type="text" value="{{actor.system.opening}}"/>
+        <p><i>The ammount of Turns that takes for the event to actualy begin. Zero means that the event begins instantly when it is added</i></p>
+    </div>
+    <div class="duration-divisor divisor">
+        <label for="system.duration">Duration: </label>
+        <input name="system.duration" type="text" value="{{actor.system.duration}}"/>
+        <p><i>The ammount of Turns that takes for the event to expire. Zero means that the event have infinite time. </i></p>
+    </div>
+    <div class="transform-divisor divisor">
+        <label for="system.transform">Transform: </label>
+        <input name="system.transform" type="text" value="{{actor.system.transform}}" placeholder="An event ID"/>
+        <p><i>Here goes the ID of another event. When this event finishes, it will transform into the event wich ID is in this field. If Empty, this event does not transform and just disappears. Use this configuration to create chains of events.</i></p>
+    </div>
+</div>

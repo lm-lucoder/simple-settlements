@@ -1,38 +1,41 @@
-class BuildingSheet extends ActorSheet {
+class EventSheet extends ActorSheet {
     static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
-			classes: ["sheet", "actor", "simple-settlements-building"],
+			classes: ["sheet", "actor", "simple-settlements-event"],
 			width: 520,
 			height: 480,
 			tabs: [
 				{
 					navSelector: ".sheet-tabs",
 					contentSelector: ".sheet-body",
-					initial: "features",
+					initial: "attributes",
 				},
 			],
 		});
 	}
     get template(){
         const path = "modules/simple-settlements/templates"
-        return `${path}/building-sheet.html`
+        return `${path}/event-sheet.html`
     }
 	async getData(){
-		// console.log(this);
 		const context = super.getData()
 
 		const description = await this._prepareDescriptionData()
 		const features = this.object.system.features
 
-		// this._enrichFeatures(features)
 		this.checkAndReRenderOpenedSettlements()
 
 		context.resources = this.actor.system.resources
 		context.categories = this.actor.system.categories
 		context.description = description
 		context.features = features
+
+		context.natureChoices = {
+			groupName: "eventNatureChoice",
+			choices: {neutral: "Neutral", good: "Good", evil: "Evil"},
+			chosen: this.actor.system.nature
+		}
 		
-		// console.log(context)
 		return context
 	}
 
@@ -63,6 +66,13 @@ class BuildingSheet extends ActorSheet {
 			const item = this.actor.items.get(li.data("itemId"));
 			item.delete();
 			li.slideUp(200, () => this.render(false));
+		});
+
+		// Handle event nature change
+		html.find("[name='eventNatureChoice']").change(async (ev) => {
+			const choice = ev.target.value
+			await this.actor.update({system: {nature: choice}})
+			console.log(this.actor.system)
 		});
 
 		
@@ -108,12 +118,6 @@ class BuildingSheet extends ActorSheet {
 		// Remove the type from the dataset since it's in the itemData.type prop.
 		delete itemData.system["type"];
 
-		// console.log(Item)
-		// console.log(Item.create)
-		// console.log(event)
-		// console.log(event.currentTarget)
-
-		// Finally, create the item!
 		return await Item.create(itemData, { parent: this.actor });
 	}
 
@@ -128,24 +132,6 @@ class BuildingSheet extends ActorSheet {
 		);
 	}
 
-	/* prepareFeaturesData(){
-		const features = this.actor.system.features
-	} */
-	/* async _enrichFeatures(features){
-        for (let i = 0; i < features.length; i++) {
-          const feature = features[i];
-          const description = await TextEditor.enrichHTML(
-            feature.system.description,
-            {
-              async: true,
-              secrets: this.parent.isOwner,
-              relativeTo: this.parent,
-            }
-          );
-          feature.system.description	= description;
-        }
-      } */
-
 	checkAndReRenderOpenedSettlements(){
         const settlements = game.actors.contents.filter(actor => actor.type === "simple-settlements.settlement")
         settlements.forEach(settlement => {
@@ -156,4 +142,4 @@ class BuildingSheet extends ActorSheet {
       }
 }
 
-export default BuildingSheet
+export default EventSheet

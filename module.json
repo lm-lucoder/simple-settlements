@@ -8,6 +8,7 @@
 	},
 	"styles": [
 		"css/building.css",
+		"css/event.css",
 		"css/resource.css",
 		"css/settlement.css",
 		"css/resource-card.css",
@@ -36,6 +37,9 @@
 				"htmlFields": ["description"]
 			},
 			"settlement": {
+				"htmlFields": ["description"]
+			},
+			"event": {
 				"htmlFields": ["description"]
 			}
 		}

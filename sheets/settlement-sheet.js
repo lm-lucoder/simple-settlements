@@ -50,7 +50,7 @@ class SettlementSheet extends ActorSheet {
 		if (!this.options.editable) return;
 
 		html.find(".time-passage").click((ev) => {
-			this.object.system._passTime()
+			this.object.system.passTime()
 		});
 
 		html.find(".item-create").click(this._onItemCreate.bind(this));

@@ -1,0 +1,16 @@
+.event-attributes-manager{
+    display: flex;
+    flex-direction: column;
+    gap: 5px
+}
+.event-attributes-manager .divisor{
+    border-top: 1px solid #999683;
+    border-bottom: 1px solid #999683;
+    padding: 3px 0;
+}
+.event-attributes-manager .divisor label{
+    font-weight: bold;
+}
+.event-attributes-manager .divisor p{
+    margin: 0;
+}

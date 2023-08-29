@@ -1,8 +1,12 @@
-class BuildingData extends foundry.abstract.TypeDataModel {
+class EventData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         const fields = foundry.data.fields;
         return {
-          description: new fields.HTMLField({required: false, blank: false, initial: "<p></p>"})
+          description: new fields.HTMLField({required: false, blank: false, initial: "<p></p>"}),
+          opening: new fields.NumberField({required: true, nullable: false, initial: 0}),
+          duration: new fields.NumberField({required: true, nullable: false, initial: 0}),
+          transform: new fields.StringField({required: false, initial: ""}),
+          nature: new fields.StringField({required: false, initial: "neutral"}),
         };
       }
       prepareDerivedData() {
@@ -62,10 +66,9 @@ class BuildingData extends foundry.abstract.TypeDataModel {
               relativeTo: this.parent,
             }
           );
-          feature.system.description	= description;
+          feature.system.description = description;
         }
       }
-
 }
 
-export default BuildingData
+export default EventData

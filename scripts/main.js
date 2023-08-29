@@ -1,3 +1,5 @@
+import EventData from "../datamodels/event.js";
+import EventSheet from "../sheets/event-sheet.js";
 import BuildingData from "../datamodels/building.js";
 import BuildingSheet from "../sheets/building-sheet.js";
 import SettlementData from "../datamodels/settlement.js";
@@ -6,6 +8,7 @@ import ResourceData from "../datamodels/resource.js";
 import ResourceSheet from "../sheets/resource-sheet.js";
 import FeatureData from "../datamodels/feature.js";
 import FeatureSheet from "../sheets/feature-sheet.js";
+import DroppHandler from "../utils/dropp-handler.js"
 
 Hooks.once("init", async function () {
 	console.log("INICIOU")
@@ -15,26 +18,20 @@ Hooks.once("init", async function () {
 });
 
 Hooks.on("dropActorSheetData", (...args) => {
-	const origin = args[2]
-	const target = args[0]
-	console.log(args)
-	if (target.type === "simple-settlements.settlement" && origin.type === "Actor") {
-		const building = game.actors.get(args[2].uuid.replace("Actor.", ""));
-		if (!building.type === "simple-settlements.building") {
-			return
-		}
-		const data = {
-			settlement: target,
-			building: building,
-		};
-		console.log(data)
-		data.settlement.system._handleBuildingDrop(data.building);
-	}
+	new DroppHandler(args)
 });
 
 
 function assignAndRegisterAll() {
-	/* Building Assign */
+	/* Event Assign */
+	Object.assign(CONFIG.Actor.dataModels, {
+		"simple-settlements.event": EventData,
+	});
+	Actors.registerSheet("event", EventSheet, {
+		types: ["simple-settlements.event"],
+		makeDefault: true,
+	});
+	/* Event Assign */
 	Object.assign(CONFIG.Actor.dataModels, {
 		"simple-settlements.building": BuildingData,
 	});
@@ -73,6 +70,7 @@ async function loadHandleBarTemplates() {
 	const templatePaths = [
 		"modules/simple-settlements/templates/parts/building-resources-manager.html",
 		"modules/simple-settlements/templates/parts/building-features-manager.html",
+		"modules/simple-settlements/templates/parts/event-attributes-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-features-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-buildings-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html",
