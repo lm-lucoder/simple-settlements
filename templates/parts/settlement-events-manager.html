@@ -44,7 +44,11 @@
                 <div class="active-status">
                     {{#if event.isActive}}
                         <span>
-                            Is Active
+                            {{#if event.hasInfiniteDuration}}
+                                Turn: {{event.turn}}
+                            {{else}}
+                                Turn: {{subtract event.turn event.system.opening}}/{{event.system.duration}}
+                            {{/if}}
                         </span>
                         {{else}}
                         <span>

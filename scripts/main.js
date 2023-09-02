@@ -92,6 +92,9 @@ function addHandlebarsCustomHelpers(){
 	Handlebars.registerHelper('sum', function (one, two) {
 		return one + two;
 	});
+	Handlebars.registerHelper('subtract', function (one, two) {
+		return one - two;
+	});
 	Handlebars.registerHelper('multiply', function (number, multiplier) {
 		return number * multiplier;
 	});

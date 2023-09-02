@@ -139,6 +139,7 @@ class EventsManager{
       if (event) {
         event.isActive = flagData.turn > event.system.opening
         event.turn = flagData.turn
+        event.hasInfiniteDuration = event.system.duration <= 0
         this._prepareDescriptionData(event)
         return event
       }
@@ -156,6 +157,11 @@ class EventsManager{
 		);
 	}
   static advanceEvent({actor, event}){
+    if (event.turn - event.system.opening >= event.system.duration && !event.hasInfiniteDuration) {
+      // actor.events.find(event => event == event)
+      actor.unsetFlag('simple-settlements', `events.${event.id}`)
+      return
+    }
     actor.setFlag('simple-settlements', `events.${event.id}.turn`, event.turn + 1)
   }
 }
