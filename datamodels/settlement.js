@@ -12,7 +12,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const categorizedResources = this._buildResourcesHierarchy(resources)
     const buildings = new this.BuildingsMapper(flags)
     const events = await this.EventsManager._init(flags)
-    const income = new this.Income(buildings, resources, events)
+    const income = this.Income.init({buildings, resources, events, flags})
 
     this.buildings = buildings
     this.events = events
@@ -147,7 +147,6 @@ class EventsManager{
     return events
   }
   static async _prepareDescriptionData(event){
-    console.log(event)
 		event.system.description = await TextEditor.enrichHTML(
 			event.system.description,
 			{
@@ -162,12 +161,13 @@ class EventsManager{
 }
 
 class Income{
-  constructor(buildings, resources, events) {
-    const resourcesIncomeData = this.prepareData({buildings, resources, events})
+  static init({buildings, resources, events, flags}){
+    const resourcesIncomeData = this.prepareData({buildings, resources, events, flags})
     const resourceIncomeDataByHierarchy = this.buildHyerarchy({resources, resourcesIncomeData})
     return resourceIncomeDataByHierarchy
+
   }
-  prepareData({buildings, resources, events}){
+  static prepareData({buildings, resources, events, flags}){
     const resourcesIncomeData = {}
     if (buildings) {
       this._handleBuildingsExistance({resourcesIncomeData, buildings})
@@ -176,11 +176,11 @@ class Income{
       this._handleResourcesExistance({resourcesIncomeData, resources})
     }
     if (events) {
-      this._handleEventsExistance({resourcesIncomeData, events})
+      this._handleEventsExistance({resourcesIncomeData, events, flags})
     }
     return resourcesIncomeData
   }
-  _handleBuildingsExistance({resourcesIncomeData, buildings}){
+  static _handleBuildingsExistance({resourcesIncomeData, buildings}){
     buildings.forEach(building => {
       const {resources} = building.system._filterItems(building.items.contents)
       resources.forEach(resource => {
@@ -195,7 +195,7 @@ class Income{
       })
     })
   }
-  _handleResourcesExistance({resourcesIncomeData, resources}){
+  static _handleResourcesExistance({resourcesIncomeData, resources}){
     resources.forEach(resource => {
       if (!resourcesIncomeData[resource.name]) {
         resourcesIncomeData[resource.name] = {
@@ -205,8 +205,12 @@ class Income{
       }
     })
   }
-  _handleEventsExistance({resourcesIncomeData, events}){
+  static _handleEventsExistance({resourcesIncomeData, events, flags}){
     events.forEach(event => {
+      /* if (flags["simple-settlements"]?.events[event.id].turn) {
+        
+      } */
+      if (!(event.turn > event.system.opening)) return
       event.system.resources.forEach(resource => {
         if (resourcesIncomeData[resource.name]) {
           resourcesIncomeData[resource.name].income += resource.system.quantity
@@ -220,7 +224,7 @@ class Income{
     })
   }
 
-  buildHyerarchy({resources, resourcesIncomeData}){
+  static buildHyerarchy({resources, resourcesIncomeData}){
     const resourceIncomeDataByHierarchy = {
       static: {},
       nonStatic: {},
@@ -237,12 +241,12 @@ class Income{
     return resourceIncomeDataByHierarchy
   }
   
-  _getIncomeStoredData({resources, resourceIncome}){
+  static _getIncomeStoredData({resources, resourceIncome}){
     const storedResource = resources.find(resource => resource.name === resourceIncome.data.name)
     resourceIncome.stored = storedResource?.system.quantity || 0
     return resourceIncome
   }
-  _treatStaticResource({resourceIncomeDataByHierarchy, resourceIncomeFormat, resourceIncome}){
+  static _treatStaticResource({resourceIncomeDataByHierarchy, resourceIncomeFormat, resourceIncome}){
     if (resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category]) {
       resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category].resources.push(resourceIncomeFormat)
     } else {
@@ -252,7 +256,7 @@ class Income{
       }
     }
   }
-  _treatNonStaticResource({resourceIncomeDataByHierarchy, resourceIncomeFormat, resourceIncome}){
+  static _treatNonStaticResource({resourceIncomeDataByHierarchy, resourceIncomeFormat, resourceIncome}){
     if (resourceIncomeDataByHierarchy.nonStatic[resourceIncome.data.system.category]) {
       resourceIncomeDataByHierarchy.nonStatic[resourceIncome.data.system.category].resources.push(resourceIncomeFormat)
     } else {
