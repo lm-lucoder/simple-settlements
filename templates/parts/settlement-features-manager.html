@@ -39,4 +39,26 @@
           {{/each}}
       </ol>
     {{/if}}
+    {{#if eventsFeaturesIsNotEmpty}}
+      <h2>Event Features:</h2>
+      <ol class="features-cards-list settlement-events-features-cards-list">
+          {{#each eventsFeatures as |eventFeature|}}
+            <li class="item feature-card" data-building-id="{{eventFeature.parent.id}}">
+              <div class="from-info">
+                <a class="item-control feature-item-see" title="Visualize Building">
+                  <i class="fa-solid fa-eye"></i>
+                  <span class="from-name">From: {{eventFeature.parent.name}}</span>
+                </a>
+                <img class="from-img" src="{{actor.img}}" title="{{actor.name}}"/>
+              </div>
+              <div class="feature-details">
+                <h2 class="card-title">{{eventFeature.name}}</h2>
+                <div class="card-description">
+                  {{{eventFeature.system.description}}}
+                </div>
+              </div>
+            </li>
+          {{/each}}
+      </ol>
+    {{/if}}
 </div>

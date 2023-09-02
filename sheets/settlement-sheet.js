@@ -28,12 +28,15 @@ class SettlementSheet extends ActorSheet {
 		const buildings = this.object.system.buildings
 		const events = this.object.system.events
 		const features = this.object.system.features
-		const buildingsFeatures = this._getBuildingsFeatures(buildings)
+		const buildingsFeatures = this._getActorsFeatures(buildings)
+		const eventsFeatures = this._getActorsFeatures(events)
 		const importantIncome = this._buildImportantIncome()
 
 		context.importantIncome = importantIncome
 		context.buildingsFeatures = buildingsFeatures
 		context.buildingsFeaturesIsNotEmpty = buildingsFeatures.length > 0
+		context.eventsFeatures = eventsFeatures
+		context.eventsFeaturesIsNotEmpty = eventsFeatures.length > 0
 		context.features = features
 		context.buildings = buildings
 		context.events = events
@@ -179,16 +182,16 @@ class SettlementSheet extends ActorSheet {
 		return await Item.create(itemData, { parent: this.actor });
 	}
 
-	_getBuildingsFeatures(buildings){
+	_getActorsFeatures(actors){
 		const features = []
 
-		buildings.forEach(building => {
-		  building.system.features.forEach(feature => {
+		actors.forEach(actor => {
+		  actor.system.features.forEach(feature => {
 			features.push(feature)
 		  })
 		})
 		return features
-	  }
+	}
 
 }
 
