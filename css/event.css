@@ -14,3 +14,114 @@
 .event-attributes-manager .divisor p{
     margin: 0;
 }
+
+/* MANAGER CONFIG */ 
+
+.events-manager{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-top: 15px;
+}
+.events-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.events-list .event-card{
+    padding: 5px;
+    border: 1px solid #383838;
+    border-radius: 5px;
+    background-color: #89898965;
+}
+.events-list .event-card.nature-evil{
+    background-color: #9b2b2665;
+}
+.events-list .event-card.nature-good{
+    background-color: #5f9b4165;
+}
+.events-list .event-card .event-description {
+    display: flex;
+    gap: 10px;
+}
+.events-list .event-card .event-description .image{
+    width: 60px;
+    border-radius: 5px;
+}
+.events-list .event-card .event-description .info .title{
+    border-bottom: none;
+    font-size: 18px;
+    margin: 0;
+}
+.events-list .event-card .event-description .info .description{
+    margin: 0;
+}
+.events-list .event-card .event-description .info .description p{
+    margin: 0;
+}
+
+.events-list .event-card .event-income{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+.events-list .event-card .event-income .income-div h3{
+    border-bottom: 0;
+    margin: 0;
+    padding: 0;
+}
+.events-list .event-card .event-income .income-div .list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 5px;
+}
+.events-list .event-card .event-income .event-resource-income .list .event-resource-card{
+    list-style: none;
+    padding: 2px 5px;
+    margin: 0;
+    display: flex;
+    gap: 5px;
+    border: 1px solid #383838;
+    border-radius: 3px;
+    align-items: center;
+}
+.events-list .event-card .event-income .event-resource-income .list .event-resource-card .card-info{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.events-list .event-card .event-income .event-resource-income .list .event-resource-card .card-info .card-image{
+    max-width: 20px;
+    display: flex;
+    align-items: center;
+}
+.events-list .event-card .event-income .event-feature-income .list .event-feature-card{
+    border: 1px solid #383838;
+    border-radius: 3px;
+    padding: 2px 5px;
+}
+
+.events-list .event-card .event-status{
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+.events-list .event-card .event-status .active-status{
+    font-weight: bold;
+}
+.events-list .event-card .event-status .active-status .fa-hourglass{
+    animation-name: spin;
+    animation-duration: 3000ms;
+    animation-iteration-count: infinite;
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}

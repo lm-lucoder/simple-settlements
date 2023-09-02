@@ -8,7 +8,7 @@ class SettlementSheet extends ActorSheet {
 				{
 					navSelector: ".sheet-tabs",
 					contentSelector: ".sheet-body",
-					initial: "features",
+					initial: "events",
 				},
 				{
 					navSelector: ".resources-tabs",
@@ -26,6 +26,7 @@ class SettlementSheet extends ActorSheet {
 		const context = await super.getData();
 
 		const buildings = this.object.system.buildings
+		const events = this.object.system.events
 		const features = this.object.system.features
 		const buildingsFeatures = this._getBuildingsFeatures(buildings)
 		const importantIncome = this._buildImportantIncome()
@@ -35,6 +36,7 @@ class SettlementSheet extends ActorSheet {
 		context.buildingsFeaturesIsNotEmpty = buildingsFeatures.length > 0
 		context.features = features
 		context.buildings = buildings
+		context.events = events
 		
 		console.log(context);
 
@@ -91,6 +93,15 @@ class SettlementSheet extends ActorSheet {
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			this._removeQuantityToBuilding(buildingId)
 		})
+		html.find(".event-see").click((ev)=>{
+			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
+			game.actors.get(eventId).sheet.render(true)
+
+		})
+		html.find(".event-remove").click((ev)=>{
+			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
+			this.object.unsetFlag("simple-settlements", `events.${eventId}`);
+		})
 	}
 	async _prepareDescriptionData(context){
 		context.description = await TextEditor.enrichHTML(
@@ -134,11 +145,11 @@ class SettlementSheet extends ActorSheet {
 		const importantStaticIncome = staticIncome.filter(resource => resource.data.system.isImportant)
 		const importantNonStaticIncome = nonStaticIncome.filter(resource => resource.data.system.isImportant)
 
-		const formattedIncome = {
+		const importantIncome = {
 			static: importantStaticIncome,
 			nonStatic: importantNonStaticIncome
 		}
-		return formattedIncome
+		return importantIncome
 	}
 
 	async _onItemCreate(event) {

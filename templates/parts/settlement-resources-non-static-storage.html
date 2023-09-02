@@ -4,15 +4,15 @@
     {{#each category.resources as |item id|}}
     <li class="item item-resource-card" data-item-id="{{item._id}}">
         <div class="item-description">
-        <div class="item-image">
-            <a class="rollable" data-roll-type="item"><img src="{{item.img}}" title="{{item.name}}" /></a>
-        </div>
-        <div class="item-info">
-            <h4 class="item-name">{{item.name}}</h4>
-            <span class="item-value">
-            {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}}
-            </span>
-        </div>
+            <div class="item-image">
+                <a class="rollable" data-roll-type="item"><img src="{{item.img}}" title="{{item.name}}" /></a>
+            </div>
+            <div class="item-info">
+                <h4 class="item-name">{{item.name}}</h4>
+                <span class="item-value">
+                {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}}
+                </span>
+            </div>
         </div>
         <div class="item-controls">
         <a class="item-control item-edit" title="Edit Item"><i class="fas fa-edit"></i></a>

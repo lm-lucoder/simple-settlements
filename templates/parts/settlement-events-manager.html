@@ -1,0 +1,64 @@
+<div class="events-manager">
+
+    <ol class="events-list">
+        {{#each events as |event|}}
+        <li class="event-card nature-{{event.system.nature}}" data-event-id="{{event._id}}">
+            <div class="event-description">
+                <div class="image">
+                    <img src="{{event.img}}" title="{{event.name}}"/>
+                </div>
+                <div class="info">
+                    <h2 class="title">{{event.name}}</h2>
+                    <div class="description">{{{event.system.description}}}</div>
+                </div>
+            </div>
+            <div class="event-income">
+                <div class="event-resource-income income-div">
+                    {{#if (arrayLenghtHigherThan event.system.resources 0)}}<h3>Resources:</h3>{{/if}}
+                    <ol class="list">
+                        {{#each event.system.resources as |resource|}}
+                            <li class="event-resource-card">
+                                <div class="card-info">
+                                    <div class="card-image">
+                                        <img src="{{resource.img}}" title="{{resource.name}}"/>
+                                    </div>
+                                    <span>{{resource.name}}</span>
+                                </div>
+                                <span>{{resource.system.quantity}}</span>
+                            </li>
+                        {{/each}}
+                    </ol>
+                </div>
+                <div class="event-feature-income income-div">
+                    {{#if (arrayLenghtHigherThan event.system.features 0)}}<h3>Features:</h3>{{/if}}
+                    <ol class="list">
+                        {{#each event.system.features as |feature|}}
+                            <li class="event-feature-card">
+                                <span class="title">{{feature.name}}</span>
+                            </li>
+                        {{/each}}
+                    </ol>
+                </div>
+            </div>
+            <div class="event-status">
+                <div class="active-status">
+                    {{#if event.isActive}}
+                        <span>
+                            Is Active
+                        </span>
+                        {{else}}
+                        <span>
+                            Opening: {{event.turn}}/{{event.system.opening}} <i class="fa-solid fa-hourglass"></i>
+                        </span>
+                    {{/if}}
+                </div>
+                <span>|</span>
+                <div class="event-controls">
+                    <a class="event-control event-see" title="Visualize Event"><i class="fa-solid fa-eye"></i></a>
+                    <a class="event-control event-remove" title="Remove Event"><i class="fa-solid fa-x"></i></a>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ol>
+</div>

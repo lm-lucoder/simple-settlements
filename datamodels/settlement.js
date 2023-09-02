@@ -5,14 +5,14 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 			description: new fields.HTMLField({required: false, blank: false, initial: "<p></p>"}),
 		};
 	}
-	prepareDerivedData() {
+	async prepareDerivedData() {
     const items = this.parent.items.contents
     const flags = this.parent.flags
     const {resources, features} = this._filterItems(items)
     const categorizedResources = this._buildResourcesHierarchy(resources)
     const buildings = new this.BuildingsMapper(flags)
-    const events = this._prepareEventsData()
-    const income = new this.Income(buildings, resources)
+    const events = await this.EventsManager._init(flags)
+    const income = new this.Income(buildings, resources, events)
 
     this.buildings = buildings
     this.events = events
@@ -20,28 +20,6 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     this.categorizedResources = categorizedResources
     this.income = income
     this.features = features
-  }
-  _prepareEventsData(){
-    let events = this._getAllEvents()
-    return events  
-  }
-
-	/* _getAllBuildingsIds() {
-    return Object.keys(this.parent.flags["simple-settlements"]?.buildings) || []
-  } */
-
-  _getAllEvents(){
-    const eventsData = Object.values(this.parent.flags["simple-settlements"]?.events || {})
-
-    const unfilteredEvents = eventsData.map((flagData, i) => {
-      const event = game.actors.get(flagData.id)
-      if (event) {
-        event.turn = flagData.turn
-        return event
-      }
-    })
-    const events = unfilteredEvents.filter(element => element !== undefined)
-    return events
   }
 	_deleteBuildingRegister(id) {
     this.parent.unsetFlag("simple-settlements", `buildings.${id}`)
@@ -99,27 +77,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
   }
 
   async passTime(){
-    const toUpdate = []
-    const toCreate = []
-    const incomeItems = Object.values(this.income.all).filter(resource => !resource.data.system.isStatic)
-    // console.log(incomeItems)
-    incomeItems.forEach(income => {
-      const existingResource = this.parent.system.resources.find(resource => resource.name === income.data.name)
-      if (existingResource) {
-        toUpdate.push({_id: existingResource.id, system: {quantity: income.income + existingResource.system.quantity}})
-      } else {
-        toCreate.push({name: income.data.name, img: income.data.img, type: income.data.type, system: {...income.data.system, quantity: income.income}})
-      }
-      // console.log(income)
-    })
-    // console.log("toUpdate", toUpdate)
-    // console.log("toCreate", toCreate)
-    if (toUpdate.length > 0) {
-      await Item.updateDocuments(toUpdate, {parent: this.parent})
-    }
-    if (toCreate.length > 0) {
-      await Item.createDocuments(toCreate, {parent: this.parent})
-    }
+    this.TimePasser.execute(this)
   }
 
   getStaticIncome(){
@@ -132,7 +90,8 @@ class SettlementData extends foundry.abstract.TypeDataModel {
   }
   Income = Income
   BuildingsMapper = BuildingsMapper
-  EventsMapper = EventsMapper
+  EventsManager = EventsManager
+  TimePasser = TimePasser
 }
 
 class BuildingsMapper{
@@ -167,23 +126,57 @@ _registerInactiveBuildings(buildings){
   })
 }
 }
-class EventsMapper{
+class EventsManager{
+  static async _init(flags){
+    let events = this._getAllEvents(flags)
+    return events 
+  }
+  static _getAllEvents(flags){
+    const eventsData = Object.values(flags["simple-settlements"]?.events || {})
 
+    const unfilteredEvents = eventsData.map((flagData, i) => {
+      const event = game.actors.get(flagData.id)
+      if (event) {
+        event.isActive = flagData.turn > event.system.opening
+        event.turn = flagData.turn
+        this._prepareDescriptionData(event)
+        return event
+      }
+    })
+    const events = unfilteredEvents.filter(element => element !== undefined)
+    return events
+  }
+  static async _prepareDescriptionData(event){
+    console.log(event)
+		event.system.description = await TextEditor.enrichHTML(
+			event.system.description,
+			{
+				async: true,
+				relativeTo: this.object,
+			}
+		);
+	}
+  static advanceEvent({actor, event}){
+    actor.setFlag('simple-settlements', `events.${event.id}.turn`, event.turn + 1)
+  }
 }
 
 class Income{
-  constructor(buildings, resources) {
-    const resourcesIncomeData = this.prepareData({buildings, resources})
+  constructor(buildings, resources, events) {
+    const resourcesIncomeData = this.prepareData({buildings, resources, events})
     const resourceIncomeDataByHierarchy = this.buildHyerarchy({resources, resourcesIncomeData})
     return resourceIncomeDataByHierarchy
   }
-  prepareData({buildings, resources}){
+  prepareData({buildings, resources, events}){
     const resourcesIncomeData = {}
     if (buildings) {
       this._handleBuildingsExistance({resourcesIncomeData, buildings})
     }
     if (resources) {
       this._handleResourcesExistance({resourcesIncomeData, resources})
+    }
+    if (events) {
+      this._handleEventsExistance({resourcesIncomeData, events})
     }
     return resourcesIncomeData
   }
@@ -210,6 +203,20 @@ class Income{
           data: resource
         }
       }
+    })
+  }
+  _handleEventsExistance({resourcesIncomeData, events}){
+    events.forEach(event => {
+      event.system.resources.forEach(resource => {
+        if (resourcesIncomeData[resource.name]) {
+          resourcesIncomeData[resource.name].income += resource.system.quantity
+        } else {
+          resourcesIncomeData[resource.name] = {
+            income: resource.system.quantity,
+            data: resource
+          }
+        }
+      })
     })
   }
 
@@ -257,6 +264,42 @@ class Income{
   }
 }
 
+class TimePasser{
+  static execute(system){
+    this.handleResources(system)
+    this.handleEvents(system)
+  }
+
+  static handleEvents(system){
+    const actor = system.parent
+    const events = system.events
+    console.log(system)
+    events.forEach(event => {
+      EventsManager.advanceEvent({actor, event})
+    })
+  }
+
+  static handleResources(system){
+    const toUpdate = []
+    const toCreate = []
+    const incomeItems = Object.values(system.income.all).filter(resource => !resource.data.system.isStatic)
+    // console.log(incomeItems)
+    incomeItems.forEach(income => {
+      const existingResource = system.parent.system.resources.find(resource => resource.name === income.data.name)
+      if (existingResource) {
+        toUpdate.push({_id: existingResource.id, system: {quantity: income.income + existingResource.system.quantity}})
+      } else {
+        toCreate.push({name: income.data.name, img: income.data.img, type: income.data.type, system: {...income.data.system, quantity: income.income}})
+      }
+    })
+    if (toUpdate.length > 0) {
+      Item.updateDocuments(toUpdate, {parent: system.parent})
+    }
+    if (toCreate.length > 0) {
+      Item.createDocuments(toCreate, {parent: system.parent})
+    }
+  }
+}
 export default SettlementData;
 
 
