@@ -9,12 +9,14 @@ import ResourceSheet from "../sheets/resource-sheet.js";
 import FeatureData from "../datamodels/feature.js";
 import FeatureSheet from "../sheets/feature-sheet.js";
 import DroppHandler from "../utils/dropp-handler.js"
+import setupApplicationHeaderPrintButton from "../hooks/app-header-buttons.js";
 
 Hooks.once("init", async function () {
 	console.log("INICIOU")
 	assignAndRegisterAll();
 	loadHandleBarTemplates();
 	addHandlebarsCustomHelpers()
+	setupApplicationHeaderPrintButton()
 });
 
 Hooks.on("dropActorSheetData", (...args) => {
