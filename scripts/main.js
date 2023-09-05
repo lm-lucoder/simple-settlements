@@ -9,7 +9,7 @@ import ResourceSheet from "../sheets/resource-sheet.js";
 import FeatureData from "../datamodels/feature.js";
 import FeatureSheet from "../sheets/feature-sheet.js";
 import DroppHandler from "../utils/dropp-handler.js"
-import setupApplicationHeaderPrintButton from "../hooks/app-header-buttons.js";
+import setupApplicationHeaderPrintButton from "../hooks/app-header-buttons.mjs";
 
 Hooks.once("init", async function () {
 	console.log("INICIOU")
@@ -79,7 +79,8 @@ async function loadHandleBarTemplates() {
 		"modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-income.html",
-		"modules/simple-settlements/templates/parts/settlement-important-resources-income.html"
+		"modules/simple-settlements/templates/parts/settlement-important-resources-income.html",
+		"modules/simple-settlements/templates/configs/settlement-config.html"
 	];
 	return loadTemplates(templatePaths);
 }
@@ -90,6 +91,10 @@ function addHandlebarsCustomHelpers(){
 			return true
 		}
 		return false
+	});
+	Handlebars.registerHelper('console', function (element) {
+		console.log(element)
+		return ""
 	});
 	Handlebars.registerHelper('sum', function (one, two) {
 		return one + two;

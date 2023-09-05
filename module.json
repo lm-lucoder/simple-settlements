@@ -11,6 +11,7 @@
 		"css/event.css",
 		"css/resource.css",
 		"css/settlement.css",
+		"css/settlement.config.css",
 		"css/resource-card.css",
 		"css/resource-small-card.css",
 		"css/important-resources-log.css",

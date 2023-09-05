@@ -1,0 +1,24 @@
+.settlement-config-form .form-description{
+    font-style: italic;
+}
+
+.settlement-config-form .form-fields-container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.settlement-config-form .form-fields-container .form-group{
+    margin: 0;
+    padding: 8px;
+    border: 1px solid #B5B3A4;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.settlement-config-form .form-fields-container .form-group label{
+    font-weight: bold;
+}
+.settlement-config-form .form-fields-container .form-group .description{
+    font-style: italic;
+}
