@@ -61,9 +61,6 @@ export default class SettlementConfig extends FormApplication {
 }
 
 class ConfigManager {
-/* 	static async getMacros(settlement, key) {
-		return await settlement.getFlag("simple-settlements", `options.macros.${key}`);
-	} */
 	static addMacro(settlement, key, value) {
 		settlement.setFlag(
 			"simple-settlements", `options.macros.${key}`, value

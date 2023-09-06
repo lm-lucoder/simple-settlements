@@ -1,7 +1,7 @@
-import EventsManager from "../classes/events-manager.js";
-import Income from "../classes/income.js";
-import SettlementBuildingsMapper from "../classes/settlement-buildings-mapper.js";
-import TimePasser from "../classes/time-passer.js";
+import EventsManager from "../helpers/settlementHelpers/events-manager.js";
+import Income from "../helpers/settlementHelpers/income.js";
+import SettlementBuildingsMapper from "../helpers/settlementHelpers/settlement-buildings-mapper.js";
+import TimePasser from "../helpers/settlementHelpers/time-passer.js";
 
 class SettlementData extends foundry.abstract.TypeDataModel {
 	static defineSchema() {
@@ -95,72 +95,4 @@ class SettlementData extends foundry.abstract.TypeDataModel {
   }
 }
 
-
-
-
 export default SettlementData;
-
-
-/* _prepareIncome(buildings, resources){
-  // Prepare all the income from the buildings
-  const resourcesIncomeData = {}
-  buildings.forEach(building => {
-    // if (building.isInactive) return;
-    const {resources} = building.system._filterItems(building.items.contents)
-    resources.forEach(resource => {
-      if (resourcesIncomeData[resource.name]) {
-        resourcesIncomeData[resource.name].income += (resource.system.quantity * building.quantity)
-      } else {
-        resourcesIncomeData[resource.name] = {
-          income: (resource.system.quantity * building.quantity),
-          data: resource
-        }
-      }
-    })
-  })
-  // Add stored resources as 0 income on the income data, for better rendering purposes
-  resources.forEach(resource => {
-    if (!resourcesIncomeData[resource.name]) {
-      resourcesIncomeData[resource.name] = {
-        income: 0,
-        data: resource
-      }
-    }
-  })
-  // Format the income result into categorized data
-  const resourceIncomeDataByHierarchy = {
-    static: {},
-    nonStatic: {},
-    all: resourcesIncomeData
-  }
-  Object.values(resourcesIncomeData).forEach(resourceIncome => {
-    const resourceIncomeFormat = getResourceIncomeFormat({resources, resourceIncome})
-    if (resourceIncome.data?.system.isStatic) {
-      if (resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category]) {
-        resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category].resources.push(resourceIncomeFormat)
-      } else {
-        resourceIncomeDataByHierarchy.static[resourceIncome.data.system.category] = {
-          name: resourceIncome.data.system.category,
-          resources: [resourceIncomeFormat]
-        }
-      }
-    } else {
-      if (resourceIncomeDataByHierarchy.nonStatic[resourceIncome.data.system.category]) {
-        resourceIncomeDataByHierarchy.nonStatic[resourceIncome.data.system.category].resources.push(resourceIncomeFormat)
-      } else {
-        resourceIncomeDataByHierarchy.nonStatic[resourceIncome.data.system.category] = {
-          name: resourceIncome.data.system.category,
-          resources: [resourceIncomeFormat]
-        }
-      }
-    }
-  })
-  
-  function getResourceIncomeFormat({resources, resourceIncome}){
-    const storedResource = resources.find(resource => resource.name === resourceIncome.data.name)
-    resourceIncome.stored = storedResource?.system.quantity || 0
-    return resourceIncome
-  }
-  
-  return resourceIncomeDataByHierarchy
-} */

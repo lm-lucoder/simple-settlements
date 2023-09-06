@@ -1,9 +1,11 @@
-import EventsManager from "./events-manager.js"
+import EventsManager from "./settlementHelpers/events-manager.js"
+import MacroManager from "./macro-manager.js"
 
 export default class TimePasser{
-    static execute(system){
-      this.handleResources(system)
+    static async execute(system){
+      await this.handleResources(system)
       this.handleEvents(system)
+      MacroManager.handleTimePasser(system)
     }
   
     static handleEvents(system){
@@ -15,7 +17,7 @@ export default class TimePasser{
       })
     }
   
-    static handleResources(system){
+    static async handleResources(system){
       const toUpdate = []
       const toCreate = []
       const incomeItems = Object.values(system.income.all).filter(resource => !resource.data.system.isStatic)
@@ -29,10 +31,10 @@ export default class TimePasser{
         }
       })
       if (toUpdate.length > 0) {
-        Item.updateDocuments(toUpdate, {parent: system.parent})
+        await Item.updateDocuments(toUpdate, {parent: system.parent})
       }
       if (toCreate.length > 0) {
-        Item.createDocuments(toCreate, {parent: system.parent})
+        await Item.createDocuments(toCreate, {parent: system.parent})
       }
     }
   }
