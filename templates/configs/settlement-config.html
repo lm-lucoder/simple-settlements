@@ -1,22 +1,29 @@
 <form class="settlement-config-form">
-	{{console flags}}
-	{{console macros}}
-	<p class="form-description">List all macros that will be called and separate them with ";"</p>
-	<div class="form-fields-container">
-		<div class="form-group">
-			<label for="incomeMacros">Income Macros</label>
-			<textarea name="incomeMacros" placeholder="example1;example2;example3" style="resize: none;">{{macros.incomeMacros}}</textarea>
-			<p class="description">Macros that will be called in the income preparation.</p>
+	<nav class="form-tabs tabs" data-group="primary">
+		<a class="item" data-tab="macros">Macros</a>
+	</nav>
+
+	<section class="form-body">
+		<div class="tab macros" data-group="primary" data-tab="macros">
+			<p class="form-description">List all macros that will be called and separate them with ";"</p>
+			<div class="form-fields-container">
+				<div class="form-group">
+					<label for="incomeMacros">Income Macros</label>
+					<textarea name="incomeMacros" placeholder="example1;example2;example3" style="resize: none;">{{macros.incomeMacros}}</textarea>
+					<p class="description">Macros that will be called in the income preparation.</p>
+				</div>
+				<div class="form-group">
+					<label for="turnMacros">Turn pass Macros</label>
+					<textarea name="turnMacros" placeholder="example1;example2;example3" style="resize: none;">{{macros.turnMacros}}</textarea>
+					<p class="description">Macros that will be called when the turn passes.</p>
+				</div>
+			</div>
 		</div>
-		<div class="form-group">
-			<label for="turnMacros">Turn pass Macros</label>
-			<textarea name="turnMacros" placeholder="example1;example2;example3" style="resize: none;">{{macros.turnMacros}}</textarea>
-			<p class="description">Macros that will be called when the turn passes.</p>
-		</div>
-	</div>
-	<footer class="sheet-footer flexrow">
-		<button type="submit" name="submit">
-			<i class="fa fa-check"></i> OK
-		</button>
-	</footer>
+		<footer class="sheet-footer flexrow">
+			<button type="submit" name="submit">
+				<i class="fa fa-check"></i> OK
+			</button>
+		</footer>
+	</section>
+	
 </form>

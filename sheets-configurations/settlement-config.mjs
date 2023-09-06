@@ -8,8 +8,15 @@ export default class SettlementConfig extends FormApplication {
 			classes: ["form"],
 			popOut: true,
 			id: "settlement-config-form",
-			title: "My macro calls",
+			title: "Settlement configurations",
 			width: 400,
+			tabs: [
+				{
+					navSelector: ".form-tabs",
+					contentSelector: ".form-body",
+					initial: "macros",
+				},
+			]
 		});
 	}
 
