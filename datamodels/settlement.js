@@ -8,6 +8,12 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 		const fields = foundry.data.fields;
 		return {
 			description: new fields.HTMLField({required: false, blank: false, initial: "<p></p>"}),
+      options: new fields.SchemaField({
+        macros: new fields.SchemaField({
+          incomeMacros: new fields.StringField({required: false, initial: ""}),
+          turnMacros: new fields.StringField({required: false, initial: ""})
+        })
+      })
 		};
 	}
 	async prepareDerivedData() {
@@ -17,7 +23,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const categorizedResources = this._buildResourcesHierarchy(resources)
     const buildings = SettlementBuildingsMapper._init(flags)
     const events = await EventsManager._init(flags)
-    const income = Income._init({buildings, resources, events, flags})
+    const income = Income._init({buildings, resources, events, flags, system: this})
 
     this.buildings = buildings
     this.events = events

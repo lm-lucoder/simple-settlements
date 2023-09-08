@@ -5,16 +5,19 @@ export default class TimePasser{
     static async execute(system){
       await this.handleResources(system)
       this.handleEvents(system)
-      MacroManager.handleTimePasser(system)
+      this.handleMacros(system)
     }
   
     static handleEvents(system){
       const actor = system.parent
       const events = system.events
-      console.log(system)
       events.forEach(event => {
         EventsManager.advanceEvent({actor, event})
       })
+    }
+
+    static handleMacros(system){
+      MacroManager.handleTimePasser(system)
     }
   
     static async handleResources(system){

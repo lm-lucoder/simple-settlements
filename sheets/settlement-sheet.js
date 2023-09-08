@@ -41,7 +41,7 @@ class SettlementSheet extends ActorSheet {
 		context.buildings = buildings
 		context.events = events
 		
-		console.log(context);
+		// console.log(context);
 
 		await this._prepareDescriptionData(context);
 

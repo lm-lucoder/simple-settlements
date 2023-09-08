@@ -1,10 +1,10 @@
 import MacroManager from "./macro-manager.js"
 
 export default class Income{
-    static _init({buildings, resources, events, flags}){
+    static _init({buildings, resources, events, flags, system}){
       const resourcesIncomeData = this.prepareData({buildings, resources, events, flags})
       const resourceIncomeDataByHierarchy = this.buildHyerarchy({resources, resourcesIncomeData})
-      MacroManager.handleIncomeData(resourceIncomeDataByHierarchy, flags)
+      MacroManager.handleIncomeData(resourceIncomeDataByHierarchy, system)
       return resourceIncomeDataByHierarchy
   
     }
