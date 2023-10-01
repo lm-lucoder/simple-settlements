@@ -1,3 +1,4 @@
+import SettlementAPI from "../helpers/settlementHelpers/api.js";
 import EventsManager from "../helpers/settlementHelpers/events-manager.js";
 import Income from "../helpers/settlementHelpers/income.js";
 import SettlementBuildingsMapper from "../helpers/settlementHelpers/settlement-buildings-mapper.js";
@@ -13,6 +14,20 @@ class SettlementData extends foundry.abstract.TypeDataModel {
           incomeMacros: new fields.StringField({required: false, initial: ""}),
           turnMacros: new fields.StringField({required: false, initial: ""})
         })
+      }),
+      raw: new fields.SchemaField({
+        buildings: new fields.ArrayField(
+          new fields.SchemaField({
+            id: new fields.StringField({required: false}),
+            count: new fields.NumberField({required: true, nullable: false, initial: 1})
+          })
+        ),
+        events: new fields.ArrayField(
+          new fields.SchemaField({
+            id: new fields.StringField({required: false}),
+            turn: new fields.NumberField({required: true, nullable: false, initial: 1})
+          })
+        )
       })
 		};
 	}
@@ -21,8 +36,8 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const flags = this.parent.flags
     const {resources, features} = this._filterItems(items)
     const categorizedResources = this._buildResourcesHierarchy(resources)
-    const buildings = SettlementBuildingsMapper._init(flags)
-    const events = await EventsManager._init(flags)
+    const buildings = SettlementBuildingsMapper._init(this.raw.buildings)
+    const events = await EventsManager._init(this.raw.events)
     const income = Income._init({buildings, resources, events, flags, system: this})
 
     this.buildings = buildings
@@ -99,6 +114,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const income = this.income;
     return Object.values(income.all).filter(resource => !resource.data.system.isStatic)
   }
+  api = SettlementAPI
 }
 
 export default SettlementData;

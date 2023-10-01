@@ -1,18 +1,16 @@
 export default class SettlementBuildingsMapper{
-    static _init(flags){
-      let buildings = this._getAllBuildings(flags)
+    static _init(rawBuildings){
+      let buildings = this._getAllBuildings(rawBuildings)
     
       this._registerInactiveBuildings(buildings)
   
       return buildings 
     }
-   static _getAllBuildings(flags){
-    const buildingsData = Object.values(flags["simple-settlements"]?.buildings || {})
-  
-    const unfilteredBuildings = buildingsData.map((flagData, i) => {
-      const building = game.actors.get(flagData.id)
+   static _getAllBuildings(rawBuildings){
+    const unfilteredBuildings = rawBuildings.map((rawBuilding, i) => {
+      const building = game.actors.get(rawBuilding.id)
       if (building) {
-        building.quantity = flagData.quantity
+        building.quantity = rawBuilding.count
         return building
       }
     })

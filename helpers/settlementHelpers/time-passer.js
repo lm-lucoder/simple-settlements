@@ -1,3 +1,4 @@
+import SettlementAPI from "./api.js"
 import EventsManager from "./events-manager.js"
 import MacroManager from "./macro-manager.js"
 
@@ -12,7 +13,7 @@ export default class TimePasser{
       const actor = system.parent
       const events = system.events
       events.forEach(event => {
-        EventsManager.advanceEvent({actor, event})
+        SettlementAPI.advanceEvent(event, actor)
       })
     }
 

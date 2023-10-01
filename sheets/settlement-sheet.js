@@ -1,3 +1,5 @@
+import SettlementAPI from "../helpers/settlementHelpers/api.js";
+
 class SettlementSheet extends ActorSheet {
 	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
@@ -85,16 +87,15 @@ class SettlementSheet extends ActorSheet {
 		})
 		html.find(".item-remove").click((ev)=>{
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
-			this.object.unsetFlag("simple-settlements", `buildings.${buildingId}`);
+			SettlementAPI.removeBuilding(buildingId, this.object)
 		})
 		html.find(".quantity-control-up").click((ev)=>{
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
-			this._addQuantityToBuilding(buildingId)
-			
+			SettlementAPI.addQuantityToBuilding(buildingId, this.object)
 		})
 		html.find(".quantity-control-down").click((ev)=>{
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
-			this._removeQuantityToBuilding(buildingId)
+			SettlementAPI.removeQuantityToBuilding(buildingId, this.object)
 		})
 		html.find(".event-see").click((ev)=>{
 			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
@@ -103,7 +104,7 @@ class SettlementSheet extends ActorSheet {
 		})
 		html.find(".event-remove").click((ev)=>{
 			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
-			this.object.unsetFlag("simple-settlements", `events.${eventId}`);
+			SettlementAPI.removeEvent(eventId, this.object)
 		})
 	}
 	async _prepareDescriptionData(context){
@@ -122,7 +123,6 @@ class SettlementSheet extends ActorSheet {
 		if (building) {
 			this.object.setFlag('simple-settlements', `buildings.${building.id}.quantity` , building.quantity + 1);
 		}
-
 	}
 	_removeQuantityToBuilding(buildingId){
 		const building = this._getBuildingById(buildingId);
@@ -194,5 +194,6 @@ class SettlementSheet extends ActorSheet {
 	}
 
 }
+
 
 export default SettlementSheet;

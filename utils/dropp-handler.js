@@ -17,10 +17,11 @@ class DroppHandler {
 		}
 	}
 	_handleEventDrop({event, target}) {
-		this._registerEvent({event, target});
+		// this._registerEvent({event, target});
+		target.system.api.addEvent(event, target)
 	}
 	_handleBuildingDrop({building, target}) {
-		this._registerBuilding({building, target});
+		target.system.api.addBuilding(building, target)
 	}
 	_registerEvent({event, target}) {
 		if (target.getFlag("simple-settlements", `events.${event.id}`)) {
@@ -31,27 +32,6 @@ class DroppHandler {
 			[event.id]: {
 				id: event.id,
 				turn: 1,
-			},
-		});
-	}
-	_registerBuilding({building, target}) {
-		if (
-			target.getFlag(
-				"simple-settlements",
-				`buildings.${building.id}`
-			)
-		) {
-			target.setFlag(
-				"simple-settlements",
-				`buildings.${building.id}.quantity`,
-				building.quantity + 1
-			);
-			return;
-		}
-		target.setFlag("simple-settlements", "buildings", {
-			[building.id]: {
-				id: building.id,
-				quantity: 1,
 			},
 		});
 	}

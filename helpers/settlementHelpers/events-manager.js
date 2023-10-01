@@ -1,16 +1,15 @@
 export default class EventsManager{
-    static async _init(flags){
-      let events = this._getAllEvents(flags)
+    static async _init(rawEvents){
+      let events = this._getAllEvents(rawEvents)
       return events 
     }
-    static _getAllEvents(flags){
-      const eventsData = Object.values(flags["simple-settlements"]?.events || {})
+    static _getAllEvents(rawEvents){
   
-      const unfilteredEvents = eventsData.map((flagData, i) => {
-        const event = game.actors.get(flagData.id)
+      const unfilteredEvents = rawEvents.map((rawEvent, i) => {
+        const event = game.actors.get(rawEvent.id)
         if (event) {
-          event.isActive = flagData.turn > event.system.opening
-          event.turn = flagData.turn
+          event.isActive = rawEvent.turn > event.system.opening
+          event.turn = rawEvent.turn
           event.hasInfiniteDuration = event.system.duration <= 0
           this._prepareDescriptionData(event)
           return event
@@ -28,13 +27,5 @@ export default class EventsManager{
               }
           );
       }
-    static advanceEvent({actor, event}){
-      if (event.turn - event.system.opening >= event.system.duration && !event.hasInfiniteDuration) {
-        // actor.events.find(event => event == event)
-        actor.unsetFlag('simple-settlements', `events.${event.id}`)
-        return
-      }
-      actor.setFlag('simple-settlements', `events.${event.id}.turn`, event.turn + 1)
-    }
   }
   
