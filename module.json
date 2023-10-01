@@ -42,6 +42,9 @@
 			},
 			"event": {
 				"htmlFields": ["description"]
+			},
+			"project": {
+				"htmlFields": ["description"]
 			}
 		}
 	}
