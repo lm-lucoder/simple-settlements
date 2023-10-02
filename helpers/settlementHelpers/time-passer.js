@@ -3,8 +3,9 @@ import EventsManager from "./events-manager.js"
 import MacroManager from "./macro-manager.js"
 
 export default class TimePasser{
-    static async execute(system){
-      await this.handleResources(system)
+    static async init(settlement, income){
+      const system = settlement.system
+      await this.handleResources(system, income)
       this.handleEvents(system)
       this.handleMacros(system)
     }
@@ -21,10 +22,10 @@ export default class TimePasser{
       MacroManager.handleTimePasser(system)
     }
   
-    static async handleResources(system){
+    static async handleResources(system, income){
       const toUpdate = []
       const toCreate = []
-      const incomeItems = Object.values(system.income.all).filter(resource => !resource.data.system.isStatic)
+      const incomeItems = Object.values(income.all).filter(resource => !resource.data.system.isStatic)
       // console.log(incomeItems)
       incomeItems.forEach(income => {
         const existingResource = system.parent.system.resources.find(resource => resource.name === income.data.name)

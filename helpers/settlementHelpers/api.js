@@ -1,5 +1,9 @@
 class SettlementAPI {
 
+    static passSettlementTime(settlement){
+
+    }
+
     /* ======== BUILDINGS ======== */
     static addBuilding (building, settlement){
         const system = settlement.system

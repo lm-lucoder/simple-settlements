@@ -1,5 +1,5 @@
 <div class="static-resource-log">
-    {{#each actor.system.income.static as |category|}}
+    {{#each income.static as |category|}}
         <h3>{{category.name}}</h3>
         <ol class="resource-income-list">
             {{#each category.resources as |resource|}}
@@ -21,7 +21,7 @@
     {{/each}}
 </div>
 <div class="nonStatic-resource-log">
-    {{#each actor.system.income.nonStatic as |category|}}
+    {{#each income.nonStatic as |category|}}
         <h3>{{category.name}}</h3>
         <ol class="resource-income-list">
             {{#each category.resources as |resource|}}

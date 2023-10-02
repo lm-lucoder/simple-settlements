@@ -38,13 +38,13 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const categorizedResources = this._buildResourcesHierarchy(resources)
     const buildings = SettlementBuildingsMapper._init(this.raw.buildings)
     const events = await EventsManager._init(this.raw.events)
-    const income = Income._init({buildings, resources, events, flags, system: this})
+    // const income = Income._init({buildings, resources, events, system: this})
 
     this.buildings = buildings
     this.events = events
     this.resources = resources
     this.categorizedResources = categorizedResources
-    this.income = income
+    // this.income = income
     this.features = features
   }
 	_deleteBuildingRegister(id) {
@@ -100,10 +100,6 @@ class SettlementData extends foundry.abstract.TypeDataModel {
      }
     })
     return resourcesByHierarchy
-  }
-
-  async passTime(){
-    TimePasser.execute(this)
   }
 
   getStaticIncome(){

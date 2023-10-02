@@ -1,14 +1,14 @@
 import MacroManager from "./macro-manager.js"
 
 export default class Income{
-    static _init({buildings, resources, events, flags, system}){
-      const resourcesIncomeData = this.prepareData({buildings, resources, events, flags})
+    static init({buildings, resources, events, settlement}){
+      const resourcesIncomeData = this.prepareData({buildings, resources, events})
       const resourceIncomeDataByHierarchy = this.buildHyerarchy({resources, resourcesIncomeData})
-      MacroManager.handleIncomeData(resourceIncomeDataByHierarchy, system)
+      MacroManager.handleIncomeData(resourceIncomeDataByHierarchy, settlement.system)
       return resourceIncomeDataByHierarchy
   
     }
-    static prepareData({buildings, resources, events, flags}){
+    static prepareData({buildings, resources, events}){
       const resourcesIncomeData = {}
       if (buildings) {
         this._handleBuildingsExistance({resourcesIncomeData, buildings})
@@ -17,7 +17,7 @@ export default class Income{
         this._handleResourcesExistance({resourcesIncomeData, resources})
       }
       if (events) {
-        this._handleEventsExistance({resourcesIncomeData, events, flags})
+        this._handleEventsExistance({resourcesIncomeData, events})
       }
       return resourcesIncomeData
     }
@@ -46,11 +46,8 @@ export default class Income{
         }
       })
     }
-    static _handleEventsExistance({resourcesIncomeData, events, flags}){
+    static _handleEventsExistance({resourcesIncomeData, events}){
       events.forEach(event => {
-        /* if (flags["simple-settlements"]?.events[event.id].turn) {
-          
-        } */
         if (!(event.turn > event.system.opening)) return
         event.system.resources.forEach(resource => {
           if (resourcesIncomeData[resource.name]) {

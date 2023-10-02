@@ -1,4 +1,6 @@
 import SettlementAPI from "../helpers/settlementHelpers/api.js";
+import Income from "../helpers/settlementHelpers/income.js";
+import TimePasser from "../helpers/settlementHelpers/time-passer.js";
 
 class SettlementSheet extends ActorSheet {
 	static get defaultOptions() {
@@ -29,10 +31,14 @@ class SettlementSheet extends ActorSheet {
 
 		const buildings = this.object.system.buildings
 		const events = this.object.system.events
+		const resources = this.object.system.resources
 		const features = this.object.system.features
 		const buildingsFeatures = this._getActorsFeatures(buildings)
 		const eventsFeatures = this._getActorsFeatures(events)
-		const importantIncome = this._buildImportantIncome()
+		const income = Income.init({buildings, resources, events, settlement: this.object});
+		const importantIncome = this._buildImportantIncome(income)
+
+		this.income = income;
 
 		context.importantIncome = importantIncome
 		context.buildingsFeatures = buildingsFeatures
@@ -41,6 +47,7 @@ class SettlementSheet extends ActorSheet {
 		context.eventsFeaturesIsNotEmpty = eventsFeatures.length > 0
 		context.features = features
 		context.buildings = buildings
+		context.income = income
 		context.events = events
 		
 		// console.log(context);
@@ -50,6 +57,10 @@ class SettlementSheet extends ActorSheet {
 		return context;
 	}
 
+	passTime(){
+		TimePasser.init(this.object, this.income)
+	}
+
 	activateListeners(html) {
 		super.activateListeners(html);
 
@@ -57,7 +68,7 @@ class SettlementSheet extends ActorSheet {
 		if (!this.options.editable) return;
 
 		html.find(".time-passage").click((ev) => {
-			this.object.system.passTime()
+			this.passTime()
 		});
 
 		html.find(".item-create").click(this._onItemCreate.bind(this));
@@ -118,32 +129,15 @@ class SettlementSheet extends ActorSheet {
 		);
 	}
 
-	_addQuantityToBuilding(buildingId){
-		const building = this._getBuildingById(buildingId);
-		if (building) {
-			this.object.setFlag('simple-settlements', `buildings.${building.id}.quantity` , building.quantity + 1);
-		}
-	}
-	_removeQuantityToBuilding(buildingId){
-		const building = this._getBuildingById(buildingId);
-		if (building) {
-			if (building.quantity > 0) {
-				this.object.setFlag('simple-settlements', `buildings.${building.id}.quantity` , building.quantity - 1);
-			} else {
-				this.object.setFlag('simple-settlements', `buildings.${building.id}.quantity` , 0);	
-			}
-		}
-	}
-
 	_getBuildingById(id){
 		const buildings = this.object.system.buildings;
 		const building = buildings.find(building => building.id === id);
 		return building 
 	}
 
-	_buildImportantIncome(){
-		const staticIncome = this.object.system.getStaticIncome()
-		const nonStaticIncome = this.object.system.getNonStaticIncome()
+	_buildImportantIncome(income){
+		const staticIncome = this._getStaticIncome(income)
+		const nonStaticIncome = this._getNonStaticIncome(income)
 
 		const importantStaticIncome = staticIncome.filter(resource => resource.data.system.isImportant)
 		const importantNonStaticIncome = nonStaticIncome.filter(resource => resource.data.system.isImportant)
@@ -153,6 +147,12 @@ class SettlementSheet extends ActorSheet {
 			nonStatic: importantNonStaticIncome
 		}
 		return importantIncome
+	}
+	_getStaticIncome(income){
+		return Object.values(income.all).filter(resource => resource.data.system.isStatic)
+	}
+	_getNonStaticIncome(income){
+		return Object.values(income.all).filter(resource => !resource.data.system.isStatic)
 	}
 
 	async _onItemCreate(event) {
