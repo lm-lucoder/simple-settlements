@@ -1,8 +1,6 @@
 import SettlementAPI from "../helpers/settlementHelpers/api.js";
 import EventsManager from "../helpers/settlementHelpers/events-manager.js";
-import Income from "../helpers/settlementHelpers/income.js";
 import SettlementBuildingsMapper from "../helpers/settlementHelpers/settlement-buildings-mapper.js";
-import TimePasser from "../helpers/settlementHelpers/time-passer.js";
 
 class SettlementData extends foundry.abstract.TypeDataModel {
 	static defineSchema() {
@@ -13,6 +11,13 @@ class SettlementData extends foundry.abstract.TypeDataModel {
         macros: new fields.SchemaField({
           incomeMacros: new fields.StringField({required: false, initial: ""}),
           turnMacros: new fields.StringField({required: false, initial: ""})
+        }),
+        permissions: new fields.SchemaField({
+          buildings: new fields.SchemaField({
+            onlyGmCanAddBuildings: new fields.BooleanField({initial: false}),
+            onlyGmCanRemoveBuildings: new fields.BooleanField({initial: false}),
+            onlyGmCanChangeBuildingsQuantity: new fields.BooleanField({initial: false}),
+          })
         })
       }),
       raw: new fields.SchemaField({

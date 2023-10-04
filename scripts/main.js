@@ -10,6 +10,8 @@ import FeatureData from "../datamodels/feature.js";
 import FeatureSheet from "../sheets/feature-sheet.js";
 import DroppHandler from "../utils/dropp-handler.js"
 import setupApplicationHeaderPrintButton from "../hooks/app-header-buttons.mjs";
+import SimpleSettlementSettings from "../settings/world-settings.js";
+import addHandlebarsCustomHelpers from "../helpers/handlebarHelpers/custom-handlebars-helpers.js";
 
 Hooks.once("init", async function () {
 	console.log("INICIOU")
@@ -17,6 +19,7 @@ Hooks.once("init", async function () {
 	loadHandleBarTemplates();
 	addHandlebarsCustomHelpers()
 	setupApplicationHeaderPrintButton()
+	new SimpleSettlementSettings()
 });
 
 Hooks.on("dropActorSheetData", (...args) => {
@@ -80,42 +83,9 @@ async function loadHandleBarTemplates() {
 		"modules/simple-settlements/templates/parts/settlement-resources-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-income.html",
 		"modules/simple-settlements/templates/parts/settlement-important-resources-income.html",
-		"modules/simple-settlements/templates/configs/settlement-config.html"
+		"modules/simple-settlements/templates/configs/settlement-config.html",
+		"modules/simple-settlements/templates/configs/settlement-permissions-form-app.html"
 	];
 	return loadTemplates(templatePaths);
 }
 
-function addHandlebarsCustomHelpers(){
-	Handlebars.registerHelper('arrayLenghtHigherThan', function (array, number) {
-		if (array.length > number) {
-			return true
-		}
-		return false
-	});
-	Handlebars.registerHelper('console', function (element) {
-		console.log(element)
-		return ""
-	});
-	Handlebars.registerHelper('sum', function (one, two) {
-		return one + two;
-	});
-	Handlebars.registerHelper('subtract', function (one, two) {
-		return one - two;
-	});
-	Handlebars.registerHelper('multiply', function (number, multiplier) {
-		return number * multiplier;
-	});
-	Handlebars.registerHelper('multiplyToString', function (number, multiplier, isNotReturningString) {
-		const result = number * multiplier;
-		if (isNotReturningString) {
-			return result
-		}
-		if (result > 0) {
-			return `+${result}`
-		}
-		if (result < 0) {
-			return String(result)
-		}
-		return String(result)
-	});
-}

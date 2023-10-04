@@ -1,0 +1,41 @@
+<form>
+    <section class="form-body">
+        <div class="checkboxField">
+            <label for="gmOnlyPassTurn">Only GM can pass turns in settlements</label>
+            <input type="checkbox" name="gmOnlyPassTurn" {{verifyIfChecked gmOnlyPassTurn}}>
+        </div>
+        <div class="checkboxField">
+            <label for="gmOnlyModifyBuildingQt">Only GM can modify building quantity</label>
+            <input type="checkbox" name="gmOnlyModifyBuildingQt" {{verifyIfChecked gmOnlyModifyBuildingQt}}>
+        </div>
+        <div class="checkboxField">
+            <label for="gmOnlyRemoveBuilding">Only GM can remove a building directly</label>
+            <input type="checkbox" name="gmOnlyRemoveBuilding" {{verifyIfChecked gmOnlyRemoveBuilding}}>
+        </div>
+        <div class="checkboxField">
+            <label for="gmOnlyAddEvents">Only GM can add events to a settlement</label>
+            <input type="checkbox" name="gmOnlyAddEvents" {{verifyIfChecked gmOnlyAddEvents}}>
+        </div>
+        <div class="checkboxField">
+            <label for="gmOnlyAddFeatures">Only GM can add features to a settlement</label>
+            <input type="checkbox" name="gmOnlyAddFeatures" {{verifyIfChecked gmOnlyAddFeatures}}>
+        </div>
+        <div class="checkboxField">
+            <label for="gmOnlyModifyFeatures">Only GM can modify features in a settlement</label>
+            <input type="checkbox" name="gmOnlyModifyFeatures" {{verifyIfChecked gmOnlyModifyFeatures}}>
+        </div>
+        <div class="checkboxField">
+            <label for="gmOnlyAddResources">Only GM can add resources to a settlement</label>
+            <input type="checkbox" name="gmOnlyAddResources" {{verifyIfChecked gmOnlyAddResources}}>
+        </div>
+        <div class="checkboxField">
+            <label for="gmOnlyModifyResources">Only GM can modify resources in a settlement</label>
+            <input type="checkbox" name="gmOnlyModifyResources" {{verifyIfChecked gmOnlyModifyResources}}>
+        </div>
+    </section>
+    <footer class="sheet-footer flexrow">
+        <button type="submit" name="submit">
+            <i class="fa fa-check"></i> OK
+        </button>
+    </footer>
+</form>
