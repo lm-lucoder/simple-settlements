@@ -17,6 +17,16 @@ class SimpleSettlementSettings {
       default: {},        // can be used to set up the default structure
     });
   }
+  static verify(wichSetting){
+    const userIsGM = game.user.isGM
+    const setting = game.settings.get("simple-settlements","settlement-permissions")[wichSetting]
+  
+    const allowed = !setting || userIsGM;
+    if (!allowed){
+      ui.notifications.error("Only the GM can execute that action");
+    }
+    return !allowed
+  }
 }
 
 class SettlementPermissionsFormApp extends FormApplication {

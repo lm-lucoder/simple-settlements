@@ -1,3 +1,5 @@
+import SimpleSettlementSettings from "../settings/world-settings.js";
+
 class DroppHandler {
 	constructor(args) {
 		const origin = args[2];
@@ -5,9 +7,8 @@ class DroppHandler {
 		if (!origin.type === "Actor") return;
 
 		if (target.type === "simple-settlements.settlement") {
-			const originElement = game.actors.get(
-				origin.uuid.replace("Actor.", "")
-			);
+			const originElement = game.actors.get(origin.uuid.replace("Actor.", ""));
+			if (!originElement) return;
 			if (originElement.type === "simple-settlements.building") {
                 this._handleBuildingDrop({building: originElement, target: target});
 			}
@@ -17,23 +18,13 @@ class DroppHandler {
 		}
 	}
 	_handleEventDrop({event, target}) {
-		// this._registerEvent({event, target});
+		const test = SimpleSettlementSettings.verify("gmOnlyAddEvents")
+		if (test) return;
 		target.system.api.addEvent(event, target)
 	}
 	_handleBuildingDrop({building, target}) {
+		if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 		target.system.api.addBuilding(building, target)
-	}
-	_registerEvent({event, target}) {
-		if (target.getFlag("simple-settlements", `events.${event.id}`)) {
-			// target.setFlag('simple-settlements', `events.${event.id}.quantity` , event.quantity + 1);
-			return;
-		}
-		target.setFlag("simple-settlements", "events", {
-			[event.id]: {
-				id: event.id,
-				turn: 1,
-			},
-		});
 	}
 }
 

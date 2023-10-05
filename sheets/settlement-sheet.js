@@ -1,6 +1,7 @@
 import SettlementAPI from "../helpers/settlementHelpers/api.js";
 import Income from "../helpers/settlementHelpers/income.js";
 import TimePasser from "../helpers/settlementHelpers/time-passer.js";
+import SimpleSettlementSettings from "../settings/world-settings.js";
 
 class SettlementSheet extends ActorSheet {
 	static get defaultOptions() {
@@ -49,6 +50,7 @@ class SettlementSheet extends ActorSheet {
 		context.buildings = buildings
 		context.income = income
 		context.events = events
+		context.isObserverOrHigher = this.object.permission > 1
 		
 		// console.log(context);
 
@@ -68,6 +70,7 @@ class SettlementSheet extends ActorSheet {
 		if (!this.options.editable) return;
 
 		html.find(".time-passage").click((ev) => {
+			if (SimpleSettlementSettings.verify("gmOnlyPassTurn")) return;
 			this.passTime()
 		});
 
@@ -76,12 +79,24 @@ class SettlementSheet extends ActorSheet {
 		html.find(".item-edit").click((ev) => {
 			const li = $(ev.currentTarget).parents(".item");
 			const item = this.actor.items.get(li.data("itemId"));
+			if (item.type === "simple-settlements.feature") {
+				if (SimpleSettlementSettings.verify("gmOnlyModifyFeatures")) return;
+			}
+			if (item.type === "simple-settlements.resource") {
+				if (SimpleSettlementSettings.verify("gmOnlyModifyResources")) return;
+			}
 			item.sheet.render(true);
 		});
 
 		html.find(".item-delete").click((ev) => {
 			const li = $(ev.currentTarget).parents(".item");
 			const item = this.actor.items.get(li.data("itemId"));
+			if (item.type === "simple-settlements.feature") {
+				if (SimpleSettlementSettings.verify("gmOnlyModifyFeatures")) return;
+			}
+			if (item.type === "simple-settlements.resource") {
+				if (SimpleSettlementSettings.verify("gmOnlyModifyResources")) return;
+			}
 			item.delete();
 			li.slideUp(200, () => this.render(false));
 		});
@@ -97,14 +112,17 @@ class SettlementSheet extends ActorSheet {
 
 		})
 		html.find(".item-remove").click((ev)=>{
+			if (SimpleSettlementSettings.verify("gmOnlyRemoveBuilding")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.removeBuilding(buildingId, this.object)
 		})
 		html.find(".quantity-control-up").click((ev)=>{
+			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.addQuantityToBuilding(buildingId, this.object)
 		})
 		html.find(".quantity-control-down").click((ev)=>{
+			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.removeQuantityToBuilding(buildingId, this.object)
 		})
@@ -114,6 +132,7 @@ class SettlementSheet extends ActorSheet {
 
 		})
 		html.find(".event-remove").click((ev)=>{
+			if (SimpleSettlementSettings.verify("gmOnlyRemoveEvents")) return;
 			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
 			SettlementAPI.removeEvent(eventId, this.object)
 		})
@@ -160,6 +179,13 @@ class SettlementSheet extends ActorSheet {
 		const header = event.currentTarget;
 		// Get the type of item to create.
 		const type = header.dataset.type;
+
+		if (type === "simple-settlements.feature") {
+			if (SimpleSettlementSettings.verify("gmOnlyAddFeatures")) return;
+		}
+		if (type === "simple-settlements.resource") {
+			if (SimpleSettlementSettings.verify("gmOnlyAddResources")) return;
+		}
 		// Grab any data associated with this control.
 		const data = duplicate(header.dataset);
 		// Initialize a default name.
@@ -173,12 +199,6 @@ class SettlementSheet extends ActorSheet {
 		// Remove the type from the dataset since it's in the itemData.type prop.
 		delete itemData.system["type"];
 
-		// console.log(Item)
-		// console.log(Item.create)
-		// console.log(event)
-		// console.log(event.currentTarget)
-
-		// Finally, create the item!
 		return await Item.create(itemData, { parent: this.actor });
 	}
 
