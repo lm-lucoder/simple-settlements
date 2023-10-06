@@ -31,6 +31,7 @@ class BuildingSheet extends ActorSheet {
 		context.categories = this.actor.system.categories
 		context.description = description
 		context.features = features
+		context.isObserverOrHigher = this.object.permission > 1
 		
 		// console.log(context)
 		return context

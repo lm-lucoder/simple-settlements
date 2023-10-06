@@ -23,6 +23,7 @@ class FeatureSheet extends ItemSheet {
 		const description = await this._prepareDescriptionData()
 
 		context.description = description
+		context.isObserverOrHigher = this.object.permission > 1
         
 		console.log(context)
 		return context;

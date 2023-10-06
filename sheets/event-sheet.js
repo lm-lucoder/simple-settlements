@@ -29,6 +29,7 @@ class EventSheet extends ActorSheet {
 		context.categories = this.actor.system.categories
 		context.description = description
 		context.features = features
+		context.isObserverOrHigher = this.object.permission > 1
 
 		context.natureChoices = {
 			groupName: "eventNatureChoice",

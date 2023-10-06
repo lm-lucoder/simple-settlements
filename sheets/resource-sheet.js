@@ -20,6 +20,8 @@ class ResourceSheet extends ItemSheet {
 	async getData(options) {
 		const context = super.getData(options);
 		await this._prepareDescriptionData(context)
+
+		context.isObserverOrHigher = this.object.permission > 1
 		// console.log(context)
 		return context;
 	}
