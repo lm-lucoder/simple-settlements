@@ -1,0 +1,25 @@
+<form class="{{cssClass}}" autocomplete="off">
+  <header class="sheet-header">
+    <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" />
+    <div class="header-fields">
+      <h1 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name" /></h1>
+    </div>
+  </header>
+
+  {{!-- Sheet Tab Navigation --}}
+  <nav class="sheet-tabs tabs" data-group="primary">
+    <a class="item" data-tab="description">Description</a>
+    <a class="item" data-tab="configuration">Configuration</a>
+  </nav>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body">
+    <div class="tab description" data-group="primary" data-tab="description">
+      {{editor description target="system.description" button=true editable=editable}}
+    </div>
+
+    <div class="tab configuration project-configurations-container" data-group="primary" data-tab="configuration">
+      {{> "modules/simple-settlements/templates/parts/project-configurations.html"}}
+    </div>
+  </section>
+</form>

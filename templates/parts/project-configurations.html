@@ -1,0 +1,105 @@
+<nav class="configuration-tabs tabs" data-group="secondary">
+    <a class="item" data-tab="main">Main</a>
+    <a class="item" data-tab="requirements">Requirements</a>
+    <a class="item" data-tab="results">Results</a>
+</nav>
+
+<div class="configuration-container">
+    <div class="project-main tab" data-tab="main" data-group="secondary">
+        <label for="system.duration">Duration</label>
+        <input name="system.duration" type="text" value="{{actor.system.duration}}">
+        <i>The quantity of turns that will take before the project is completed</i>
+    </div>
+    <div class="project-requirements-container tab" data-tab="requirements" data-group="secondary">
+        <h3>Project requirements</h3>
+        <p><i>Drop entities in the fields bellow.</i></p>
+        <div class="projects-requirements-events">
+            <span class="list-title">Events</span>
+            <ul class="project-card-list requirements-events-list">
+                {{#each actor.system.requirements.events as |event|}}
+                <li class="project-card" elementId="{{event.id}}" elementType="requirements-events">
+                    <span>{{event.name}} <i class="fas fa-trash delete-config-btn"></i></span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="projects-requirements-buildings">
+            <span class="list-title">Buildings</span>
+            <ul class="project-card-list requirements-buildings-list">
+                {{#each actor.system.requirements.buildings as |building|}}
+                <li class="project-card" elementId="{{building.id}}" elementType="requirements-buildings">
+                    <span>{{building.name}} <i class="fas fa-trash delete-config-btn"></i></span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="projects-requirements-features">
+            <span class="list-title">Features</span>
+            <ul class="project-card-list requirements-features-list">
+                {{#each actor.system.requirements.features as |feature|}}
+                <li class="project-card" elementId="{{feature.id}}" elementType="requirements-features">
+                    <span>{{feature.name}} <i class="fas fa-trash delete-config-btn"></i></span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="projects-requirements-resources">
+            <span class="list-title">Resources</span>
+            <ul class="project-card-list requirements-resources-list">
+                {{#each actor.system.requirements.resources as |resource|}}
+                <li class="project-card" elementId="{{resource.id}}" elementType="requirements-resources">
+                    <span>{{resource.name}}</span>
+                    <input class="resource-input-change" type="text" value="{{resource.quantity}}">
+                    <i class="fas fa-trash delete-config-btn"></i>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+    <div class="projects-results-container tab" data-tab="results" data-group="secondary">
+        <h3>Project results</h3>
+        <p><i>Drop entities in the fields bellow.</i></p>
+        <div class="projects-results-events">
+            <span class="list-title">Events</span>
+            <ul class="project-card-list results-events-list">
+                {{#each actor.system.results.events as |event|}}
+                <li class="project-card" elementId="{{event.id}}" elementType="results-events">
+                    <span>{{event.name}} <i class="fas fa-trash delete-config-btn"></i></span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="projects-results-buildings">
+            <span class="list-title">Buildings</span>
+            <ul class="project-card-list results-buildings-list">
+                {{#each actor.system.results.buildings as |building|}}
+                <li class="project-card" elementId="{{building.id}}" elementType="results-buildings">
+                    <span>{{building.name}} <i class="fas fa-trash delete-config-btn"></i></span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="projects-results-features">
+            <span class="list-title">Features</span>
+            <ul class="project-card-list results-features-list">
+                {{#each actor.system.results.features as |feature|}}
+                <li class="project-card" elementId="{{feature.id}}" elementType="results-features">
+                    <span>{{feature.name}} <i class="fas fa-trash delete-config-btn"></i></span>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+        <div class="projects-results-resources">
+            <span class="list-title">Resources</span>
+            <ul class="project-card-list results-resources-list">
+                {{#each actor.system.results.resources as |resource|}}
+                <li class="project-card" elementId="{{resource.id}}" elementType="results-resources">
+                    <span>{{resource.name}}</span>
+                    <input class="resource-input-change" type="text" value="{{resource.quantity}}">
+                    <i class="fas fa-trash delete-config-btn"></i>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </div>
+</div>

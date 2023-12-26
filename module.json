@@ -16,7 +16,8 @@
 		"css/resource-small-card.css",
 		"css/important-resources-log.css",
 		"css/features-manager.css",
-		"css/settings-style.css"
+		"css/settings-style.css",
+		"css/project.css"
 	],
 	"authors": [
 		{

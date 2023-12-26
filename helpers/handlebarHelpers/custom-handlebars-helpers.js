@@ -38,6 +38,7 @@ function addHandlebarsCustomHelpers(){
 		}
 		return ""
 	});
+
 }
 
 export default addHandlebarsCustomHelpers

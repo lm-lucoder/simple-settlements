@@ -12,9 +12,10 @@ import DroppHandler from "../utils/dropp-handler.js"
 import setupApplicationHeaderPrintButton from "../hooks/app-header-buttons.mjs";
 import SimpleSettlementSettings from "../settings/world-settings.js";
 import addHandlebarsCustomHelpers from "../helpers/handlebarHelpers/custom-handlebars-helpers.js";
+import ProjectData from "../datamodels/project.js";
+import ProjectSheet from "../sheets/project-sheet.js";
 
 Hooks.once("init", async function () {
-	console.log("INICIOU")
 	assignAndRegisterAll();
 	loadHandleBarTemplates();
 	addHandlebarsCustomHelpers()
@@ -68,6 +69,14 @@ function assignAndRegisterAll() {
 		types: ["simple-settlements.feature"],
 		makeDefault: true,
 	});
+	/* Project Assign */
+	Object.assign(CONFIG.Actor.dataModels, {
+		"simple-settlements.project": ProjectData,
+	});
+	Actors.registerSheet("project", ProjectSheet, {
+		types: ["simple-settlements.project"],
+		makeDefault: true,
+	});
 }
 
 async function loadHandleBarTemplates() {
@@ -83,6 +92,7 @@ async function loadHandleBarTemplates() {
 		"modules/simple-settlements/templates/parts/settlement-resources-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-income.html",
 		"modules/simple-settlements/templates/parts/settlement-important-resources-income.html",
+		"modules/simple-settlements/templates/parts/project-configurations.html",
 		"modules/simple-settlements/templates/configs/settlement-config.html",
 		"modules/simple-settlements/templates/configs/settlement-permissions-form-app.html"
 	];

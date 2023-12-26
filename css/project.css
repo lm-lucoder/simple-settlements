@@ -1,0 +1,36 @@
+/* .project-configurations-container h3{
+    border-bottom: 0;
+} */
+.configuration-tabs{
+    margin-bottom: 5px;
+    border-bottom: 1px solid #B5B3A4;
+    padding-bottom: 5px;
+}
+.project-card-list{
+    list-style: none;
+    padding: 5px;
+    border: 1px solid #B5B3A4;
+    border-radius: 3px;
+    min-height: 40px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+.project-card{
+    background-color: #B5B3A4;
+    border-radius: 3px;
+    padding: 3px 6px;
+    color: #4e4d47;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.project-card .fas{
+    cursor: pointer;
+}
+
+.resource-input-change{
+    width: 30px !important;
+    background-color: #dddbce !important;
+    border: none !important;
+}

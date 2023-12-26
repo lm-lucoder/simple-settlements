@@ -4,6 +4,10 @@ class DroppHandler {
 	constructor(args) {
 		const origin = args[2];
 		const target = args[0];
+		if (target.type === "simple-settlements.project") {
+			
+		}
+
 		if (!origin.type === "Actor") return;
 
 		if (target.type === "simple-settlements.settlement") {
