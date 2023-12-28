@@ -36,8 +36,6 @@ class ProjectSheet extends ActorSheet {
 	activateListeners(html) {
 		super.activateListeners(html);
 
-		console.log(html)
-
 		html.find(".delete-config-btn").click(e => {
 			const card = e.target.closest(".project-card")
 			const [section, type] = card.getAttribute("elementType").split("-")
@@ -73,6 +71,7 @@ class ProjectSheet extends ActorSheet {
 			}
 		);
 	}
+
 	_onDropActor(e, data) {
 		ProjectDrop.actorDrop(e, data, this)
 	}

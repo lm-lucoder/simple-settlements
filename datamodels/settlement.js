@@ -1,5 +1,6 @@
 import SettlementAPI from "../helpers/settlementHelpers/api.js";
 import EventsManager from "../helpers/settlementHelpers/events-manager.js";
+import ProjectsManager from "../helpers/settlementHelpers/projects-manager.js";
 import SettlementBuildingsMapper from "../helpers/settlementHelpers/settlement-buildings-mapper.js";
 
 class SettlementData extends foundry.abstract.TypeDataModel {
@@ -32,7 +33,13 @@ class SettlementData extends foundry.abstract.TypeDataModel {
             id: new fields.StringField({required: false}),
             turn: new fields.NumberField({required: true, nullable: false, initial: 1})
           })
-        )
+        ),
+        projects: new fields.ArrayField(
+          new fields.SchemaField({
+            id: new fields.StringField({required: false}),
+            turn: new fields.NumberField({required: true, nullable: false, initial: 1})
+          })
+        ),
       })
 		};
 	}
@@ -43,10 +50,12 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const categorizedResources = this._buildResourcesHierarchy(resources)
     const buildings = SettlementBuildingsMapper._init(this.raw.buildings)
     const events = await EventsManager._init(this.raw.events)
+    const projects = await ProjectsManager._init(this.raw.projects)
     // const income = Income._init({buildings, resources, events, system: this})
 
     this.buildings = buildings
     this.events = events
+    this.projects = projects
     this.resources = resources
     this.categorizedResources = categorizedResources
     // this.income = income

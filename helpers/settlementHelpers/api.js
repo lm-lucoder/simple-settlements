@@ -89,6 +89,27 @@ class SettlementAPI {
             events: [...rawEvents]
         }}})
     }
+    /* ======== PROJECTS ======== */
+    static addProject(project, settlement){
+        const system = settlement.system
+        const rawProjects = system.raw.projects
+        const projectExists = rawProjects.find(el => project.id === el.id)
+
+        if (projectExists) return; 
+
+        settlement.update({system:{raw: {
+            projects: [...rawProjects, {id: project.id}]
+        }}})
+    }
+    static removeProject(){
+
+    }
+    static advanceProject(){
+        
+    }
+    static concludeProject(){
+
+    }
 }
 
 export default SettlementAPI

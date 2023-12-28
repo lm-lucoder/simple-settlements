@@ -4,6 +4,7 @@ import MacroManager from "./macro-manager.js"
 
 export default class TimePasser{
     static async init(settlement, income){
+      console.log(settlement)
       const system = settlement.system
       await this.handleResources(system, income)
       this.handleEvents(system)

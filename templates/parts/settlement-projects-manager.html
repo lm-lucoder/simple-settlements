@@ -1,0 +1,137 @@
+<div class="projects-manager-container">
+    <ul class="st-projects-cards-list">
+        {{#each projects as |project|}}
+        <li class="st-project-card">
+            <div class="card-header">
+                <img class="card-header-img" src="{{project.img}}" title="{{project.name}}">
+                <div class="info">
+                    <h2 class="title">{{project.name}}</h2>
+                    <div class="description">{{{project.system.description}}}</div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="requirements-section st-project-manager-body-section">
+                    <h2 class="st-project-manager-section-title">Requirements:</h2>
+                    {{#if (arrayLenghtHigherThan project.system.fullData.requirements.events 0)}}
+                        <div class="requirements-events-section section">
+                            <h3 class="st-project-manager-minor-section-title">events:</h3>
+                            <ul class="st-requirements-list">
+                                {{#each project.system.fullData.requirements.events as |event|}}
+                                <li class="st-project-item-card">
+                                    <img src="{{event.img}}" title="{{event.name}}" />
+                                    <span>{{event.name}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                    {{#if (arrayLenghtHigherThan project.system.fullData.requirements.features 0)}}
+                        <div class="requirements-features-section section">
+                            <h3 class="st-project-manager-minor-section-title">features:</h3>
+                            <ul class="st-requirements-list">
+                                {{#each project.system.fullData.requirements.features as |feature|}}
+                                <li class="st-project-item-card">
+                                    <img src="{{feature.img}}" title="{{feature.name}}" />
+                                    <span>{{feature.name}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                    {{#if (arrayLenghtHigherThan project.system.fullData.requirements.buildings 0)}}
+                        <div class="requirements-buildings-section section">
+                            <h3 class="st-project-manager-minor-section-title">Buildings:</h3>
+                            <ul class="st-requirements-list">
+                                {{#each project.system.fullData.requirements.buildings as |building|}}
+                                <li class="st-project-item-card">
+                                    <img src="{{building.img}}" title="{{building.name}}" />
+                                    <span>{{building.name}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                    {{#if (arrayLenghtHigherThan project.system.fullData.requirements.resources 0)}}
+                        <div class="requirements-resources-section section">
+                            <h3 class="st-project-manager-minor-section-title">Resources:</h3>
+                            <ul class="st-requirements-list">
+                                {{#each project.system.fullData.requirements.resources as |resource|}}
+                                <li class="st-project-item-card">
+                                    <img src="{{resource.img}}" title="{{resource.name}}" />
+                                    <span>{{resource.name}} {{resource.quantity}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                </div>
+                <div class="results-section section st-project-manager-body-section">
+                    <h2 class="st-project-manager-section-title">Results:</h2>
+                    {{#if (arrayLenghtHigherThan project.system.fullData.results.events 0)}}
+                        <div class="results-events-section section">
+                            <h3 class="st-project-manager-minor-section-title">events:</h3>
+                            <ul class="st-results-list">
+                                {{#each project.system.fullData.results.events as |event|}}
+                                <li class="st-project-item-card">
+                                    <img src="{{event.img}}" title="{{event.name}}" />
+                                    <span>{{event.name}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                    {{#if (arrayLenghtHigherThan project.system.fullData.results.features 0)}}
+                        <div class="results-features-section section">
+                            <h3 class="st-project-manager-minor-section-title">features:</h3>
+                            <ul class="st-results-list">
+                                {{#each project.system.fullData.results.features as |feature|}}
+                                <li class="st-project-item-card">
+                                    <img src="{{feature.img}}" title="{{feature.name}}" />
+                                    <span>{{feature.name}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                    {{#if (arrayLenghtHigherThan project.system.fullData.results.buildings 0)}}
+                        <div class="results-buildings-section section">
+                            <h3 class="st-project-manager-minor-section-title">Buildings:</h3>
+                            <ul class="st-results-list">
+                                {{#each project.system.fullData.results.buildings as |building|}}
+                                <li class="st-project-item-card">
+                                    <img src="{{building.img}}" title="{{building.name}}" />
+                                    <span>{{building.name}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                    {{#if (arrayLenghtHigherThan project.system.fullData.results.resources 0)}}
+                        <div class="results-resources-section section">
+                            <h3 class="st-project-manager-minor-section-title">Resources:</h3>
+                            <ul class="st-results-list">
+                                {{#each project.system.fullData.results.resources as |resource|}}
+                                <li class="st-project-item-card">
+                                    <img src="{{resource.img}}" title="{{resource.name}}" />
+                                    <span>{{resource.name}} {{resource.quantity}}</span>
+                                </li>
+                                {{/each}}
+                            </ul>
+                        </div>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="card-footer">
+                <span>Turn {{project.turn}}/{{project.system.duration}}</span>
+                <span>|</span>
+                <div class="project-controls">
+                    <a class="project-control project-see" title="Visualize project"><i class="fa-solid fa-eye"></i></a>
+                    <a class="project-control project-remove" title="Remove project"><i class="fa-solid fa-x"></i></a>
+                </div>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+
+<!-- arrayLenghtHigherThan -->

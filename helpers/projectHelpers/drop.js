@@ -1,21 +1,4 @@
 class ProjectDrop {
-    /* static async actorDrop(e, data, projectSheet) {
-        const droppedId = data.uuid.replace("Actor.", "")
-        const droppedDocument = game.actors.get(droppedId)
-        const droppedType = droppedDocument.type.replace("simple-settlements.", "")
-        const projectActor = projectSheet.object
-        const requirementCases = ["requirements-events-list", "requirements-buildings-list"]
-        // const resultCases = ["results-events-list", "results-buildings-list"]
-        const caseTypes = ["event", "building"]
-        for (let i = 0; i < requirementCases.length; i++) {
-            // const caseName = requirementCases[i]
-            if (droppedType != caseTypes[i]) return;
-            if (e.target.className.includes(droppedType)) {
-                await this.addRequirement(caseTypes[i], projectActor, droppedId)
-                return
-            }
-        }
-    } */
     static async actorDrop(e, data, projectSheet) {
         const projectActor = projectSheet.object
         const droppedId = data.uuid.replace("Actor.", "")

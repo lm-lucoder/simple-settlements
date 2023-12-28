@@ -1,0 +1,77 @@
+.projects-manager-container{
+    padding-top: 15px;
+}
+
+.st-projects-cards-list{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.st-project-card{
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #383838;
+    border-radius: 3px;
+    padding: 5px;
+    box-sizing: border-box;
+    background-color: #5f9b4165
+}
+
+.st-project-card .card-header{
+    display: flex;
+    gap: 10px;
+}
+.st-project-card .card-header img{
+    width: 60px;
+    height: 60px;
+}
+.st-project-card .card-header .info h2{
+    display: inline;
+    border-bottom: none;
+    font-size: 18px;
+    margin: 0;
+}
+.st-project-manager-section-title{
+    border-bottom: none;
+    margin: 0;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #383838;
+}
+.st-project-manager-minor-section-title{
+    border-bottom: none;
+    font-size: 18px;
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.st-requirements-list, .st-results-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+}
+
+.st-project-item-card{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 5px;
+    border: 1px solid #383838;
+    border-radius: 3px;
+}
+.st-project-item-card img {
+    width: 20px;
+    height: 20px;
+}
+
+.st-project-card .card-footer{
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    font-weight: bold;
+}

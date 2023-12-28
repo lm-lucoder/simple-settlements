@@ -13,7 +13,7 @@ class SettlementSheet extends ActorSheet {
 				{
 					navSelector: ".sheet-tabs",
 					contentSelector: ".sheet-body",
-					initial: "events",
+					initial: "projects",
 				},
 				{
 					navSelector: ".resources-tabs",
@@ -31,11 +31,17 @@ class SettlementSheet extends ActorSheet {
 		const context = await super.getData();
 
 		const buildings = this.object.system.buildings
+		const projects = this.object.system.projects
 		const events = this.object.system.events
 		const resources = this.object.system.resources
 		const features = this.object.system.features
+
+		// console.log(this.object)
+		// console.log("CHEGOU")
 		const buildingsFeatures = this._getActorsFeatures(buildings)
+		// console.log("CHEGOU 2")
 		const eventsFeatures = this._getActorsFeatures(events)
+		// console.log("CHEGOU 3")
 		const income = Income.init({buildings, resources, events, settlement: this.object});
 		const importantIncome = this._buildImportantIncome(income)
 
@@ -48,9 +54,13 @@ class SettlementSheet extends ActorSheet {
 		context.eventsFeaturesIsNotEmpty = eventsFeatures.length > 0
 		context.features = features
 		context.buildings = buildings
+		context.projects = projects
 		context.income = income
 		context.events = events
 		context.isObserverOrHigher = this.object.permission > 1
+
+		// console.log(context)
+		// console.log(projects[0].system)
 		
 		// console.log(context);
 
@@ -211,6 +221,13 @@ class SettlementSheet extends ActorSheet {
 		  })
 		})
 		return features
+	}
+
+	_onDropActor(e, data){
+		const actor = game.actors.get(data.uuid.replace("Actor.", ""))
+		if (actor.type === "simple-settlements.project") {
+			this.object.system.api.addProject(actor, this.object)
+		}
 	}
 
 }
