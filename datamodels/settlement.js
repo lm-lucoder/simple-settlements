@@ -49,8 +49,8 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     const {resources, features} = this._filterItems(items)
     const categorizedResources = this._buildResourcesHierarchy(resources)
     const buildings = SettlementBuildingsMapper._init(this.raw.buildings)
-    const events = await EventsManager._init(this.raw.events)
-    const projects = await ProjectsManager._init(this.raw.projects)
+    const events = EventsManager._init(this.raw.events)
+    const projects = ProjectsManager._init(this.raw.projects)
     // const income = Income._init({buildings, resources, events, system: this})
 
     this.buildings = buildings

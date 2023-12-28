@@ -1,5 +1,5 @@
 export default class EventsManager{
-    static async _init(rawEvents){
+    static _init(rawEvents){
       let events = this._getAllEvents(rawEvents)
       return events 
     }

@@ -1,5 +1,5 @@
 export default class ProjectsManager{
-    static async _init(rawProjects){
+    static _init(rawProjects){
       let projects = this._getAllProjects(rawProjects)
       return projects 
     }
@@ -8,14 +8,13 @@ export default class ProjectsManager{
       const unfilteredProjects = rawProjects.map((rawProject, i) => {
         const project = game.actors.get(rawProject.id)
         if (project) {
-        //   project.isActive = rawProject.turn > project.system.opening
           project.turn = rawProject.turn
-        //   project.hasInfiniteDuration = project.system.duration <= 0
           this._prepareDescriptionData(project)
           return project
         }
       })
       const projects = unfilteredProjects.filter(element => element !== undefined)
+      console.log("DEEAEAEA")
       return projects
     }
     static async _prepareDescriptionData(project){

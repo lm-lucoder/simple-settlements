@@ -36,12 +36,8 @@ class SettlementSheet extends ActorSheet {
 		const resources = this.object.system.resources
 		const features = this.object.system.features
 
-		// console.log(this.object)
-		// console.log("CHEGOU")
 		const buildingsFeatures = this._getActorsFeatures(buildings)
-		// console.log("CHEGOU 2")
 		const eventsFeatures = this._getActorsFeatures(events)
-		// console.log("CHEGOU 3")
 		const income = Income.init({buildings, resources, events, settlement: this.object});
 		const importantIncome = this._buildImportantIncome(income)
 
@@ -58,11 +54,6 @@ class SettlementSheet extends ActorSheet {
 		context.income = income
 		context.events = events
 		context.isObserverOrHigher = this.object.permission > 1
-
-		// console.log(context)
-		// console.log(projects[0].system)
-		
-		// console.log(context);
 
 		await this._prepareDescriptionData(context);
 
