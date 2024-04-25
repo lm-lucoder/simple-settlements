@@ -37,8 +37,8 @@ class SettlementSheet extends ActorSheet {
 		const features = this.object.system.features
 
 		const buildingsFeatures = this._getActorsFeatures(buildings)
-		const eventsFeatures = this._getActorsFeatures(events)
-		const income = Income.init({buildings, resources, events, settlement: this.object});
+		const eventsFeatures = this._getEventFeatures(events)
+		const income = Income.init(this.object);
 		const importantIncome = this._buildImportantIncome(income)
 
 		this.income = income;
@@ -56,7 +56,7 @@ class SettlementSheet extends ActorSheet {
 		context.isObserverOrHigher = this.object.permission > 1
 
 		await this._prepareDescriptionData(context);
-
+		console.log(context)
 		return context;
 	}
 
@@ -137,6 +137,16 @@ class SettlementSheet extends ActorSheet {
 			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
 			SettlementAPI.removeEvent(eventId, this.object)
 		})
+		html.find(".project-see").click((ev)=>{
+			const projectId = ev.currentTarget.closest(".st-project-card").attributes["data-project-id"].value;
+			game.actors.get(projectId).sheet.render(true)
+
+		})
+		html.find(".project-remove").click((ev)=>{
+			//if (SimpleSettlementSettings.verify("gmOnlyRemoveEvents")) return;
+			const projectId = ev.currentTarget.closest(".st-project-card").attributes["data-project-id"].value;
+			SettlementAPI.removeProject(projectId, this.object)
+		})
 	}
 	async _prepareDescriptionData(context){
 		context.description = await TextEditor.enrichHTML(
@@ -209,6 +219,19 @@ class SettlementSheet extends ActorSheet {
 		actors.forEach(actor => {
 		  actor.system.features.forEach(feature => {
 			features.push(feature)
+		  })
+		})
+		return features
+	}
+
+	_getEventFeatures(events){
+		const features = []
+
+		events.forEach(actor => {
+		  actor.system.features.forEach(feature => {
+			if(feature.isActive){
+				features.push(feature)
+			}
 		  })
 		})
 		return features

@@ -47,10 +47,22 @@
             <span class="list-title">Resources</span>
             <ul class="project-card-list requirements-resources-list">
                 {{#each actor.system.requirements.resources as |resource|}}
-                <li class="project-card" elementId="{{resource.id}}" elementType="requirements-resources">
-                    <span>{{resource.name}}</span>
-                    <input class="resource-input-change" type="text" value="{{resource.quantity}}">
-                    <i class="fas fa-trash delete-config-btn"></i>
+                <li class="project-card-resource-requirement project-card" elementId="{{resource.id}}" elementType="requirements-resources">
+                    <div class="top">
+                        <span>{{resource.name}}</span>
+                        <input class="resource-input-change" type="text" value="{{resource.quantity}}">
+                        <i class="fas fa-trash delete-config-btn"></i>
+                    </div>
+                    {{#unless (verifyIfProjectResourceIsStatic resource.id) }}
+                        <div class="bottom">
+                            <span>Consumes:</span>
+                            <input class="resource-checkbox-consumes" name="resource.consumes" type="checkbox" {{checked resource.consumes}}>
+                            {{#if resource.consumes}}
+                                <span>Only on finish:</span>
+                                <input class="resource-checkbox-consumesOnlyOnFinish" name="resource.consumesOnlyOnFinish" type="checkbox" {{checked resource.consumesOnlyOnFinish}}>
+                            {{/if}}
+                        </div>
+                    {{/unless}}
                 </li>
                 {{/each}}
             </ul>

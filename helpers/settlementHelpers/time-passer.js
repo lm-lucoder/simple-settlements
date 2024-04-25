@@ -4,11 +4,11 @@ import MacroManager from "./macro-manager.js"
 
 export default class TimePasser{
     static async init(settlement, income){
-      console.log(settlement)
       const system = settlement.system
       await this.handleResources(system, income)
       this.handleEvents(system)
       this.handleMacros(system)
+      this.handleProjects(system)
     }
   
     static handleEvents(system){
@@ -16,6 +16,14 @@ export default class TimePasser{
       const events = system.events
       events.forEach(event => {
         SettlementAPI.advanceEvent(event, actor)
+      })
+    }
+
+    static handleProjects(system){
+      const settlement = system.parent
+      const projects = system.projects
+      projects.forEach(project => {
+        SettlementAPI.advanceProject(project, settlement)
       })
     }
 

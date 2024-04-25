@@ -10,6 +10,7 @@ export default class EventsManager{
         if (event) {
           event.isActive = rawEvent.turn > event.system.opening
           event.turn = rawEvent.turn
+          event.opening = event.system.opening
           event.hasInfiniteDuration = event.system.duration <= 0
           this._prepareDescriptionData(event)
           return event

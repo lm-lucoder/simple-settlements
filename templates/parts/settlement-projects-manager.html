@@ -1,7 +1,7 @@
 <div class="projects-manager-container">
     <ul class="st-projects-cards-list">
         {{#each projects as |project|}}
-        <li class="st-project-card">
+        <li class="st-project-card" data-project-id="{{project._id}}">
             <div class="card-header">
                 <img class="card-header-img" src="{{project.img}}" title="{{project.name}}">
                 <div class="info">

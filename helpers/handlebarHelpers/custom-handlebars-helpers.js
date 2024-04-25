@@ -39,6 +39,13 @@ function addHandlebarsCustomHelpers(){
 		return ""
 	});
 
+	// specific cases 
+
+	Handlebars.registerHelper('verifyIfProjectResourceIsStatic', function (id) {
+		const resource = game.items.get(id)
+		return resource.system.isStatic
+	});
+
 }
 
 export default addHandlebarsCustomHelpers

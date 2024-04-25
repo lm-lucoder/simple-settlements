@@ -73,7 +73,6 @@ class EventSheet extends ActorSheet {
 		html.find("[name='eventNatureChoice']").change(async (ev) => {
 			const choice = ev.target.value
 			await this.actor.update({system: {nature: choice}})
-			console.log(this.actor.system)
 		});
 
 		
@@ -84,7 +83,6 @@ class EventSheet extends ActorSheet {
 		const li = $(event.currentTarget).parents(".feature-card")
 		const feature = this.actor.items.get(li.data("itemId"));
 
-		console.log(feature)
 		
 		ChatMessage.create({
 			user: this.object.id,
@@ -140,7 +138,7 @@ class EventSheet extends ActorSheet {
             settlement.sheet.render()
           }
         })
-      }
+    }
 }
 
 export default EventSheet

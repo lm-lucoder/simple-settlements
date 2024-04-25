@@ -23,7 +23,9 @@ class ProjectData extends foundry.abstract.TypeDataModel {
                 id: new fields.StringField({required: false}),
                 quantity: new fields.NumberField({required: false, initial: 0}),
                 name: new fields.StringField({required: false}),
-                type: new fields.StringField({required: false, initial: "item.resource"})
+                type: new fields.StringField({required: false, initial: "item.resource"}),
+                consumes: new fields.BooleanField({required: false, initial: false}),
+                consumesOnlyOnFinish: new fields.BooleanField({required: false, initial: false}),
             })),
         }),
         results: new fields.SchemaField({
@@ -46,7 +48,7 @@ class ProjectData extends foundry.abstract.TypeDataModel {
                 id: new fields.StringField({required: false}),
                 quantity: new fields.NumberField({required: false, initial: 0}),
                 name: new fields.StringField({required: false}),
-                type: new fields.StringField({required: false, initial: "item.resource"})
+                type: new fields.StringField({required: false, initial: "item.resource"}),
             })),
         }),
         duration: new fields.NumberField({initial: 1}),
@@ -80,41 +82,53 @@ class ProjectData extends foundry.abstract.TypeDataModel {
 			resources: []
 		}
 		Object.keys(this.requirements).forEach((requirement, i) => {
-			if (requirement.length === 0) return
             for (let i = 0; i < this.requirements[requirement].length; i++) {
                 const requirementValue = this.requirements[requirement][i]
+                // console.log("requirementValue")
+                // console.log(requirementValue)
                 const isActor = requirementValue.type.split(".")[0] === "actor" ? true : false
-                let elementData
-                if (isActor) {
-                    elementData = game.actors.get(requirementValue.id)
-                } else {
-                    elementData = game.items.get(requirementValue.id)
-                }
                 const type = requirementValue.type.split(".")[1]
+                
+                let elementData 
+                
+                if (isActor) {
+                    const {img, name} = game.actors.get(requirementValue.id)
+                    elementData = {...requirementValue, img, name}
+                } else {
+                    const {img, name} = game.items.get(requirementValue.id)
+                    elementData = {...requirementValue, img, name}
+                }
                 if (type === "resource") {
-                    elementData.quantity = requirementValue.quantity
+                    
                 }
                 requirements[type+"s"].push(elementData)
             }
 		})
 		Object.keys(this.results).forEach((result, i) => {
-			if (result.length === 0) return
             for (let i = 0; i < this.results[result].length; i++) {
                 const resultValue = this.results[result][i]
+                // console.log("resultValue")
+                // console.log(resultValue)
                 const isActor = resultValue.type.split(".")[0] === "actor" ? true : false
-                let elementData
-                if (isActor) {
-                    elementData = game.actors.get(resultValue.id)
-                } else {
-                    elementData = game.items.get(resultValue.id)
-                }
                 const type = resultValue.type.split(".")[1]
+                
+                let elementData 
+                
+                if (isActor) {
+                    const {img, name} = game.actors.get(resultValue.id)
+                    elementData = {...resultValue, img, name}
+                } else {
+                    const {img, name} = game.items.get(resultValue.id)
+                    elementData = {...resultValue, img, name}
+                }
                 if (type === "resource") {
-                    elementData.quantity = resultValue.quantity
+                    
                 }
                 results[type+"s"].push(elementData)
             }
 		})
+        console.log("Requirements", requirements)
+        console.log("Results", results)
         
 		return {requirements, results}
 	}

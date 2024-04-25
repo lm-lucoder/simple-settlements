@@ -14,7 +14,6 @@ export default class ProjectsManager{
         }
       })
       const projects = unfilteredProjects.filter(element => element !== undefined)
-      console.log("DEEAEAEA")
       return projects
     }
     static async _prepareDescriptionData(project){

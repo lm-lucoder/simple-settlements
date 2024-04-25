@@ -1,14 +1,21 @@
 import MacroManager from "./macro-manager.js"
 
 export default class Income{
-    static init({buildings, resources, events, settlement}){
-      const resourcesIncomeData = this.prepareData({buildings, resources, events})
+    static init(settlement){
+      const buildings = settlement.system.buildings
+      const resources = settlement.system.resources
+      const events = settlement.system.events
+      const projects = settlement.system.projects
+
+
+      const resourcesIncomeData = this.prepareData({buildings, resources, events, projects})
       const resourceIncomeDataByHierarchy = this.buildHyerarchy({resources, resourcesIncomeData})
       MacroManager.handleIncomeData(resourceIncomeDataByHierarchy, settlement.system)
+      // console.log(resourceIncomeDataByHierarchy)
       return resourceIncomeDataByHierarchy
   
     }
-    static prepareData({buildings, resources, events}){
+    static prepareData({buildings, resources, events, projects}){
       const resourcesIncomeData = {}
       if (buildings) {
         this._handleBuildingsExistance({resourcesIncomeData, buildings})
@@ -18,6 +25,10 @@ export default class Income{
       }
       if (events) {
         this._handleEventsExistance({resourcesIncomeData, events})
+      }
+      if (projects) {
+        console.log(projects)
+        // this._handleProjectsExistance({resourcesIncomeData, projects})
       }
       return resourcesIncomeData
     }
@@ -61,6 +72,11 @@ export default class Income{
         })
       })
     }
+    // static _handleProjectsExistance({resourcesIncomeData, projects}){
+    //   projects.forEach(project => {
+    //     project.system.resources
+    //   })
+    // }
   
     static buildHyerarchy({resources, resourcesIncomeData}){
       const resourceIncomeDataByHierarchy = {

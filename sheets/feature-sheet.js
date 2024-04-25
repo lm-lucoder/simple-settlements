@@ -25,7 +25,6 @@ class FeatureSheet extends ItemSheet {
 		context.description = description
 		context.isObserverOrHigher = this.object.permission > 1
         
-		console.log(context)
 		return context;
 	}
 	activateListeners(html) {

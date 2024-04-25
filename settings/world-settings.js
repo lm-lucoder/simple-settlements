@@ -57,7 +57,6 @@ class SettlementPermissionsFormApp extends FormApplication {
 			"simple-settlements",
 			"settlement-permissions"
 		);
-    console.log(data)
 		return data
 	}
 

@@ -27,9 +27,11 @@ class ProjectSheet extends ActorSheet {
 	async getData() {
 		const context = super.getData();
 
-		console.log(context)
+		// console.log(context)
 
 		await this._prepareDescriptionData(context)
+
+		this.checkAndReRenderOpenedSettlements()
 
 		return context;
 	}
@@ -47,7 +49,6 @@ class ProjectSheet extends ActorSheet {
 		})
 
 		html.find(".resource-input-change").change(e => {
-			console.log(e)
 			const card = e.target.closest(".project-card")
 			const resourceId = card.getAttribute("elementId")
 			const [section, type] = card.getAttribute("elementType").split("-")
@@ -56,6 +57,30 @@ class ProjectSheet extends ActorSheet {
 			resources[resourceIndex].quantity = e.target.value
 
 			this.object.update({ system: {[section]: {resources: [...resources]}} })
+		})
+		html.find(".resource-checkbox-consumes").change(e => {
+			const checkboxConsumesChecked = e.target.checked
+			const card = e.target.closest(".project-card-resource-requirement")
+			const resourceId = card.getAttribute("elementId")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const resources = this.object.system[section].resources
+			const resourceIndex = resources.findIndex(resource => resource.id === resourceId)
+			resources[resourceIndex].consumes = checkboxConsumesChecked
+
+			this.object.update({ system: {[section]: {resources: [...resources]}} })
+			// console.log(this.object.system.requirements.resources)
+		})
+		html.find(".resource-checkbox-consumesOnlyOnFinish").change(e => {
+			const checkboxConsumesChecked = e.target.checked
+			const card = e.target.closest(".project-card-resource-requirement")
+			const resourceId = card.getAttribute("elementId")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const resources = this.object.system[section].resources
+			const resourceIndex = resources.findIndex(resource => resource.id === resourceId)
+			resources[resourceIndex].consumesOnlyOnFinish = checkboxConsumesChecked
+
+			this.object.update({ system: {[section]: {resources: [...resources]}} })
+			// console.log(this.object.system.requirements.resources)
 		})
 
 		if (!this.options.editable) return;
@@ -80,6 +105,15 @@ class ProjectSheet extends ActorSheet {
 		e.preventDefault()
 		ProjectDrop.itemDrop(e, data, this)
 	}
+
+	checkAndReRenderOpenedSettlements(){
+        const settlements = game.actors.contents.filter(actor => actor.type === "simple-settlements.settlement")
+        settlements.forEach(settlement => {
+          if (settlement.sheet.rendered) {
+            settlement.sheet.render()
+          }
+        })
+    }
 
 }
 

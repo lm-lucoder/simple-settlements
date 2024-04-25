@@ -65,7 +65,7 @@ class ProjectDrop {
         const types = projectActor.system.requirements[type+"s"]
         if(types.find(idObj => idObj.id === droppedId)) return;
         if (type === "resource") {
-            await projectActor.update({ system: { requirements: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name, quantity: 0}]} } })
+            await projectActor.update({ system: { results: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name, quantity: 0}]} } })
         }
         await projectActor.update({ system: { requirements: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name}]} } })
     }
