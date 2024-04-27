@@ -9,6 +9,7 @@ class SettlementAPI {
         const system = settlement.system
         const rawBuildings = system.raw.buildings
         const buildingExists = rawBuildings.find(element => building.id === element.id)
+        debugger
         if (buildingExists) {
             buildingExists.count += 1
             settlement.update({system:{raw:{
@@ -20,20 +21,20 @@ class SettlementAPI {
             }}})
         }
     }
-    static addQuantityToBuilding (buildingId, settlement){
+    static addQuantityToBuilding (buildingId, settlement, qt){
         const system = settlement.system
         const rawBuildings = system.raw.buildings
 		const rawBuilding = rawBuildings.find(el => el.id === buildingId)
-		rawBuilding.count += 1
+		rawBuilding.count += qt ? qt : 1
 		settlement.update({system: {raw: {
 			buildings: [...rawBuildings]
 		}}})
 	}
-    static removeQuantityToBuilding(buildingId, settlement){
+    static removeQuantityToBuilding(buildingId, settlement, qt){
         const system = settlement.system
         const rawBuildings = system.raw.buildings
 		const rawBuilding = rawBuildings.find(el => el.id === buildingId)
-		rawBuilding.count -= 1
+		rawBuilding.count -= qt ? qt : -1
 		settlement.update({system: {raw: {
 			buildings: [...rawBuildings]
 		}}})
@@ -157,11 +158,37 @@ class SettlementAPI {
         if (toCreate.length > 0) {
             Item.createDocuments(toCreate, {parent: settlement})
         }
-
+        // Buildings
+        project.system.results.buildings.forEach(building => {
+            
+            //const buildings = settlement.system.raw.buildings;
+            let exitingBuilding = settlement.system.raw.buildings.find(el => el.id == building.id)
+            if(exitingBuilding){
+                /* buildings[exitingBuildingIndex].count += 1
+                settlement.update({system: {raw: {buildings: [...buildings]}}}) */
+                settlement.system.api.addQuantityToBuilding(exitingBuilding.id, settlement)
+            } else {
+                
+                const foundedBuilding = Actor.get(building.id)
+                debugger
+                settlement.system.api.addBuilding(foundedBuilding, settlement)
+            }
+        })
+        // Events
+        project.system.results.events.forEach(event => {
+            let exitingEvent = settlement.system.raw.events.find(el => el.id == event.id)
+            if(exitingEvent){
+                return ui.notifications.info(`The event: "${exitingEvent.name}" already exists in this settlement`)
+            } else {
+                const foundedEvent = Actor.get(event.id)
+                settlement.system.api.addEvent(foundedEvent, settlement)
+            }
+        })
+        
         //Features
         toCreate = []
         project.system.results.features.forEach(feature => {
-            let exitingFeature = settlement.system.resources.find(el => el.name == feature.name)
+            let exitingFeature = settlement.system.features.find(el => el.name == feature.name)
             if(exitingFeature){
                 return ui.notifications.info(`The feature: "${exitingFeature.name}" already exists in this settlement`)
             } else {
