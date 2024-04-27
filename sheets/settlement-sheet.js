@@ -143,7 +143,7 @@ class SettlementSheet extends ActorSheet {
 
 		})
 		html.find(".project-remove").click((ev)=>{
-			//if (SimpleSettlementSettings.verify("gmOnlyRemoveEvents")) return;
+			if (SimpleSettlementSettings.verify("gmOnlyRemoveProjects")) return;
 			const projectId = ev.currentTarget.closest(".st-project-card").attributes["data-project-id"].value;
 			SettlementAPI.removeProject(projectId, this.object)
 		})
@@ -229,9 +229,7 @@ class SettlementSheet extends ActorSheet {
 
 		events.forEach(actor => {
 		  actor.system.features.forEach(feature => {
-			if(feature.isActive){
-				features.push(feature)
-			}
+			features.push(feature)
 		  })
 		})
 		return features
@@ -240,6 +238,7 @@ class SettlementSheet extends ActorSheet {
 	_onDropActor(e, data){
 		const actor = game.actors.get(data.uuid.replace("Actor.", ""))
 		if (actor.type === "simple-settlements.project") {
+			if (SimpleSettlementSettings.verify("gmOnlyRemoveProjects")) return;
 			this.object.system.api.addProject(actor, this.object)
 		}
 	}

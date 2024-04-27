@@ -36,6 +36,14 @@
             <label for="gmOnlyModifyResources">Only GM can modify resources in a settlement</label>
             <input type="checkbox" name="gmOnlyModifyResources" {{verifyIfChecked gmOnlyModifyResources}}>
         </div>
+        <div class="checkboxField">
+            <label for="gmOnlyAddProjects">Only GM can add projects to a settlement</label>
+            <input type="checkbox" name="gmOnlyAddProjects" {{verifyIfChecked gmOnlyAddProjects}}>
+        </div>
+        <div class="checkboxField">
+            <label for="gmOnlyRemoveProjects">Only GM can remove projects in a settlement</label>
+            <input type="checkbox" name="gmOnlyRemoveProjects" {{verifyIfChecked gmOnlyRemoveProjects}}>
+        </div>
     </section>
     <footer class="sheet-footer flexrow">
         <button type="submit" name="submit">
