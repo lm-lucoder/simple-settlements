@@ -17,6 +17,7 @@ class ProjectData extends foundry.abstract.TypeDataModel {
             buildings: new fields.ArrayField(new fields.SchemaField({
                 id: new fields.StringField({required: false}),
                 name: new fields.StringField({required: false}),
+                quantity: new fields.NumberField({required: false, initial: 1}),
                 type: new fields.StringField({required: false, initial: "actor.building"})
             })),
             resources: new fields.ArrayField(new fields.SchemaField({
@@ -42,6 +43,7 @@ class ProjectData extends foundry.abstract.TypeDataModel {
             buildings: new fields.ArrayField(new fields.SchemaField({
                 id: new fields.StringField({required: false}),
                 name: new fields.StringField({required: false}),
+                quantity: new fields.NumberField({required: false, initial: 1}),
                 type: new fields.StringField({required: false, initial: "actor.building"})
             })),
             resources: new fields.ArrayField(new fields.SchemaField({

@@ -48,6 +48,15 @@ class ProjectSheet extends ActorSheet {
 			this.object.update({ system: { [section]: { [type]: [...types] } } })
 		})
 
+		html.find(".project-input-change").change(e => {
+			const card = e.target.closest(".project-card")
+			const elementId = card.getAttribute("elementId")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const elements = this.object.system[section][type]
+			const elementIndex = elements.findIndex(el => el.id === elementId)
+			elements[elementIndex].quantity = e.target.value
+			this.object.update({ system: {[section]: {[type]: [...elements]}} })
+		})
 		html.find(".resource-input-change").change(e => {
 			const card = e.target.closest(".project-card")
 			const resourceId = card.getAttribute("elementId")

@@ -45,7 +45,7 @@
                                 {{#each project.system.fullData.requirements.buildings as |building|}}
                                 <li class="st-project-item-card">
                                     <img src="{{building.img}}" title="{{building.name}}" />
-                                    <span>{{building.name}}</span>
+                                    <span>{{building.name}} ({{building.quantity}})</span>
                                 </li>
                                 {{/each}}
                             </ul>
@@ -58,7 +58,7 @@
                                 {{#each project.system.fullData.requirements.resources as |resource|}}
                                 <li class="st-project-item-card">
                                     <img src="{{resource.img}}" title="{{resource.name}}" />
-                                    <span>{{resource.name}} {{resource.quantity}}</span>
+                                    <span>{{resource.name}} ({{resource.quantity}})</span>
                                 </li>
                                 {{/each}}
                             </ul>
@@ -100,7 +100,7 @@
                                 {{#each project.system.fullData.results.buildings as |building|}}
                                 <li class="st-project-item-card">
                                     <img src="{{building.img}}" title="{{building.name}}" />
-                                    <span>{{building.name}}</span>
+                                    <span>{{building.name}} ({{building.quantity}})</span>
                                 </li>
                                 {{/each}}
                             </ul>
@@ -113,7 +113,7 @@
                                 {{#each project.system.fullData.results.resources as |resource|}}
                                 <li class="st-project-item-card">
                                     <img src="{{resource.img}}" title="{{resource.name}}" />
-                                    <span>{{resource.name}} {{resource.quantity}}</span>
+                                    <span>{{resource.name}} ({{resource.quantity}})</span>
                                 </li>
                                 {{/each}}
                             </ul>

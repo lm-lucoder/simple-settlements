@@ -5,19 +5,18 @@ class SettlementAPI {
     }
 
     /* ======== BUILDINGS ======== */
-    static addBuilding (building, settlement){
+    static addBuilding (building, settlement, quantity){
         const system = settlement.system
         const rawBuildings = system.raw.buildings
-        const buildingExists = rawBuildings.find(element => building.id === element.id)
-        debugger
-        if (buildingExists) {
-            buildingExists.count += 1
+        const rawBuildingExists = rawBuildings.find(element => building.id === element.id)
+        if (rawBuildingExists) {
+            rawBuildingExists.count += quantity ? quantity : 1
             settlement.update({system:{raw:{
                 buildings: [...rawBuildings]
             }}})
         } else {
             settlement.update({system:{raw: {
-                buildings: [...rawBuildings, {id: building.id}]
+                buildings: [...rawBuildings, {id: building.id, count: quantity ? quantity : 1}]
             }}})
         }
     }
@@ -161,17 +160,12 @@ class SettlementAPI {
         // Buildings
         project.system.results.buildings.forEach(building => {
             
-            //const buildings = settlement.system.raw.buildings;
             let exitingBuilding = settlement.system.raw.buildings.find(el => el.id == building.id)
             if(exitingBuilding){
-                /* buildings[exitingBuildingIndex].count += 1
-                settlement.update({system: {raw: {buildings: [...buildings]}}}) */
-                settlement.system.api.addQuantityToBuilding(exitingBuilding.id, settlement)
+                settlement.system.api.addQuantityToBuilding(exitingBuilding.id, settlement, building.quantity)
             } else {
-                
                 const foundedBuilding = Actor.get(building.id)
-                debugger
-                settlement.system.api.addBuilding(foundedBuilding, settlement)
+                settlement.system.api.addBuilding(foundedBuilding, settlement, building.quantity)
             }
         })
         // Events
@@ -244,10 +238,20 @@ class SettlementAPI {
                     if(!requirementValue.consumesOnlyOnFinish && resource.quantity < requirementValue.quantity){
                         log.push('The resource: ' + resource.name + ' has not enough quantity to support this project.')
                     }
+                } else if (type === "building") {
+                    const building = settlement.system.buildings.find(building=> building.id === requirementValue.id);
+                    if(!building){
+                        log.push(`The required building: ${requirementValue.name} is not present in this settlement.`) 
+                        continue
+                    }
+                    if(building.quantity < requirementValue.quantity){
+                        log.push(`There is not enough buildings: ${requirementValue.name} in this settlement. (${building.quantity}/${requirementValue.quantity})`) 
+                        continue
+                    }
                 } else {
                     const settlementMatchingValue = settlement.system[requirement].find(value=> value.name === requirementValue.name)
                     if (!settlementMatchingValue) {
-                        log.push(`The ${type}: ${requirementValue.name} was not found in that settlement.`)
+                        log.push(`The ${type}: ${requirementValue.name} was not found in this settlement.`)
                     }
                 }
                 

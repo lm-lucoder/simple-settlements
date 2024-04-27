@@ -66,6 +66,12 @@
     cursor: pointer;
 }
 
+.project-input-change{
+    width: 30px !important;
+    background-color: #dddbce !important;
+    border: none !important;
+}
+
 .resource-input-change{
     width: 30px !important;
     background-color: #dddbce !important;

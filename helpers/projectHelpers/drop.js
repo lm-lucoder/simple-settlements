@@ -61,12 +61,13 @@ class ProjectDrop {
         await projectActor.update({ system: { requirements: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name}]} } })
     }
     static async addRequirementItem(type, projectActor, droppedId) {
+        
         const droppedDocument = game.items.get(droppedId)
         const types = projectActor.system.requirements[type+"s"]
         if(types.find(idObj => idObj.id === droppedId)) return;
-        if (type === "resource") {
-            await projectActor.update({ system: { results: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name, quantity: 0}]} } })
-        }
+        /* if (type === "resource") {
+            await projectActor.update({ system: { requirements: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name, quantity: 0}]} } })
+        } */
         await projectActor.update({ system: { requirements: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name}]} } })
     }
     static async addResultActor(type, projectActor, droppedId) {
@@ -79,9 +80,9 @@ class ProjectDrop {
         const droppedDocument = game.items.get(droppedId)
         const types = projectActor.system.results[type+"s"]
         if(types.find(idObj => idObj.id === droppedId)) return;
-        if (type === "resource") {
+        /* if (type === "resource") {
             await projectActor.update({ system: { results: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name, quantity: 0}]} } })
-        }
+        } */
         await projectActor.update({ system: { results: {[type+"s"]: [...types, {id: droppedId, name: droppedDocument.name}]} } })
     }
 }

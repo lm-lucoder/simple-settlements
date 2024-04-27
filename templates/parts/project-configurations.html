@@ -28,7 +28,9 @@
             <ul class="project-card-list requirements-buildings-list">
                 {{#each actor.system.requirements.buildings as |building|}}
                 <li class="project-card" elementId="{{building.id}}" elementType="requirements-buildings">
-                    <span>{{building.name}} <i class="fas fa-trash delete-config-btn"></i></span>
+                    <span>{{building.name}} </span>
+                    <input class="project-input-change" type="text" value="{{building.quantity}}">
+                    <i class="fas fa-trash delete-config-btn"></i>
                 </li>
                 {{/each}}
             </ul>
@@ -50,7 +52,7 @@
                 <li class="project-card-resource-requirement project-card" elementId="{{resource.id}}" elementType="requirements-resources">
                     <div class="top">
                         <span>{{resource.name}}</span>
-                        <input class="resource-input-change" type="text" value="{{resource.quantity}}">
+                        <input class="project-input-change" type="text" value="{{resource.quantity}}">
                         <i class="fas fa-trash delete-config-btn"></i>
                     </div>
                     {{#unless (verifyIfProjectResourceIsStatic resource.id) }}
@@ -86,7 +88,9 @@
             <ul class="project-card-list results-buildings-list">
                 {{#each actor.system.results.buildings as |building|}}
                 <li class="project-card" elementId="{{building.id}}" elementType="results-buildings">
-                    <span>{{building.name}} <i class="fas fa-trash delete-config-btn"></i></span>
+                    <span>{{building.name}} </span>
+                    <input class="project-input-change" type="text" value="{{building.quantity}}">
+                    <i class="fas fa-trash delete-config-btn"></i>
                 </li>
                 {{/each}}
             </ul>
