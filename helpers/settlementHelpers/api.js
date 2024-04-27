@@ -33,7 +33,7 @@ class SettlementAPI {
         const system = settlement.system
         const rawBuildings = system.raw.buildings
 		const rawBuilding = rawBuildings.find(el => el.id === buildingId)
-		rawBuilding.count -= qt ? qt : -1
+		rawBuilding.count -= qt ? qt : 1
 		settlement.update({system: {raw: {
 			buildings: [...rawBuildings]
 		}}})

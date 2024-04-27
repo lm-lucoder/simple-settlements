@@ -7,8 +7,8 @@ export default class TimePasser{
       const system = settlement.system
       await this.handleResources(system, income)
       this.handleEvents(system)
-      this.handleMacros(system)
       this.handleProjects(system)
+      this.handleMacros(system)
     }
   
     static handleEvents(system){
