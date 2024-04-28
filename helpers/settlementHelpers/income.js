@@ -1,9 +1,11 @@
 import MacroManager from "./macro-manager.js"
 
 export default class Income{
-    static init(settlement){
+    static init(context){
+      //debugger
+      const settlement = context.actor
       const buildings = settlement.system.buildings
-      const resources = settlement.system.resources
+      const resources = context.items.filter(item => item.type == "simple-settlements.resource")
       const events = settlement.system.events
       const projects = settlement.system.projects
 

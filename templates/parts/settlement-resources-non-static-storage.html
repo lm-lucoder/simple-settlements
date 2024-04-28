@@ -1,4 +1,4 @@
-{{#each actor.system.categorizedResources.nonStatic as |category|}}
+{{#each categorizedResources.nonStatic as |category|}}
 <h3>{{#if category.name}}{{category.name}}{{else}}Without Category{{/if}}</h3>
 <ol class="items-list items-resources-list items">
     {{#each category.resources as |item id|}}

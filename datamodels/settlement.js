@@ -46,9 +46,10 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 	}
 	async prepareDerivedData() {
     const items = this.parent.items.contents
+    
     const flags = this.parent.flags
     const {resources, features} = this._filterItems(items)
-    const categorizedResources = this._buildResourcesHierarchy(resources)
+    
     const buildings = SettlementBuildingsMapper._init(this.raw.buildings)
     const events = EventsManager._init(this.raw.events)
     const projects = ProjectsManager._init(this.raw.projects)
@@ -58,7 +59,6 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     this.events = events
     this.projects = projects
     this.resources = resources
-    this.categorizedResources = categorizedResources
     // this.income = income
     this.features = features
   }
@@ -88,34 +88,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
 
     return {resources, features}
   }
-  _buildResourcesHierarchy(resources){
-    const resourcesByHierarchy = {
-      static: {},
-      nonStatic: {}
-    }
-    resources.forEach(resource => {
-     if (resource.system.isStatic) {
-      if (resourcesByHierarchy.static[resource.system.category]) {
-        resourcesByHierarchy.static[resource.system.category].resources.push(resource)
-      } else {
-        resourcesByHierarchy.static[resource.system.category] = {
-          name: resource.system.category,
-          resources: [resource]
-        }
-      }
-     } else {
-      if (resourcesByHierarchy.nonStatic[resource.system.category]) {
-        resourcesByHierarchy.nonStatic[resource.system.category].resources.push(resource)
-      } else {
-        resourcesByHierarchy.nonStatic[resource.system.category] = {
-          name: resource.system.category,
-          resources: [resource]
-        }
-      }
-     }
-    })
-    return resourcesByHierarchy
-  }
+
 
   getStaticIncome(){
     const income = this.income;

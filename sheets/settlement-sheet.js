@@ -21,6 +21,10 @@ class SettlementSheet extends ActorSheet {
 					initial: "income",
 				},
 			],
+			dragDrop: [
+				{ dragSelector: ".item-list .item", dropSelector: null },
+				{ dragSelector: ".items-resources-list .item-resource-card", dropSelector: null },
+			],
 		});
 	}
 	get template() {
@@ -29,20 +33,21 @@ class SettlementSheet extends ActorSheet {
 	}
 	async getData() {
 		const context = await super.getData();
-
 		const buildings = this.object.system.buildings
 		const projects = this.object.system.projects
 		const events = this.object.system.events
 		const resources = this.object.system.resources
 		const features = this.object.system.features
+		const categorizedResources = this._buildResourcesHierarchy(context.items.filter(item => item.type == "simple-settlements.resource"))
 
 		const buildingsFeatures = this._getActorsFeatures(buildings)
 		const eventsFeatures = this._getEventFeatures(events)
-		const income = Income.init(this.object);
-		const importantIncome = this._buildImportantIncome(income)
 
+		const income = Income.init(context);
+		const importantIncome = this._buildImportantIncome(income)
 		this.income = income;
 
+		context.categorizedResources = categorizedResources
 		context.importantIncome = importantIncome
 		context.buildingsFeatures = buildingsFeatures
 		context.buildingsFeaturesIsNotEmpty = buildingsFeatures.length > 0
@@ -60,7 +65,7 @@ class SettlementSheet extends ActorSheet {
 		return context;
 	}
 
-	passTime(){
+	passTime() {
 		TimePasser.init(this.object, this.income)
 	}
 
@@ -102,59 +107,59 @@ class SettlementSheet extends ActorSheet {
 			li.slideUp(200, () => this.render(false));
 		});
 
-		html.find(".feature-item-see").click((ev)=>{
+		html.find(".feature-item-see").click((ev) => {
 			const buildingId = ev.currentTarget.closest(".feature-card").attributes["data-building-id"].value;
 			game.actors.get(buildingId).sheet.render(true)
 
 		})
-		html.find(".item-see").click((ev)=>{
+		html.find(".item-see").click((ev) => {
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			game.actors.get(buildingId).sheet.render(true)
 
 		})
-		html.find(".item-remove").click((ev)=>{
+		html.find(".item-remove").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyRemoveBuilding")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.removeBuilding(buildingId, this.object)
 		})
-		html.find(".building-toggle-activation").change((ev)=>{
+		html.find(".building-toggle-activation").change((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			const checkBoxValue = ev.currentTarget.checked
 			SettlementAPI.setBuildingActivation(buildingId, this.object, checkBoxValue)
 		})
-		html.find(".quantity-control-up").click((ev)=>{
+		html.find(".quantity-control-up").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.addQuantityToBuilding(buildingId, this.object)
 		})
-		html.find(".quantity-control-down").click((ev)=>{
+		html.find(".quantity-control-down").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.removeQuantityToBuilding(buildingId, this.object)
 		})
-		html.find(".event-see").click((ev)=>{
+		html.find(".event-see").click((ev) => {
 			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
 			game.actors.get(eventId).sheet.render(true)
 
 		})
-		html.find(".event-remove").click((ev)=>{
+		html.find(".event-remove").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyRemoveEvents")) return;
 			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
 			SettlementAPI.removeEvent(eventId, this.object)
 		})
-		html.find(".project-see").click((ev)=>{
+		html.find(".project-see").click((ev) => {
 			const projectId = ev.currentTarget.closest(".st-project-card").attributes["data-project-id"].value;
 			game.actors.get(projectId).sheet.render(true)
 
 		})
-		html.find(".project-remove").click((ev)=>{
+		html.find(".project-remove").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyRemoveProjects")) return;
 			const projectId = ev.currentTarget.closest(".st-project-card").attributes["data-project-id"].value;
 			SettlementAPI.removeProject(projectId, this.object)
 		})
 	}
-	async _prepareDescriptionData(context){
+	async _prepareDescriptionData(context) {
 		context.description = await TextEditor.enrichHTML(
 			this.object.system.description,
 			{
@@ -165,13 +170,13 @@ class SettlementSheet extends ActorSheet {
 		);
 	}
 
-	_getBuildingById(id){
+	_getBuildingById(id) {
 		const buildings = this.object.system.buildings;
 		const building = buildings.find(building => building.id === id);
-		return building 
+		return building
 	}
 
-	_buildImportantIncome(income){
+	_buildImportantIncome(income) {
 		const staticIncome = this._getStaticIncome(income)
 		const nonStaticIncome = this._getNonStaticIncome(income)
 
@@ -184,10 +189,10 @@ class SettlementSheet extends ActorSheet {
 		}
 		return importantIncome
 	}
-	_getStaticIncome(income){
+	_getStaticIncome(income) {
 		return Object.values(income.all).filter(resource => resource.data.system.isStatic)
 	}
-	_getNonStaticIncome(income){
+	_getNonStaticIncome(income) {
 		return Object.values(income.all).filter(resource => !resource.data.system.isStatic)
 	}
 
@@ -219,29 +224,90 @@ class SettlementSheet extends ActorSheet {
 		return await Item.create(itemData, { parent: this.actor });
 	}
 
-	_getActorsFeatures(actors){
+	_onSortItem(event, itemData) {
+		
+		// Get the drag source and drop target
+		const items = this.actor.items;
+		const source = items.get(itemData._id);
+		const dropTarget = event.target.closest("[data-item-id]");
+		if (!dropTarget) return;
+		const target = items.get(dropTarget.dataset.itemId);
+
+		// Don't sort on yourself
+		if (source.id === target.id) return;
+
+		// Identify sibling items based on adjacent HTML elements
+		const siblings = [];
+		for (let el of dropTarget.parentElement.children) {
+			const siblingId = el.dataset.itemId;
+			if (siblingId && (siblingId !== source.id)) siblings.push(items.get(el.dataset.itemId));
+		}
+
+		// Perform the sort
+		const sortUpdates = SortingHelpers.performIntegerSort(source, { target, siblings });
+		const updateData = sortUpdates.map(u => {
+			const update = u.update;
+			update._id = u.target._id;
+			return update;
+		});
+
+		// Perform the update
+		return this.actor.updateEmbeddedDocuments("Item", updateData);
+	}
+
+	_buildResourcesHierarchy(resources){
+		const resourcesByHierarchy = {
+		  static: {},
+		  nonStatic: {}
+		}
+		resources.forEach(resource => {
+		 if (resource.system.isStatic) {
+		  if (resourcesByHierarchy.static[resource.system.category]) {
+			resourcesByHierarchy.static[resource.system.category].resources.push(resource)
+		  } else {
+			resourcesByHierarchy.static[resource.system.category] = {
+			  name: resource.system.category,
+			  resources: [resource]
+			}
+		  }
+		 } else {
+		  if (resourcesByHierarchy.nonStatic[resource.system.category]) {
+			resourcesByHierarchy.nonStatic[resource.system.category].resources.push(resource)
+		  } else {
+			resourcesByHierarchy.nonStatic[resource.system.category] = {
+			  name: resource.system.category,
+			  resources: [resource]
+			}
+		  }
+		 }
+		})
+		return resourcesByHierarchy
+	  }
+
+
+	_getActorsFeatures(actors) {
 		const features = []
 
 		actors.forEach(actor => {
-		  actor.system.features.forEach(feature => {
-			features.push(feature)
-		  })
+			actor.system.features.forEach(feature => {
+				features.push(feature)
+			})
 		})
 		return features
 	}
 
-	_getEventFeatures(events){
+	_getEventFeatures(events) {
 		const features = []
 
 		events.forEach(actor => {
-		  actor.system.features.forEach(feature => {
-			features.push(feature)
-		  })
+			actor.system.features.forEach(feature => {
+				features.push(feature)
+			})
 		})
 		return features
 	}
 
-	_onDropActor(e, data){
+	_onDropActor(e, data) {
 		const actor = game.actors.get(data.uuid.replace("Actor.", ""))
 		if (actor.type === "simple-settlements.project") {
 			if (SimpleSettlementSettings.verify("gmOnlyRemoveProjects")) return;
