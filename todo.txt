@@ -1,5 +1,5 @@
 
-- Buildings poderem ser desativadas sem precisar mexer na Quantity
+x Buildings poderem ser desativadas sem precisar mexer na Quantity
 - Status de recursos: (BAD, que fica com o background vermelho) ou (GOOD, que fica com o background verde)
 
 - Ordenação dos recursos e das buildings

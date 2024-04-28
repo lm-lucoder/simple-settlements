@@ -3,7 +3,8 @@
         <h3>{{category.name}}</h3>
         <ol class="resource-income-list">
             {{#each category.resources as |resource|}}
-                <li class="resource-small-income-card">
+                <!-- resource custom class field for macro support (resource.data.customClass) -->
+                <li class="resource-small-income-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}">
                     <div class="card-info">
                         <div class="card-image">
                             <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
@@ -25,7 +26,8 @@
         <h3>{{category.name}}</h3>
         <ol class="resource-income-list">
             {{#each category.resources as |resource|}}
-                <li class="resource-small-income-card">
+                <!-- resource custom class field for macro support (resource.data.customClass) -->
+                <li class="resource-small-income-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}">
                     <div class="card-info">
                         <div class="card-image">
                             <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
