@@ -17,17 +17,16 @@ export default class Income{
     }
     static prepareData({buildings, resources, events, projects}){
       const resourcesIncomeData = {}
-      if (buildings) {
-        this._handleBuildingsExistance({resourcesIncomeData, buildings})
-      }
       if (resources) {
         this._handleResourcesExistance({resourcesIncomeData, resources})
+      }
+      if (buildings) {
+        this._handleBuildingsExistance({resourcesIncomeData, buildings})
       }
       if (events) {
         this._handleEventsExistance({resourcesIncomeData, events})
       }
       if (projects) {
-        console.log(projects)
         // this._handleProjectsExistance({resourcesIncomeData, projects})
       }
       return resourcesIncomeData

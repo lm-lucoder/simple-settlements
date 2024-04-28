@@ -1,0 +1,12 @@
+
+- Buildings poderem ser desativadas sem precisar mexer na Quantity
+- Status de recursos: (BAD, que fica com o background vermelho) ou (GOOD, que fica com o background verde)
+
+- Ordenação dos recursos e das buildings
+
+- Log de Income para cada recurso
+
+-- Eventos culminarem em outros eventos (TERMINAR)
+-- recursos poderem ter decimais?
+-- Limite máximo e mínimo para recursos
+-- Evento anunciando mudança de status de recursos
