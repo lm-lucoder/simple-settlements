@@ -2,7 +2,7 @@
 x Buildings poderem ser desativadas sem precisar mexer na Quantity
 x Status de recursos: (BAD, que fica com o background vermelho) ou (GOOD, que fica com o background verde)
 
-- Ordenação dos recursos e das buildings
+x Ordenação dos recursos e das buildings
 
 - Log de Income para cada recurso
 

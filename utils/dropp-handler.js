@@ -5,8 +5,9 @@ class DroppHandler {
 		const origin = args[2];
 		const target = args[0];
 
+		if(Object.keys(origin).length == 0) return;
 		if (!origin.type === "Actor") return;
-
+		
 		if (target.type === "simple-settlements.settlement") {
 			const originElement = game.actors.get(origin.uuid.replace("Actor.", ""));
 			if (!originElement) return;

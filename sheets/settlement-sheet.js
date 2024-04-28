@@ -74,6 +74,28 @@ class SettlementSheet extends ActorSheet {
 
 		// Everything below here is only needed if the sheet is editable
 		if (!this.options.editable) return;
+		
+		$(".buildings-list").on('drop', (ev) => {
+			ev.preventDefault();
+			var draggedItemId = ev.originalEvent.dataTransfer.getData("text/plain");
+			var droppedItemId = ev.target.closest(".building-card").attributes["data-building-id"].value;
+			const rawBuildings = this.object.system.raw.buildings
+			const draggedIndex = rawBuildings.findIndex(obj => obj.id === draggedItemId);
+    		const droppedIndex = rawBuildings.findIndex(obj => obj.id === droppedItemId);
+			if (draggedIndex === -1 || droppedIndex === -1) return
+			const temp = rawBuildings[draggedIndex];
+			rawBuildings[draggedIndex] = rawBuildings[droppedIndex];
+			rawBuildings[droppedIndex] = temp;
+			this.object.update({system: {raw: {buildings: [...rawBuildings]}}})
+			
+		});
+
+		// Adiciona eventos de arrastar para os itens da lista
+		$(".buildings-list li").on('dragstart', (ev) => {
+			// Define o ID do elemento arrastado
+			ev.originalEvent.dataTransfer.setData("text/plain", ev.target.attributes["data-building-id"].value);
+			
+		});
 
 		html.find(".time-passage").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyPassTurn")) return;
@@ -225,7 +247,7 @@ class SettlementSheet extends ActorSheet {
 	}
 
 	_onSortItem(event, itemData) {
-		
+
 		// Get the drag source and drop target
 		const items = this.actor.items;
 		const source = items.get(itemData._id);
@@ -255,34 +277,34 @@ class SettlementSheet extends ActorSheet {
 		return this.actor.updateEmbeddedDocuments("Item", updateData);
 	}
 
-	_buildResourcesHierarchy(resources){
+	_buildResourcesHierarchy(resources) {
 		const resourcesByHierarchy = {
-		  static: {},
-		  nonStatic: {}
+			static: {},
+			nonStatic: {}
 		}
 		resources.forEach(resource => {
-		 if (resource.system.isStatic) {
-		  if (resourcesByHierarchy.static[resource.system.category]) {
-			resourcesByHierarchy.static[resource.system.category].resources.push(resource)
-		  } else {
-			resourcesByHierarchy.static[resource.system.category] = {
-			  name: resource.system.category,
-			  resources: [resource]
+			if (resource.system.isStatic) {
+				if (resourcesByHierarchy.static[resource.system.category]) {
+					resourcesByHierarchy.static[resource.system.category].resources.push(resource)
+				} else {
+					resourcesByHierarchy.static[resource.system.category] = {
+						name: resource.system.category,
+						resources: [resource]
+					}
+				}
+			} else {
+				if (resourcesByHierarchy.nonStatic[resource.system.category]) {
+					resourcesByHierarchy.nonStatic[resource.system.category].resources.push(resource)
+				} else {
+					resourcesByHierarchy.nonStatic[resource.system.category] = {
+						name: resource.system.category,
+						resources: [resource]
+					}
+				}
 			}
-		  }
-		 } else {
-		  if (resourcesByHierarchy.nonStatic[resource.system.category]) {
-			resourcesByHierarchy.nonStatic[resource.system.category].resources.push(resource)
-		  } else {
-			resourcesByHierarchy.nonStatic[resource.system.category] = {
-			  name: resource.system.category,
-			  resources: [resource]
-			}
-		  }
-		 }
 		})
 		return resourcesByHierarchy
-	  }
+	}
 
 
 	_getActorsFeatures(actors) {
