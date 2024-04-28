@@ -15,8 +15,13 @@ class SettlementAPI {
                 buildings: [...rawBuildings]
             }}})
         } else {
+            const newBuilding = {
+                id: building.id, 
+                isRawInactive: false, 
+                count: quantity ? quantity : 1
+            }
             settlement.update({system:{raw: {
-                buildings: [...rawBuildings, {id: building.id, count: quantity ? quantity : 1}]
+                buildings: [...rawBuildings, newBuilding]
             }}})
         }
     }
@@ -43,6 +48,15 @@ class SettlementAPI {
         const rawBuildings = system.raw.buildings
         const rawBuildingIndex = rawBuildings.findIndex(el => el.id === buildingId)
         rawBuildings.splice(rawBuildingIndex, 1)
+        settlement.update({system: {raw: {
+            buildings: [...rawBuildings]
+        }}})
+    }
+    static setBuildingActivation(buildingId, settlement, activation){
+        const system = settlement.system
+        const rawBuildings = system.raw.buildings
+        const rawBuilding = rawBuildings.find(el => el.id === buildingId)
+		rawBuilding.isRawInactive = activation
         settlement.update({system: {raw: {
             buildings: [...rawBuildings]
         }}})

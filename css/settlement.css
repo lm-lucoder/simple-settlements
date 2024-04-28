@@ -60,6 +60,11 @@
 
 .buildings-list .building-card .building-description .building-info .building-name{
     font-size: 18px;
+    margin-bottom: 0px;
+}
+.buildings-list .building-card .building-description .building-info .isInactive-container{
+    display: flex;
+    align-items: center;
 }
 
 

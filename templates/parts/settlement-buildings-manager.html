@@ -9,13 +9,17 @@
             <div class="building-info">
               <h4 class="building-name">{{building.name}}</h4>
               <div class="isInactive-container">
-                {{#if building.isInactive}}
-                  <label>Inactive Building</label>
-                {{/if}}
+                <label>Deactivate</label>
+                <input type="checkbox" class="building-toggle-activation" {{checked building.isRawInactive }}/>
               </div>
             </div>
           </div>
           <ol class="building-resources-container">
+            <div class="isInactive-container">
+              {{#if building.isInactive}}
+                <label>Inactive Building</label>
+              {{/if}}
+            </div>
             {{#unless building.isInactive}}
               {{#each building.system.resources as |item id|}}
                   <li class="settlement-building-resource-card" data-item-id="{{item._id}}">

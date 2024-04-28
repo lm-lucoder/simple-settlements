@@ -117,6 +117,14 @@ class SettlementSheet extends ActorSheet {
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.removeBuilding(buildingId, this.object)
 		})
+		html.find(".building-toggle-activation").change((ev)=>{
+			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
+			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
+			const checkBoxValue = ev.currentTarget.checked
+			SettlementAPI.setBuildingActivation(buildingId, this.object, checkBoxValue)
+			//console.log(checkBoxValue)
+			//SettlementAPI.addQuantityToBuilding(buildingId, this.object)
+		})
 		html.find(".quantity-control-up").click((ev)=>{
 			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;

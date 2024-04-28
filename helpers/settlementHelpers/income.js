@@ -33,6 +33,7 @@ export default class Income{
     }
     static _handleBuildingsExistance({resourcesIncomeData, buildings}){
       buildings.forEach(building => {
+        if(building.isInactive) return
         const {resources} = building.system._filterItems(building.items.contents)
         resources.forEach(resource => {
           if (resourcesIncomeData[resource.name]) {

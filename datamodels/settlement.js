@@ -25,7 +25,8 @@ class SettlementData extends foundry.abstract.TypeDataModel {
         buildings: new fields.ArrayField(
           new fields.SchemaField({
             id: new fields.StringField({required: false}),
-            count: new fields.NumberField({required: true, nullable: false, initial: 1})
+            count: new fields.NumberField({required: true, nullable: false, initial: 1}),
+            isRawInactive: new fields.BooleanField({initial: false}),
           })
         ),
         events: new fields.ArrayField(
