@@ -6,7 +6,14 @@ x Ordenação dos recursos e das buildings
 
 - Log de Income para cada recurso
 
+-- Notificações ao:
+    - Adicionar projetos
+    - Adicionar Eventos
+    - Concluir Eventos 
+
+-- Segurança de Notificações
+-- Revisão de permissões
+
 -- Eventos culminarem em outros eventos (TERMINAR)
 -- recursos poderem ter decimais?
 -- Limite máximo e mínimo para recursos
--- Evento anunciando mudança de status de recursos
