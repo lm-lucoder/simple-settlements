@@ -332,7 +332,7 @@ class SettlementSheet extends ActorSheet {
 	_onDropActor(e, data) {
 		const actor = game.actors.get(data.uuid.replace("Actor.", ""))
 		if (actor.type === "simple-settlements.project") {
-			if (SimpleSettlementSettings.verify("gmOnlyRemoveProjects")) return;
+			if (SimpleSettlementSettings.verify("gmOnlyAddProjects")) return;
 			this.object.system.api.addProject(actor, this.object)
 		}
 	}

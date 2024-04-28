@@ -90,18 +90,26 @@ class SettlementAPI {
         const rawEvents = system.raw.events
         
         if (event.turn - event.system.opening >= event.system.duration && !event.hasInfiniteDuration) {
-            const rawEventIndex = rawEvents.findIndex(el => event.id === el.id)
-            rawEvents.splice(rawEventIndex, 1)
-            settlement.update({system:{raw: {
-                events: [...rawEvents]
-            }}})
-            return
+            return this.concludeEvent(event, settlement)
         }
         const rawEvent = rawEvents.find(el => event.id === el.id)
         rawEvent.turn += 1
         settlement.update({system:{raw: {
             events: [...rawEvents]
         }}})
+    }
+
+    static concludeEvent(event, settlement){
+        const system = settlement.system
+        const rawEvents = system.raw.events
+        const rawEventIndex = rawEvents.findIndex(el => event.id === el.id)
+        rawEvents.splice(rawEventIndex, 1)
+        settlement.update({system:{raw: {
+            events: [...rawEvents]
+        }}})
+        if(event.system.transform){
+            this.addEvent(Actor.get(event.system.transform), settlement)
+        } 
     }
     /* ======== PROJECTS ======== */
     static addProject(project, settlement){
@@ -113,6 +121,9 @@ class SettlementAPI {
         
         if (!this.verifyProjectDependencies(project, settlement)){
             return
+        }
+        if(project.system.duration == 0){
+            return this.concludeProject(project, settlement)
         }
         
         settlement.update({system:{raw: {
@@ -207,6 +218,23 @@ class SettlementAPI {
         if (toCreate.length > 0) {
             Item.createDocuments(toCreate, {parent: settlement})
         }
+        let htmlMessage = `<h3 style="line-height: 2">The project @UUID[Actor.${project.id}]{${project.name}} has been concluded</h3> 
+        <p><b>Settlement: </b>@UUID[Actor.${settlement.id}]{${settlement.name}}</p>` 
+        if(project.system.results.resources.length > 0){
+            htmlMessage += `<p><b>Acquired Resources</b>: ${project.system.results.resources.map(resource => `${resource.name} x${resource.quantity}`).join(", ")}</p>`
+        }
+        if(project.system.results.buildings.length > 0){
+            htmlMessage += `<p><b>Constructed Buildings</b>: ${project.system.results.buildings.map(building => `${building.name} x${building.quantity}`).join(", ")}</p>`
+        }
+        if(project.system.results.features.length > 0){
+            htmlMessage += `<p><b>Acquired Features</b>: ${project.system.results.features.map(feature => `${feature.name}`).join(", ")}</p>`
+        }
+        if(project.system.results.events.length > 0){
+            htmlMessage += `<p><b>Started Events</b>: ${project.system.results.events.map(event => `${event.name}`).join(", ")}</p>`
+        }
+        ChatMessage.create({
+            content: htmlMessage
+        });
     }
 
     static verifyProjectDependencies(project, settlement){
