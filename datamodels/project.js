@@ -54,12 +54,8 @@ class ProjectData extends foundry.abstract.TypeDataModel {
             })),
         }),
         duration: new fields.NumberField({initial: 1}),
-        // owner: new fields.SchemaField({
-        //     have: new fields.StringField({initial: "dont-have"}),
-        //     turnAdder: new fields.NumberField({initial: 0}),
-        // }),
         configs: new fields.SchemaField({
-            // actorType: new fields.StringField({required: false}),
+            
             turnMacros: new fields.StringField({initial: ""}),
             finishMacros: new fields.StringField({initial: ""}),
         })

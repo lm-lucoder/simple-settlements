@@ -8,7 +8,7 @@
     <div class="project-main tab" data-tab="main" data-group="secondary">
         <label for="system.duration">Duration</label>
         <input name="system.duration" type="text" value="{{actor.system.duration}}">
-        <i>The quantity of turns that will take before the project is completed</i>
+        <i>The quantity of turns that will take before the project is completed</i>   
     </div>
     <div class="project-requirements-container tab" data-tab="requirements" data-group="secondary">
         <h3>Project requirements</h3>
@@ -55,16 +55,16 @@
                         <input class="project-input-change" type="text" value="{{resource.quantity}}">
                         <i class="fas fa-trash delete-config-btn"></i>
                     </div>
-                    {{#unless (verifyIfProjectResourceIsStatic resource.id) }}
-                        <div class="bottom">
-                            <span>Consumes:</span>
-                            <input class="resource-checkbox-consumes" name="resource.consumes" type="checkbox" {{checked resource.consumes}}>
-                            {{#if resource.consumes}}
-                                <span>Only on finish:</span>
-                                <input class="resource-checkbox-consumesOnlyOnFinish" name="resource.consumesOnlyOnFinish" type="checkbox" {{checked resource.consumesOnlyOnFinish}}>
-                            {{/if}}
+                    <div class="bottom">
+                        <span>Consumes:</span>
+                        <input class="resource-checkbox-consumes" name="resource.consumes" type="checkbox" {{checked resource.consumes}}>
+                        {{#unless (verifyIfProjectResourceIsStatic resource.id) }}
+                        {{#if resource.consumes}}
+                            <span>Only on finish:</span>
+                            <input class="resource-checkbox-consumesOnlyOnFinish" name="resource.consumesOnlyOnFinish" type="checkbox" {{checked resource.consumesOnlyOnFinish}}>
+                        {{/if}}
+                        {{/unless}}
                         </div>
-                    {{/unless}}
                 </li>
                 {{/each}}
             </ul>

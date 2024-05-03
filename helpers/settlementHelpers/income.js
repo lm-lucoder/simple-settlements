@@ -29,7 +29,7 @@ export default class Income{
         this._handleEventsExistance({resourcesIncomeData, events})
       }
       if (projects) {
-        // this._handleProjectsExistance({resourcesIncomeData, projects})
+        this._handleProjectsExistance({resourcesIncomeData, projects})
       }
       return resourcesIncomeData
     }
@@ -74,11 +74,21 @@ export default class Income{
         })
       })
     }
-    // static _handleProjectsExistance({resourcesIncomeData, projects}){
-    //   projects.forEach(project => {
-    //     project.system.resources
-    //   })
-    // }
+    static _handleProjectsExistance({resourcesIncomeData, projects}){
+      projects.forEach(project => {
+        const consumingResources = project.system.requirements.resources.filter(resource => resource.consumes && !resource.consumesOnlyOnFinish)
+        consumingResources.forEach(resource => {
+          if (resourcesIncomeData[resource.name]) {
+            resourcesIncomeData[resource.name].income -= resource.quantity
+          } else {
+            resourcesIncomeData[resource.name] = {
+              income: -(resource.quantity),
+              data: resource
+            }
+          }
+        })
+      })
+    }
   
     static buildHyerarchy({resources, resourcesIncomeData}){
       const resourceIncomeDataByHierarchy = {

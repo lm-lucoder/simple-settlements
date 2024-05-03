@@ -265,12 +265,12 @@ class SettlementAPI {
                     }
 
                     let resourceQuantity = 0
-                    if (resource.system.isStatic) {
-                        if(resource){
+                    //if (resource.system.isStatic) {
+                        //if(resource){
                             resourceQuantity += resource.system.quantity
-                        }
+                        //}
                         resourceQuantity += settlement._sheet.income.all[requirementValue.name]?.income
-                    }
+                    //}
                     
                     if (resourceQuantity < requirementValue.quantity){
                    
