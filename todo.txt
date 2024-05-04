@@ -4,7 +4,7 @@ x Status de recursos: (BAD, que fica com o background vermelho) ou (GOOD, que fi
 
 x Ordenação dos recursos e das buildings
 
-- Log de Income para cada recurso
+x Log de Income para cada recurso
 
 -- Notificações ao:
     - Adicionar projetos
@@ -14,6 +14,6 @@ x Ordenação dos recursos e das buildings
 -- Segurança de Notificações
 -- Revisão de permissões
 
--- Eventos culminarem em outros eventos (TERMINAR)
--- recursos poderem ter decimais?
+x Eventos culminarem em outros eventos (TERMINAR)
+x recursos poderem ter decimais?
 -- Limite máximo e mínimo para recursos
