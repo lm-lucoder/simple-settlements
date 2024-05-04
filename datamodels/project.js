@@ -26,7 +26,9 @@ class ProjectData extends foundry.abstract.TypeDataModel {
                 name: new fields.StringField({required: false}),
                 type: new fields.StringField({required: false, initial: "item.resource"}),
                 consumes: new fields.BooleanField({required: false, initial: false}),
-                consumesOnlyOnFinish: new fields.BooleanField({required: false, initial: false}),
+                onFinished: new fields.BooleanField({required: false, initial: false}),
+                consumesOnDrop: new fields.BooleanField({required: false, initial: false}),
+                consumesPerTurn: new fields.BooleanField({required: false, initial: false}),
             })),
         }),
         results: new fields.SchemaField({

@@ -249,7 +249,7 @@ class SettlementAPI {
               
                 if (type === "resource") {
                     
-                    if(requirementValue.consumesOnlyOnFinish){
+                    if(requirementValue.onFinished){
                         continue
                     }
 
@@ -277,7 +277,7 @@ class SettlementAPI {
                         log.push(`The resource: ${requirementValue.name} is under the required ammount (${resourceQuantity}/${requirementValue.quantity})`)
                         continue
                     }
-                    if(!requirementValue.consumesOnlyOnFinish && resource.quantity < requirementValue.quantity){
+                    if(!requirementValue.onFinished && resource.quantity < requirementValue.quantity){
                         log.push('The resource: ' + resource.name + ' has not enough quantity to support this project.')
                     }
                 } else if (type === "building") {
@@ -302,7 +302,21 @@ class SettlementAPI {
         if(log.length > 0){
             ui.notifications.info(log.join(", "))
         }
+        const consumedLog = []
         if(log.length == 0){
+            
+            const onDropResources = project.system.requirements.resources.filter(resource => resource.consumes && resource.consumesOnDrop)
+            onDropResources.forEach(resource => {
+                const settlementResource = settlement.system.resources.find(item => resource.name == item.name)
+                const newQt = settlementResource.system.quantity -= resource.quantity
+                settlementResource.update({['system.quantity'] : newQt})
+                consumedLog.push(`Recurso: ${resource.name} consumido em (${resource.quantity})`)
+            })
+
+            if(consumedLog.length > 0){
+                ui.notifications.info(consumedLog.join(", "))
+            }
+            
             return true
         }
     }

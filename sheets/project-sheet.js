@@ -79,17 +79,39 @@ class ProjectSheet extends ActorSheet {
 			this.object.update({ system: {[section]: {resources: [...resources]}} })
 			// console.log(this.object.system.requirements.resources)
 		})
-		html.find(".resource-checkbox-consumesOnlyOnFinish").change(e => {
+		html.find(".resource-checkbox-onFinished").change(e => {
 			const checkboxConsumesChecked = e.target.checked
 			const card = e.target.closest(".project-card-resource-requirement")
 			const resourceId = card.getAttribute("elementId")
 			const [section, type] = card.getAttribute("elementType").split("-")
 			const resources = this.object.system[section].resources
 			const resourceIndex = resources.findIndex(resource => resource.id === resourceId)
-			resources[resourceIndex].consumesOnlyOnFinish = checkboxConsumesChecked
+			resources[resourceIndex].onFinished = checkboxConsumesChecked
 
 			this.object.update({ system: {[section]: {resources: [...resources]}} })
 			// console.log(this.object.system.requirements.resources)
+		})
+		html.find(".resource-checkbox-consumesOnDrop").change(e => {
+			const checkboxConsumesChecked = e.target.checked
+			const card = e.target.closest(".project-card-resource-requirement")
+			const resourceId = card.getAttribute("elementId")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const resources = this.object.system[section].resources
+			const resourceIndex = resources.findIndex(resource => resource.id === resourceId)
+			resources[resourceIndex].consumesOnDrop = checkboxConsumesChecked
+
+			this.object.update({ system: {[section]: {resources: [...resources]}} })
+		})
+		html.find(".resource-checkbox-consumesPerTurn").change(e => {
+			const checkboxConsumesChecked = e.target.checked
+			const card = e.target.closest(".project-card-resource-requirement")
+			const resourceId = card.getAttribute("elementId")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const resources = this.object.system[section].resources
+			const resourceIndex = resources.findIndex(resource => resource.id === resourceId)
+			resources[resourceIndex].consumesPerTurn = checkboxConsumesChecked
+
+			this.object.update({ system: {[section]: {resources: [...resources]}} })
 		})
 
 		if (!this.options.editable) return;

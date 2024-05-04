@@ -60,8 +60,12 @@
                         <input class="resource-checkbox-consumes" name="resource.consumes" type="checkbox" {{checked resource.consumes}}>
                         {{#unless (verifyIfProjectResourceIsStatic resource.id) }}
                         {{#if resource.consumes}}
-                            <span>Only on finish:</span>
-                            <input class="resource-checkbox-consumesOnlyOnFinish" name="resource.consumesOnlyOnFinish" type="checkbox" {{checked resource.consumesOnlyOnFinish}}>
+                            <span>On finish:</span>
+                            <input class="resource-checkbox-onFinished" name="resource.onFinished" type="checkbox" {{checked resource.onFinished}}>
+                            <span>On drop:</span>
+                            <input class="resource-checkbox-consumesOnDrop" name="resource.consumesOnDrop" type="checkbox" {{checked resource.consumesOnDrop}}>
+                            <span>Per Turn:</span>
+                            <input class="resource-checkbox-consumesPerTurn" name="resource.consumesPerTurn" type="checkbox" {{checked resource.consumesPerTurn}}>
                         {{/if}}
                         {{/unless}}
                         </div>

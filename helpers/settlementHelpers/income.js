@@ -76,7 +76,7 @@ export default class Income{
     }
     static _handleProjectsExistance({resourcesIncomeData, projects}){
       projects.forEach(project => {
-        const consumingResources = project.system.requirements.resources.filter(resource => resource.consumes && !resource.consumesOnlyOnFinish)
+        const consumingResources = project.system.requirements.resources.filter(resource => resource.consumes && resource.consumesPerTurn)
         consumingResources.forEach(resource => {
           if (resourcesIncomeData[resource.name]) {
             resourcesIncomeData[resource.name].income -= resource.quantity
