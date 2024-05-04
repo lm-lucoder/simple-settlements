@@ -2,7 +2,7 @@
     <ol class="important-resources-log-list">
         {{#each importantIncome.static as |resource|}}
             <!-- resource custom class field for macro support (resource.data.customClass) -->
-            <li class="important-log-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}">
+            <li class="important-log-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}" {{#if (higherThan resource.log.length 0)}} data-tooltip='{{> "modules/simple-settlements/templates/parts/settlement-resources-income-tooltip.html"}}' data-tooltip-direction="LEFT" {{/if}}>
                 <div class="card-info">
                     <div class="card-image">
                         <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
@@ -14,7 +14,7 @@
         {{/each}}
         {{#each importantIncome.nonStatic as |resource|}}
             <!-- resource custom class field for macro support (resource.data.customClass) -->
-            <li class="important-log-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}">
+            <li class="important-log-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}" {{#if (higherThan resource.log.length 0)}} data-tooltip='{{> "modules/simple-settlements/templates/parts/settlement-resources-income-tooltip.html"}}' data-tooltip-direction="LEFT" {{/if}}>
                 <div class="card-info">
                     <div class="card-image">
                         <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>

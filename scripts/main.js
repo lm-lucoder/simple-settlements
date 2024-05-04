@@ -92,6 +92,7 @@ async function loadHandleBarTemplates() {
 		"modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-static-storage.html",
 		"modules/simple-settlements/templates/parts/settlement-resources-income.html",
+		"modules/simple-settlements/templates/parts/settlement-resources-income-tooltip.html",
 		"modules/simple-settlements/templates/parts/settlement-important-resources-income.html",
 		"modules/simple-settlements/templates/parts/project-configurations.html",
 		"modules/simple-settlements/templates/configs/settlement-config.html",

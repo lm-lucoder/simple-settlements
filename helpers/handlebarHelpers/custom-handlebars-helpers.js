@@ -5,7 +5,14 @@ function addHandlebarsCustomHelpers(){
 		}
 		return false
 	});
+	Handlebars.registerHelper('higherThan', function (a, b) {
+		if (a > b) {
+			return true
+		}
+		return false
+	});
 	Handlebars.registerHelper('console', function (element) {
+		//debugger
 		console.log(element)
 		return ""
 	});
