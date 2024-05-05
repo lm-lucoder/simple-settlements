@@ -13,6 +13,8 @@
 		"css/settlement.css",
 		"css/settlement.config.css",
 		"css/settlement-projects-manager.css",
+		"css/settlement-buildings-list.css",
+		"css/settlement-buildings-list-resumed.css",
 		"css/resource-card.css",
 		"css/resource-small-card.css",
 		"css/important-resources-log.css",

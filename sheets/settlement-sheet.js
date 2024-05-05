@@ -13,12 +13,17 @@ class SettlementSheet extends ActorSheet {
 				{
 					navSelector: ".sheet-tabs",
 					contentSelector: ".sheet-body",
-					initial: "projects",
+					initial: "buildings",
 				},
 				{
 					navSelector: ".resources-tabs",
 					contentSelector: ".resources-container",
 					initial: "income",
+				},
+				{
+					navSelector: ".buildings-tabs",
+					contentSelector: ".buildings-container",
+					initial: "resumed",
 				},
 			],
 			dragDrop: [

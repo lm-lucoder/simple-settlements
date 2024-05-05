@@ -43,7 +43,19 @@
 
     {{!-- buildings Tab --}}
     <div class="tab buildings" data-group="primary" data-tab="buildings">
-      {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager.html"}}
+      <nav class="buildings-tabs tabs" data-group="buildings">
+        <a class="item" data-tab="board">Board</a>
+        <a class="item" data-tab="resumed">Resumed</a>
+      </nav>
+      <nav class="buildings-container">
+        <div class="tab resources-income-log" data-group="buildings" data-tab="board">
+          {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager.html"}}
+        </div>
+        <div class="tab resources-storage" data-group="buildings" data-tab="resumed">
+          {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager-resumed.html"}}
+        </div>
+      </nav>
+      
     </div>
 
     {{!-- events Tab --}}
