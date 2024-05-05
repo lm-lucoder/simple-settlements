@@ -30,13 +30,14 @@ function addHandlebarsCustomHelpers(){
 		if (isNotReturningString) {
 			return result
 		}
+		let formattedResult = Number.isInteger(result) ? result : result.toFixed(2)
 		if (result > 0) {
-			return `+${result}`
+			return `+${formattedResult}`
 		}
 		if (result < 0) {
-			return String(result)
+			return String(formattedResult)
 		}
-		return String(result)
+		return String(formattedResult)
 	});
 
 	Handlebars.registerHelper('verifyIfChecked', function (boolean) {
