@@ -314,8 +314,10 @@ class SettlementSheet extends ActorSheet {
 
 	_getActorsFeatures(actors) {
 		const features = []
+		
 
 		actors.forEach(actor => {
+			if(actor.isInactive) return
 			actor.system.features.forEach(feature => {
 				features.push(feature)
 			})
