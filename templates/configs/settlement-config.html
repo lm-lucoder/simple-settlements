@@ -1,6 +1,7 @@
 <form class="settlement-config-form">
 	<nav class="form-tabs tabs" data-group="primary">
 		<a class="item" data-tab="macros">Macros</a>
+		<a class="item" data-tab="conventions">Conventions</a>
 	</nav>
 
 	<section class="form-body">
@@ -16,6 +17,63 @@
 					<label for="turnMacros">Turn pass Macros</label>
 					<textarea name="turnMacros" placeholder="example1;example2;example3" style="resize: none;">{{macros.turnMacros}}</textarea>
 					<p class="description">Macros that will be called when the turn passes.</p>
+				</div>
+			</div>
+		</div>
+		<div class="tab conventions" data-group="primary" data-tab="conventions">
+			<div class="convention">
+				<h2>Buildings</h2>
+				<div  class="name-info">
+					<label>Name:</label>
+					<input type="text" name="system.options.conventions.buildings.name" value="{{system.options.conventions.buildings.name}}">
+				</div>
+				<div class="displayed-info">
+					<label>Is Displayed</label>
+					<input name="system.options.conventions.buildings.isRevealed" type="checkbox" {{checked system.options.conventions.buildings.isRevealed }}/>
+				</div>
+			</div>
+			<div class="convention">
+				<h2>Events</h2>
+				<div class="name-info">
+					<label>Name:</label>
+					<input type="text" name="system.options.conventions.events.name" value="{{system.options.conventions.events.name}}">
+				</div>
+				<div class="displayed-info">
+					<label>Is Displayed</label>
+					<input name="system.options.conventions.events.isRevealed" type="checkbox" {{checked system.options.conventions.events.isRevealed }}/>
+				</div>
+			</div>
+			<div class="convention">
+				<h2>Projects</h2>
+				<div class="name-info">
+					<label>Name:</label>
+					<input type="text" name="system.options.conventions.projects.name" value="{{system.options.conventions.projects.name}}">
+				</div>
+				<div class="displayed-info">
+					<label>Is Displayed</label>
+					<input name="system.options.conventions.projects.isRevealed" type="checkbox" {{checked system.options.conventions.projects.isRevealed }}/>
+				</div>
+			</div>
+			<div class="convention">
+				<h2>Features</h2>
+				<div class="name-info">
+					<label>Name:</label>
+					<input type="text" name="system.options.conventions.features.name" value="{{system.options.conventions.features.name}}">
+				</div>
+				<div class="displayed-info">
+					<label>Is Displayed</label>
+					<input name="system.options.conventions.features.isRevealed" type="checkbox" {{checked system.options.conventions.features.isRevealed }}/>
+				</div>
+			</div>
+			<div class="convention">
+				<h2>Resources</h2>
+				<div class="name-info">
+					<label>Name:</label>
+					<input type="text" name="system.options.conventions.resources.name" value="{{system.options.conventions.resources.name}}">
+				</div>
+				<div class="displayed-info">
+					<label>Is Displayed</label>
+					<input name="system.options.conventions.resources.isRevealed" type="checkbox" {{checked system.options.conventions.resources.isRevealed }}/>
 				</div>
 			</div>
 		</div>

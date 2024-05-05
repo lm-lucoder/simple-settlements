@@ -19,6 +19,28 @@ class SettlementData extends foundry.abstract.TypeDataModel {
             onlyGmCanRemoveBuildings: new fields.BooleanField({initial: false}),
             onlyGmCanChangeBuildingsQuantity: new fields.BooleanField({initial: false}),
           })
+        }),
+        conventions: new fields.SchemaField({
+          buildings: new fields.SchemaField({
+            name: new fields.StringField({required: false, initial: "Buildings"}),
+            isRevealed: new fields.BooleanField({initial: true}),
+          }),
+          events: new fields.SchemaField({
+            name: new fields.StringField({required: false, initial: "Events"}),
+            isRevealed: new fields.BooleanField({initial: true}),
+          }),
+          projects: new fields.SchemaField({
+            name: new fields.StringField({required: false, initial: "Projects"}),
+            isRevealed: new fields.BooleanField({initial: true}),
+          }),
+          features: new fields.SchemaField({
+            name: new fields.StringField({required: false, initial: "Features"}),
+            isRevealed: new fields.BooleanField({initial: true}),
+          }),
+          resources: new fields.SchemaField({
+            name: new fields.StringField({required: false, initial: "Resources"}),
+            isRevealed: new fields.BooleanField({initial: true}),
+          })
         })
       }),
       raw: new fields.SchemaField({
