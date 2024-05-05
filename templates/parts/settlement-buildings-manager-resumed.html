@@ -9,9 +9,9 @@
           data-building-id="{{building._id}}">
             
               <div class="main">
-                <div class="building-description">
-                  <div class="building-image">
-                    <img {{#if building.isInactive}}class="innactive"{{/if}} src="{{building.img}}" title="{{building.name}}" />
+                <div class="building-description" >
+                  <div class="building-image" data-tooltip='<img src="{{building.img}}"/>' data-tooltip-direction="LEFT">
+                    <img {{#if building.isInactive}}class="innactive"{{/if}} src="{{building.img}}" title="{{building.name}}"   />
                   </div>
                   <div class="building-info">
                     <h4 class="building-name">{{building.name}}</h4>
@@ -26,7 +26,7 @@
                   </div>
                   {{#unless building.isInactive}}
                     {{#each building.system.resources as |item id|}}
-                        <li class="settlement-building-resource-card" data-item-id="{{item._id}}">
+                        <li class="settlement-building-resource-card" data-item-id="{{item._id}}" data-tooltip='{{item.name}} ({{#if (higherThan item.system.quantity 0)}}+{{/if}}{{item.system.quantity}})' data-tooltip-direction="LEFT">
                             <div class="item-description">
                                 <div class="item-image">
                                     <img src="{{item.img}}" title="{{item.name}}" />
