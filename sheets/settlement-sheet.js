@@ -13,7 +13,7 @@ class SettlementSheet extends ActorSheet {
 				{
 					navSelector: ".sheet-tabs",
 					contentSelector: ".sheet-body",
-					initial: "buildings",
+					initial: "resources",
 				},
 				{
 					navSelector: ".resources-tabs",

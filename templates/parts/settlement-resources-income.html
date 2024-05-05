@@ -1,10 +1,23 @@
 <div class="static-resource-log">
     {{#each income.static as |category|}}
-        <h3>{{category.name}}</h3>
+        <h3 class="category-title">{{category.name}}</h3>
         <ol class="resource-income-list">
             {{#each category.resources as |resource|}}
                 <!-- resource custom class field for macro support (resource.data.customClass) -->
                 <li class="resource-small-income-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}"  {{#if (higherThan resource.log.length 0)}} data-tooltip='{{> "modules/simple-settlements/templates/parts/settlement-resources-income-tooltip.html"}}' data-tooltip-direction="LEFT" {{/if}}>
+                    <div class="card-info">
+                        <div class="card-image">
+                            <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
+                        </div>
+                        <span class="card-title">{{resource.data.name}}: <span class="stored-info">{{sum resource.income resource.stored}}</span></span>
+                    </div>
+                    <!-- <div class="card-description">
+                        <div class="card-description-section">
+                            <span>{{sum resource.income resource.stored}}</span>
+                        </div>
+                    </div> -->
+                </li>
+                <!-- <li class="resource-small-income-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}"  {{#if (higherThan resource.log.length 0)}} data-tooltip='{{> "modules/simple-settlements/templates/parts/settlement-resources-income-tooltip.html"}}' data-tooltip-direction="LEFT" {{/if}}>
                     <div class="card-info">
                         <div class="card-image">
                             <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
@@ -16,14 +29,14 @@
                             <span>{{sum resource.income resource.stored}}</span>
                         </div>
                     </div>
-                </li>
+                </li> -->
             {{/each}}
         </ol>
     {{/each}}
 </div>
 <div class="nonStatic-resource-log">
     {{#each income.nonStatic as |category|}}
-        <h3>{{category.name}}</h3>
+        <h3 class="category-title">{{category.name}}</h3>
         <ol class="resource-income-list">
             {{#each category.resources as |resource|}}
                 <!-- resource custom class field for macro support (resource.data.customClass) -->
@@ -32,8 +45,8 @@
                         <div class="card-image">
                             <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
                         </div>
-                        <span class="card-title">{{resource.data.name}}</span>
-                    </div>
+                        <span class="card-title">{{resource.data.name}}: <span class="stored-info">{{resource.stored}}</span> <span class="income-info">{{#if (higherThan resource.income 0)}}+{{/if}}{{resource.income}}</span></span>
+                    </div><!-- 
                     <div class="card-description">
                         <div class="card-description-section">
                             <span class="card-description-title"><i class="fa-solid fa-box"></i> :</span>
@@ -43,7 +56,7 @@
                             <span class="card-description-title"><i class="fa-solid fa-plus"></i> :</span>
                             <span>{{resource.income}}</span>
                         </div>
-                    </div>
+                    </div> -->
                 </li>
             {{/each}}
         </ol>
