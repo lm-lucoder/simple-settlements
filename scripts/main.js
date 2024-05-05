@@ -85,6 +85,7 @@ async function loadHandleBarTemplates() {
 		"modules/simple-settlements/templates/parts/settlement-events-manager.html",
 		"modules/simple-settlements/templates/parts/building-resources-manager.html",
 		"modules/simple-settlements/templates/parts/building-features-manager.html",
+		"modules/simple-settlements/templates/parts/building-config-manager.html",
 		"modules/simple-settlements/templates/parts/event-attributes-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-features-manager.html",
 		"modules/simple-settlements/templates/parts/settlement-projects-manager.html",

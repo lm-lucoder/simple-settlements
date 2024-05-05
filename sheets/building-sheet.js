@@ -18,8 +18,8 @@ class BuildingSheet extends ActorSheet {
         return `${path}/building-sheet.html`
     }
 	async getData(){
-		// console.log(this);
 		const context = super.getData()
+		console.log(context);
 
 		const description = await this._prepareDescriptionData()
 		const features = this.object.system.features
@@ -27,6 +27,7 @@ class BuildingSheet extends ActorSheet {
 		// this._enrichFeatures(features)
 		this.checkAndReRenderOpenedSettlements()
 
+		context.system = this.actor.system
 		context.resources = this.actor.system.resources
 		context.categories = this.actor.system.categories
 		context.description = description
