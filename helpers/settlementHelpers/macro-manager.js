@@ -5,7 +5,7 @@ export default class MacroManager {
             eval(macro.command)
         })
 	}
-    static handleTimePasser(system){
+    static handleTimePasser(income, system){
 		const income = system.income
         const macros = this.getMacros(system, "turnMacros");
         macros.forEach(macro => {

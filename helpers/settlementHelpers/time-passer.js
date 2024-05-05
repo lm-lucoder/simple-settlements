@@ -5,10 +5,10 @@ import MacroManager from "./macro-manager.js"
 export default class TimePasser{
     static async init(settlement, income){
       const system = settlement.system
+      this.handleMacros(income, system)
       await this.handleResources(system, income)
       this.handleEvents(system)
       this.handleProjects(system)
-      this.handleMacros(system)
     }
   
     static handleEvents(system){
@@ -27,8 +27,8 @@ export default class TimePasser{
       })
     }
 
-    static handleMacros(system){
-      MacroManager.handleTimePasser(system)
+    static handleMacros(income, system){
+      MacroManager.handleTimePasser(income, system)
     }
   
     static async handleResources(system, income){
