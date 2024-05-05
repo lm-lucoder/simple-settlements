@@ -1,0 +1,38 @@
+.log-manager{
+
+}
+
+.log-manager .title{
+    border: 0;
+    text-align: center;
+    /* border-bottom: 1px solid #999683;
+    padding-bottom: 5px;
+    margin-bottom: 5px; */
+}
+
+.log-manager .log-cards-list{
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.log-manager .log-cards-list .log-card{
+    display: flex;
+    justify-content: space-between;
+    padding: 3px 0;
+    border-top: 1px solid #999683;
+}
+
+.log-manager .bottom-config{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 5px;
+    margin-top: 5px;
+    border-top: 1px solid #999683;
+}
+.log-manager .bottom-config .erase-log{
+    font-size: 26px;
+}

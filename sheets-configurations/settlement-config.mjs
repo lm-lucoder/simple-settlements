@@ -45,16 +45,17 @@ export default class SettlementConfig extends FormApplication {
 	async _updateObject(event, formData) {
 		const settlement = this.settlementSheet.object;
 
-		// normal updateObject stuff
-
 		Object.keys(formData).forEach((key) => {
 			if (key === "incomeMacros" || key === "turnMacros") {
-				ConfigManager.addMacro(settlement, key, formData[key]);
+				return ConfigManager.addMacro(settlement, key, formData[key]);
 			}
+			settlement.update({[key]: formData[key]})
 		});
 
 		this.render(); // rerenders the FormApp with the new data.
 	}
+
+
 	ConfigManager = ConfigManager;
 }
 

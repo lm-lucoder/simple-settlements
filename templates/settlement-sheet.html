@@ -19,11 +19,24 @@
   <nav class="sheet-tabs tabs" data-group="primary">
     <a class="item" data-tab="description">Description</a>
     {{#if isObserverOrHigher}}
-    <a class="item" data-tab="buildings">Buildings</a>
-    <a class="item" data-tab="events">Events</a>
-    <a class="item" data-tab="projects">Projects</a>
-    <a class="item" data-tab="features">Features</a>
-    <a class="item" data-tab="resources">Resources</a>
+    {{#if (unlessOrGm actor.system.options.conventions.buildings.onlyGm)}}
+      {{#if actor.system.options.conventions.buildings.isRevealed}}<a class="item" data-tab="buildings">{{actor.system.options.conventions.buildings.name}}</a>{{/if}}
+    {{/if}}
+    {{#if (unlessOrGm actor.system.options.conventions.events.onlyGm)}}
+      {{#if actor.system.options.conventions.events.isRevealed}}<a class="item" data-tab="events">{{actor.system.options.conventions.events.name}}</a>{{/if}}
+    {{/if}}
+    {{#if (unlessOrGm actor.system.options.conventions.projects.onlyGm)}}
+      {{#if actor.system.options.conventions.projects.isRevealed}}<a class="item" data-tab="projects">{{actor.system.options.conventions.projects.name}}</a>{{/if}}
+    {{/if}}
+    {{#if (unlessOrGm actor.system.options.conventions.features.onlyGm)}}
+      {{#if actor.system.options.conventions.features.isRevealed}}<a class="item" data-tab="features">{{actor.system.options.conventions.features.name}}</a>{{/if}}
+    {{/if}}
+    {{/if}}
+    {{#if (unlessOrGm actor.system.options.conventions.resources.onlyGm)}}
+      {{#if actor.system.options.conventions.resources.isRevealed}}<a class="item" data-tab="resources">{{actor.system.options.conventions.resources.name}}</a>{{/if}}
+    {{/if}}
+    {{#if (unlessOrGm actor.system.options.conventions.log.onlyGm)}}
+      {{#if actor.system.options.conventions.log.isRevealed}}<a class="item" data-tab="log">Log</a>{{/if}}
     {{/if}}
   </nav>
 
@@ -36,42 +49,82 @@
     </div>
 
     {{#if isObserverOrHigher}}
-    {{!-- Features Tab --}}
-    <div class="tab features" data-group="primary" data-tab="features">
-      {{> "modules/simple-settlements/templates/parts/settlement-features-manager.html"}}
-    </div>
 
-    {{!-- buildings Tab --}}
-    <div class="tab buildings" data-group="primary" data-tab="buildings">
-      {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager.html"}}
-    </div>
+      {{!-- Features Tab --}}
+      {{console actor.system.options.conventions.features}}
+      {{#if (unlessOrGm actor.system.options.conventions.features.onlyGm)}}
+        {{#if actor.system.options.conventions.features.isRevealed}}
+          <div class="tab features" data-group="primary" data-tab="features">
+            {{> "modules/simple-settlements/templates/parts/settlement-features-manager.html"}}
+          </div>
+        {{/if}}
+      {{/if}}
 
-    {{!-- events Tab --}}
-    <div class="tab events" data-group="primary" data-tab="events">
-      {{> "modules/simple-settlements/templates/parts/settlement-events-manager.html"}}
-    </div>
+      {{!-- buildings Tab --}}
+      {{#if (unlessOrGm actor.system.options.conventions.buildings.onlyGm)}}
+        {{#if actor.system.options.conventions.buildings.isRevealed}}
+          <div class="tab buildings" data-group="primary" data-tab="buildings">
+            <nav class="buildings-tabs tabs" data-group="buildings">
+              <a class="item" data-tab="board">Board</a>
+              <a class="item" data-tab="resumed">Resumed</a>
+            </nav>
+            <nav class="buildings-container">
+              <div class="tab resources-income-log" data-group="buildings" data-tab="board">
+                {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager.html"}}
+              </div>
+              <div class="tab resources-storage" data-group="buildings" data-tab="resumed">
+                {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager-resumed.html"}}
+              </div>
+            </nav>
+          </div>
+        {{/if}}
+      {{/if}}
 
-    {{!-- projects Tab --}}
-    <div class="tab projects" data-group="primary" data-tab="projects">
-      {{> "modules/simple-settlements/templates/parts/settlement-projects-manager.html"}}
-    </div>
+      {{!-- events Tab --}}
+      {{#if (unlessOrGm actor.system.options.conventions.events.onlyGm)}}
+        {{#if actor.system.options.conventions.events.isRevealed}}
+          <div class="tab events" data-group="primary" data-tab="events">
+            {{> "modules/simple-settlements/templates/parts/settlement-events-manager.html"}}
+          </div>
+        {{/if}}
+      {{/if}}
+      {{!-- projects Tab --}}
+      {{#if (unlessOrGm actor.system.options.conventions.projects.onlyGm)}}
+        {{#if actor.system.options.conventions.projects.isRevealed}}
+          <div class="tab projects" data-group="primary" data-tab="projects">
+            {{> "modules/simple-settlements/templates/parts/settlement-projects-manager.html"}}
+          </div>
+        {{/if}}
+      {{/if}}
 
-    {{!-- resources Tab --}}
-    <div class="tab resources" data-group="primary" data-tab="resources">
-      <nav class="resources-tabs tabs" data-group="secondary">
-        <a class="item" data-tab="income">Income</a>
-        <a class="item" data-tab="storage">Storage</a>
-      </nav>
-      <div class="resources-container">
-        <div class="tab resources-income-log" data-group="secondary" data-tab="income">
-          {{> "modules/simple-settlements/templates/parts/settlement-resources-income.html"}}
-        </div>
-        <div class="tab resources-storage" data-group="secondary" data-tab="storage">
-          {{> "modules/simple-settlements/templates/parts/settlement-resources-static-storage.html"}}
-          {{> "modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html"}}
-        </div>
-      </div>
-    </div>
+      {{!-- resources Tab --}}
+      {{#if (unlessOrGm actor.system.options.conventions.resources.onlyGm)}}
+        {{#if actor.system.options.conventions.resources.isRevealed}}
+          <div class="tab resources" data-group="primary" data-tab="resources">
+            <nav class="resources-tabs tabs" data-group="secondary">
+              <a class="item" data-tab="income">Income</a>
+              <a class="item" data-tab="storage">Storage</a>
+            </nav>
+            <div class="resources-container">
+              <div class="tab resources-income-log" data-group="secondary" data-tab="income">
+                {{> "modules/simple-settlements/templates/parts/settlement-resources-income.html"}}
+              </div>
+              <div class="tab resources-storage" data-group="secondary" data-tab="storage">
+                {{> "modules/simple-settlements/templates/parts/settlement-resources-static-storage.html"}}
+                {{> "modules/simple-settlements/templates/parts/settlement-resources-non-static-storage.html"}}
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      {{/if}}
+
+      {{#if (unlessOrGm actor.system.options.conventions.log.onlyGm)}}
+        {{#if actor.system.options.conventions.log.isRevealed}}
+          <div class="tab log" data-group="primary" data-tab="log">
+            {{> "modules/simple-settlements/templates/parts/settlement-log-manager.html"}}
+          </div>
+        {{/if}}
+      {{/if}}
     {{/if}}
   </section>
 </form>

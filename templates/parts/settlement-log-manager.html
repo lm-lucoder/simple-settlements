@@ -1,0 +1,14 @@
+<div class="log-manager">
+    <h2 class="title">Log messages</h2>
+    <ol class="log-cards-list">
+        {{#each log as |message index|}}
+            <li class="log-card" data-log-index="{{index}}">
+                <span class="text">{{sum index 1}}: {{message}}</span>
+                <a class="remove-log-btn"><i class="fas fa-trash"></i></a>
+            </li>
+        {{/each}}
+    </ol>
+    <div class="bottom-config">
+        <a class="erase-log"><i class="fas fa-trash"></i></a>
+    </div>
+</div>

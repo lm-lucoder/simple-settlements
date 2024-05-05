@@ -67,12 +67,20 @@ class SettlementAPI {
         const system = settlement.system
         const rawEvents = system.raw.events
         const eventExists = rawEvents.find(el => event.id === el.id)
-
+        
         if (eventExists) return; 
 
         settlement.update({system:{raw: {
             events: [...rawEvents, {id: event.id}]
         }}})
+
+        ChatMessage.create({
+            content: `
+            <h3 style="line-height: 2">Event @UUID[Actor.${event.id}]{${event.name}} added</h3> 
+            <p>
+                <b>Settlement: </b>@UUID[Actor.${settlement.id}]{${settlement.name}}
+            </p>` 
+        });
     }
 
     static removeEvent(eventId, settlement){
@@ -110,6 +118,13 @@ class SettlementAPI {
         if(event.system.transform){
             this.addEvent(Actor.get(event.system.transform), settlement)
         } 
+        ChatMessage.create({
+            content: `
+            <h3 style="line-height: 2">Event @UUID[Actor.${event.id}]{${event.name}} has been concluded.</h3> 
+            <p>
+                <b>Settlement: </b>@UUID[Actor.${settlement.id}]{${settlement.name}}
+            </p>` 
+        });
     }
     /* ======== PROJECTS ======== */
     static addProject(project, settlement){
@@ -129,6 +144,14 @@ class SettlementAPI {
         settlement.update({system:{raw: {
             projects: [...rawProjects, {id: project.id}]
         }}})
+
+        ChatMessage.create({
+            content: `
+            <h3 style="line-height: 2">Project @UUID[Actor.${project.id}]{${project.name}} added</h3> 
+            <p>
+                <b>Settlement: </b>@UUID[Actor.${settlement.id}]{${settlement.name}}
+            </p>` 
+        });
     }
     static removeProject(projectid, settlement){
         const system = settlement.system
@@ -141,8 +164,8 @@ class SettlementAPI {
     }
     static advanceProject(project, settlement){
         
-        console.log('Advance projetct: ', project)
-        console.log('Advance Settlement: ', settlement)
+        /* console.log('Advance projetct: ', project)
+        console.log('Advance Settlement: ', settlement) */
 
         const system = settlement.system
         const rawProjects = system.raw.projects
@@ -319,6 +342,21 @@ class SettlementAPI {
             
             return true
         }
+    }
+
+    /* ======== LOG ======== */
+    static addToLog(message, settlement){
+        const log = settlement.system.log
+        log.push(message)
+        settlement.update({['system.log']: [...log]})
+    }
+    static removeFromLog(index, settlement){
+        const log = settlement.system.log
+        log.splice(index, 1)
+        settlement.update({['system.log']: [...log]})
+    }
+    static eraseLog(settlement){
+        settlement.update({['system.log']: []})
     }
 }
 

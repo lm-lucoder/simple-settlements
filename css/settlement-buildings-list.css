@@ -1,0 +1,98 @@
+
+.buildings-board{
+    list-style: none;
+    margin: 0;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.buildings-board .building-card{
+    border: 1px solid #999683;
+    border-radius: 3px;
+    max-width: 200px;
+    padding: 5px;
+    align-self: flex-start;
+    flex-grow: 1;
+}
+.buildings-board .building-card.building-inactive{
+    background-color: #75757544;
+}
+
+.buildings-board .building-card .building-description{
+    display: flex;
+    gap: 5px;
+}
+.buildings-board .building-card .building-description .building-image{
+    width: 50px;
+    border: none;
+}
+.buildings-board .building-card .building-description .building-image img{
+    width: 50px;
+    border: 1px solid #999683;
+    border-radius: 2px;
+}
+.buildings-board .building-card .building-description .building-image img.innactive{
+    filter: grayscale(100%)
+}
+
+.buildings-board .building-card .building-description .building-info .building-name{
+    font-size: 18px;
+    margin-bottom: 0px;
+}
+.buildings-board .building-card .building-description .building-info .isInactive-container{
+    display: flex;
+    align-items: center;
+}
+
+
+
+.buildings-board .building-card .item-controls{
+    border-top: 1px solid #999683;
+    margin-top: 5px;
+    padding-top: 5px;
+    text-align: center;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+}
+.buildings-board .building-card .item-controls .item-amount-control{
+    padding-left: 6px;
+    border-left: 1px solid #999683;
+}
+.buildings-board .building-card .item-controls .item-amount-control input{
+    width: 50px;
+    height: 20px
+}
+.buildings-board .building-card .building-resources-container{
+    list-style: none;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 0;
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+}
+.buildings-board .building-card .building-resources-container .settlement-building-resource-card{
+    border: 1px solid #999683;
+    padding: 3px;
+    background-color: #ddd8bd;
+    border-radius: 5px;
+    width: 100%;
+}
+.buildings-board .building-card .building-resources-container .settlement-building-resource-card .item-description{
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+.buildings-board .building-card .building-resources-container .settlement-building-resource-card .item-description .item-name{
+    margin: 0;
+}
+.buildings-board .building-card .building-resources-container .settlement-building-resource-card .item-description .item-image{
+    max-width: 25px;
+}

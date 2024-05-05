@@ -1,4 +1,16 @@
 function addHandlebarsCustomHelpers(){
+	Handlebars.registerHelper('ifOrGm', function (condition) {
+		if (condition || game.user.isGM) {
+			return true
+		}
+		return false
+	});
+	Handlebars.registerHelper('unlessOrGm', function (condition) {
+		if (!condition || game.user.isGM) {
+			return true
+		}
+		return false
+	});
 	Handlebars.registerHelper('arrayLenghtHigherThan', function (array, number) {
 		if (array.length > number) {
 			return true

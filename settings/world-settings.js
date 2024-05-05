@@ -23,7 +23,7 @@ class SimpleSettlementSettings {
   
     const allowed = !setting || userIsGM;
     if (!allowed){
-      ui.notifications.error("Only the GM can execute that action");
+      return ui.notifications.error("Only the GM can execute that action");
     }
     return !allowed
   }

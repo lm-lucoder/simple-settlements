@@ -22,3 +22,19 @@
 .settlement-config-form .form-fields-container .form-group .description{
     font-style: italic;
 }
+
+.settlement-config-form .convention{
+    border-top: 1px solid #B5B3A4;
+    padding: 5px 0;
+}
+.settlement-config-form .convention h2{
+    border-bottom: 0;
+    font-size: 16px;
+    font-weight: 500;
+    padding: 0;
+}
+.settlement-config-form .convention div{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}

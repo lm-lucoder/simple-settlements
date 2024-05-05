@@ -18,7 +18,7 @@
       {{/each}}
     </ol>
     {{#if buildingsFeaturesIsNotEmpty}}
-      <h2>Buildings Features:</h2>
+      <h3>{{actor.system.options.conventions.buildings.name}} {{actor.system.options.conventions.features.name}}:</h3>
       <ol class="features-cards-list settlement-buildings-features-cards-list">
           {{#each buildingsFeatures as |buildingFeature|}}
             <li class="item feature-card" data-building-id="{{buildingFeature.parent.id}}">
@@ -40,7 +40,7 @@
       </ol>
     {{/if}}
     {{#if eventsFeaturesIsNotEmpty}}
-      <h2>Event Features:</h2>
+      <h3>{{actor.system.options.conventions.events.name}} {{actor.system.options.conventions.features.name}}:</h3>
       <ol class="features-cards-list settlement-events-features-cards-list">
           {{#each eventsFeatures as |eventFeature|}}
             <li class="item feature-card" data-building-id="{{eventFeature.parent.id}}">
