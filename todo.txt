@@ -11,6 +11,7 @@ x Notificações ao:
     x Adicionar Eventos
     x Concluir Eventos 
 
+-- FIX: gm only add resources not working
 -- Segurança de Notificações
 -- Revisão de permissões
 

@@ -84,6 +84,7 @@ class SettlementSheet extends ActorSheet {
 
 		$(".resource-card-input").on('change', (ev) => {
 			ev.preventDefault()
+			if (SimpleSettlementSettings.verify("gmOnlyModifyResources")) return;
 			const newValue = ev.target.value
 			const itemId = ev.target.closest(".item-resource-card").getAttribute("data-item-id")
 			const resource = this.object.system.resources.find(item => item.id == itemId)
@@ -394,6 +395,21 @@ class SettlementSheet extends ActorSheet {
 			if (SimpleSettlementSettings.verify("gmOnlyAddProjects")) return;
 			this.object.system.api.addProject(actor, this.object)
 		}
+	}
+
+	_onDropItem(e, data){
+		const itemId = data?.uuid.split(".")[1]
+		if(!itemId) return super._onDropItem(e, data);
+		const item = Item.get(itemId)
+		if(!item) return super._onDropItem(e, data)
+		if (
+			item.type == 'simple-settlements.resource' 
+			&& !item.isOwned 
+			&& SimpleSettlementSettings.verify("gmOnlyAddResources")
+		) {
+			return e.preventDefault()
+		}
+		super._onDropItem(e, data)
 	}
 
 }
