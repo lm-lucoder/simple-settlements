@@ -24,22 +24,31 @@ class SettlementData extends foundry.abstract.TypeDataModel {
           buildings: new fields.SchemaField({
             name: new fields.StringField({required: false, initial: "Buildings"}),
             isRevealed: new fields.BooleanField({initial: true}),
+            onlyGm: new fields.BooleanField({initial: false}),
           }),
           events: new fields.SchemaField({
             name: new fields.StringField({required: false, initial: "Events"}),
             isRevealed: new fields.BooleanField({initial: true}),
+            onlyGm: new fields.BooleanField({initial: false}),
           }),
           projects: new fields.SchemaField({
             name: new fields.StringField({required: false, initial: "Projects"}),
             isRevealed: new fields.BooleanField({initial: true}),
+            onlyGm: new fields.BooleanField({initial: false}),
           }),
           features: new fields.SchemaField({
             name: new fields.StringField({required: false, initial: "Features"}),
             isRevealed: new fields.BooleanField({initial: true}),
+            onlyGm: new fields.BooleanField({initial: false}),
           }),
           resources: new fields.SchemaField({
             name: new fields.StringField({required: false, initial: "Resources"}),
             isRevealed: new fields.BooleanField({initial: true}),
+            onlyGm: new fields.BooleanField({initial: false}),
+          }),
+          log: new fields.SchemaField({
+            isRevealed: new fields.BooleanField({initial: true}),
+            onlyGm: new fields.BooleanField({initial: true}),
           })
         })
       }),
@@ -63,7 +72,10 @@ class SettlementData extends foundry.abstract.TypeDataModel {
             turn: new fields.NumberField({required: true, nullable: false, initial: 1})
           })
         ),
-      })
+      }),
+      log: new fields.ArrayField(
+        new fields.StringField({required: false})
+      )
 		};
 	}
 	async prepareDerivedData() {

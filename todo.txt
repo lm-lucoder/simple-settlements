@@ -6,10 +6,10 @@ x Ordenação dos recursos e das buildings
 
 x Log de Income para cada recurso
 
--- Notificações ao:
-    - Adicionar projetos
-    - Adicionar Eventos
-    - Concluir Eventos 
+x Notificações ao:
+    x Adicionar projetos
+    x Adicionar Eventos
+    x Concluir Eventos 
 
 -- Segurança de Notificações
 -- Revisão de permissões

@@ -1,3 +1,4 @@
+import SettlementAPI from "../helpers/settlementHelpers/api.js";
 import SimpleSettlementSettings from "../settings/world-settings.js";
 
 class DroppHandler {
@@ -20,13 +21,14 @@ class DroppHandler {
 		}
 	}
 	_handleEventDrop({event, target}) {
-		const test = SimpleSettlementSettings.verify("gmOnlyAddEvents")
-		if (test) return;
+		if (SimpleSettlementSettings.verify("gmOnlyAddEvents")) return;
 		target.system.api.addEvent(event, target)
+		SettlementAPI.addToLog(`${event.name} manually added on ${target.name}`, target)
 	}
 	_handleBuildingDrop({building, target}) {
 		if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 		target.system.api.addBuilding(building, target)
+		SettlementAPI.addToLog(`${building.name} manually added on ${target.name}`, target)
 	}
 }
 

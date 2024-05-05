@@ -12,6 +12,7 @@
 		"css/resource.css",
 		"css/settlement.css",
 		"css/settlement.config.css",
+		"css/settlement-log-manager.css",
 		"css/settlement-projects-manager.css",
 		"css/settlement-resources-income.css",
 		"css/settlement-buildings-list.css",

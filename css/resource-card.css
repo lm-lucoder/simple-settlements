@@ -35,6 +35,9 @@
     text-align: center;
     margin: 0;
 }
+.item-resource-card .item-description .item-info .item-value .resource-card-input{
+    text-align: center;
+}
 
 .item-resource-card .item-controls{
     margin-top: 5px;

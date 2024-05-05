@@ -13,7 +13,7 @@ class SettlementSheet extends ActorSheet {
 				{
 					navSelector: ".sheet-tabs",
 					contentSelector: ".sheet-body",
-					initial: "resources",
+					initial: "log",
 				},
 				{
 					navSelector: ".resources-tabs",
@@ -43,6 +43,7 @@ class SettlementSheet extends ActorSheet {
 		const events = this.object.system.events
 		const resources = this.object.system.resources
 		const features = this.object.system.features
+		const log = this.object.system.log.reverse()
 		const categorizedResources = this._arrangeResourcesByCategories(context.items.filter(item => item.type == "simple-settlements.resource"))
 		const categorizedBuildings = this._arrangeBuildingsByCategories(buildings)
 		const buildingsFeatures = this._getActorsFeatures(buildings)
@@ -64,6 +65,7 @@ class SettlementSheet extends ActorSheet {
 		context.projects = projects
 		context.income = income
 		context.events = events
+		context.log = log
 		context.isObserverOrHigher = this.object.permission > 1
 
 		await this._prepareDescriptionData(context);
@@ -77,14 +79,24 @@ class SettlementSheet extends ActorSheet {
 
 	activateListeners(html) {
 		super.activateListeners(html);
-
 		// Everything below here is only needed if the sheet is editable
 		if (!this.options.editable) return;
+
+		$(".resource-card-input").on('change', (ev) => {
+			ev.preventDefault()
+			const newValue = ev.target.value
+			const itemId = ev.target.closest(".item-resource-card").getAttribute("data-item-id")
+			const resource = this.object.system.resources.find(item => item.id == itemId)
+			const oldValue = resource.system.quantity
+			resource.update({['system.quantity']: newValue})
+			SettlementAPI.addToLog(`Resource ${resource.name} value changed from ${oldValue} to ${newValue}`, this.object)
+		})
 		
 		$(".buildings-list").on('drop', (ev) => {
 			ev.preventDefault();
 			var draggedItemId = ev.originalEvent.dataTransfer.getData("text/plain");
-			var droppedItemId = ev.target.closest(".building-card").attributes["data-building-id"].value;
+			var droppedItemId = ev.target.closest(".building-card")?.attributes["data-building-id"]?.value;
+			if (!droppedItemId) return
 			const rawBuildings = this.object.system.raw.buildings
 			const draggedIndex = rawBuildings.findIndex(obj => obj.id === draggedItemId);
     		const droppedIndex = rawBuildings.findIndex(obj => obj.id === droppedItemId);
@@ -106,6 +118,7 @@ class SettlementSheet extends ActorSheet {
 		html.find(".time-passage").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyPassTurn")) return;
 			this.passTime()
+			SettlementAPI.addToLog(`Time passed`, this.object)
 		});
 
 		html.find(".item-create").click(this._onItemCreate.bind(this));
@@ -133,6 +146,7 @@ class SettlementSheet extends ActorSheet {
 			}
 			item.delete();
 			li.slideUp(200, () => this.render(false));
+			SettlementAPI.addToLog(`Item ${item.name} manually removed`, this.object)
 		});
 
 		html.find(".feature-item-see").click((ev) => {
@@ -149,22 +163,34 @@ class SettlementSheet extends ActorSheet {
 			if (SimpleSettlementSettings.verify("gmOnlyRemoveBuilding")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.removeBuilding(buildingId, this.object)
+			const building = Actor.get(buildingId)
+			SettlementAPI.addToLog(`${building.name} manually removed`, this.object)
 		})
 		html.find(".building-toggle-activation").change((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
+			const building = Actor.get(buildingId)
 			const checkBoxValue = ev.currentTarget.checked
 			SettlementAPI.setBuildingActivation(buildingId, this.object, checkBoxValue)
+			if(checkBoxValue){
+				SettlementAPI.addToLog(`${building.name} has been manually deactivated`, this.object)
+			} else {
+				SettlementAPI.addToLog(`${building.name} has been manually activated`, this.object)
+			}
 		})
 		html.find(".quantity-control-up").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.addQuantityToBuilding(buildingId, this.object)
+			const building = Actor.get(buildingId)
+			SettlementAPI.addToLog(`${building.name} quantity manually increased`, this.object)
 		})
 		html.find(".quantity-control-down").click((ev) => {
 			if (SimpleSettlementSettings.verify("gmOnlyModifyBuildingQt")) return;
 			const buildingId = ev.currentTarget.closest(".building-card").attributes["data-building-id"].value;
 			SettlementAPI.removeQuantityToBuilding(buildingId, this.object)
+			const building = Actor.get(buildingId)
+			SettlementAPI.addToLog(`${building.name} quantity manually decreased`, this.object)
 		})
 		html.find(".event-see").click((ev) => {
 			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
@@ -175,6 +201,8 @@ class SettlementSheet extends ActorSheet {
 			if (SimpleSettlementSettings.verify("gmOnlyRemoveEvents")) return;
 			const eventId = ev.currentTarget.closest(".event-card").attributes["data-event-id"].value;
 			SettlementAPI.removeEvent(eventId, this.object)
+			const event = Actor.get(eventId)
+			SettlementAPI.addToLog(`${event.name} manually removed`, this.object)
 		})
 		html.find(".project-see").click((ev) => {
 			const projectId = ev.currentTarget.closest(".st-project-card").attributes["data-project-id"].value;
@@ -185,6 +213,15 @@ class SettlementSheet extends ActorSheet {
 			if (SimpleSettlementSettings.verify("gmOnlyRemoveProjects")) return;
 			const projectId = ev.currentTarget.closest(".st-project-card").attributes["data-project-id"].value;
 			SettlementAPI.removeProject(projectId, this.object)
+			const project = Actor.get(projectId)
+			SettlementAPI.addToLog(`${project.name} manually removed`, this.object)
+		})
+		html.find(".remove-log-btn").click((ev) => {
+			const logMessageId = ev.currentTarget.closest(".log-card").attributes["data-log-index"].value;
+			SettlementAPI.removeFromLog(logMessageId, this.object)
+		})
+		html.find(".erase-log").click((ev) => {
+			SettlementAPI.eraseLog(this.object)
 		})
 	}
 	async _prepareDescriptionData(context) {

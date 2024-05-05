@@ -1,5 +1,5 @@
 {{#each categorizedResources.nonStatic as |category|}}
-<h3>{{#if category.name}}{{category.name}}{{else}}Without Category{{/if}}</h3>
+<h3 class="category-title">{{#if category.name}}{{category.name}}{{else}}Without Category{{/if}}</h3>
 <ol class="items-list items-resources-list items">
     {{#each category.resources as |item id|}}
     <li class="item item-resource-card" data-item-id="{{item._id}}">
@@ -10,7 +10,7 @@
             <div class="item-info">
                 <h4 class="item-name">{{item.name}}</h4>
                 <span class="item-value">
-                {{#if item.system.details.quantityIsPositive}}+{{/if}}{{item.system.quantity}}
+                    <input class="resource-card-input" type="text" value="{{item.system.quantity}}">
                 </span>
             </div>
         </div>
