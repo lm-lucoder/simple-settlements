@@ -43,8 +43,8 @@ class SettlementSheet extends ActorSheet {
 		const events = this.object.system.events
 		const resources = this.object.system.resources
 		const features = this.object.system.features
-		const categorizedResources = this._buildResourcesHierarchy(context.items.filter(item => item.type == "simple-settlements.resource"))
-
+		const categorizedResources = this._arrangeResourcesByCategories(context.items.filter(item => item.type == "simple-settlements.resource"))
+		const categorizedBuildings = this._arrangeBuildingsByCategories(buildings)
 		const buildingsFeatures = this._getActorsFeatures(buildings)
 		const eventsFeatures = this._getEventFeatures(events)
 
@@ -53,6 +53,7 @@ class SettlementSheet extends ActorSheet {
 		this.income = income;
 
 		context.categorizedResources = categorizedResources
+		context.categorizedBuildings = categorizedBuildings
 		context.importantIncome = importantIncome
 		context.buildingsFeatures = buildingsFeatures
 		context.buildingsFeaturesIsNotEmpty = buildingsFeatures.length > 0
@@ -282,35 +283,49 @@ class SettlementSheet extends ActorSheet {
 		return this.actor.updateEmbeddedDocuments("Item", updateData);
 	}
 
-	_buildResourcesHierarchy(resources) {
-		const resourcesByHierarchy = {
+	_arrangeResourcesByCategories(resources) {
+		const resourcesByCategories = {
 			static: {},
 			nonStatic: {}
 		}
 		resources.forEach(resource => {
 			if (resource.system.isStatic) {
-				if (resourcesByHierarchy.static[resource.system.category]) {
-					resourcesByHierarchy.static[resource.system.category].resources.push(resource)
+				if (resourcesByCategories.static[resource.system.category]) {
+					resourcesByCategories.static[resource.system.category].resources.push(resource)
 				} else {
-					resourcesByHierarchy.static[resource.system.category] = {
+					resourcesByCategories.static[resource.system.category] = {
 						name: resource.system.category,
 						resources: [resource]
 					}
 				}
 			} else {
-				if (resourcesByHierarchy.nonStatic[resource.system.category]) {
-					resourcesByHierarchy.nonStatic[resource.system.category].resources.push(resource)
+				if (resourcesByCategories.nonStatic[resource.system.category]) {
+					resourcesByCategories.nonStatic[resource.system.category].resources.push(resource)
 				} else {
-					resourcesByHierarchy.nonStatic[resource.system.category] = {
+					resourcesByCategories.nonStatic[resource.system.category] = {
 						name: resource.system.category,
 						resources: [resource]
 					}
 				}
 			}
 		})
-		return resourcesByHierarchy
+		return resourcesByCategories
 	}
-
+	_arrangeBuildingsByCategories(buildings) {
+		const buildingsByCategories = {}
+		buildings.forEach(building => {
+			
+			if (buildingsByCategories[building.system.category]) {
+				buildingsByCategories[building.system.category].buildings.push(building)
+			} else {
+				buildingsByCategories[building.system.category] = {
+					name: building.system.category,
+					buildings: [building]
+				}
+			}
+		})
+		return buildingsByCategories
+	}
 
 	_getActorsFeatures(actors) {
 		const features = []

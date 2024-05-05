@@ -141,8 +141,8 @@ class SettlementAPI {
     }
     static advanceProject(project, settlement){
         
-        console.log('Advance projetct: ', project)
-        console.log('Advance Settlement: ', settlement)
+        /* console.log('Advance projetct: ', project)
+        console.log('Advance Settlement: ', settlement) */
 
         const system = settlement.system
         const rawProjects = system.raw.projects
