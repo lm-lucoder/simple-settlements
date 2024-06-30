@@ -92,11 +92,19 @@ class ProjectData extends foundry.abstract.TypeDataModel {
                 let elementData 
                 
                 if (isActor) {
-                    const {img, name} = game.actors.get(requirementValue.id)
-                    elementData = {...requirementValue, img, name}
+                    const existingActor =  game.actors.get(requirementValue.id)
+                    
+                    if(existingActor){
+                        const {img, name} = existingActor
+                        elementData = {...requirementValue, img, name}
+                    }
                 } else {
-                    const {img, name} = game.items.get(requirementValue.id)
-                    elementData = {...requirementValue, img, name}
+                    
+                    const existingResource = game.items.get(requirementValue.id)
+                    if(existingResource){
+                        const {img, name} = existingResource
+                        elementData = {...requirementValue, img, name}
+                    }
                 }
                 if (type === "resource") {
                     
@@ -115,11 +123,17 @@ class ProjectData extends foundry.abstract.TypeDataModel {
                 let elementData 
                 
                 if (isActor) {
-                    const {img, name} = game.actors.get(resultValue.id)
-                    elementData = {...resultValue, img, name}
+                    const existingActor =  game.actors.get(resultValue.id)
+                    if(existingActor){
+                        const {img, name} = existingActor
+                        elementData = {...resultValue, img, name}
+                    }
                 } else {
-                    const {img, name} = game.items.get(resultValue.id)
-                    elementData = {...resultValue, img, name}
+                    const existingResource = game.items.get(resultValue.id)
+                    if(existingResource){
+                        const {img, name} = existingResource
+                        elementData = {...resultValue, img, name}
+                    }
                 }
                 if (type === "resource") {
                     

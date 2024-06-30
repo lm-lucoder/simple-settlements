@@ -1,4 +1,7 @@
 
+- Projetos poderem consumir buildings, features, events requeridas, da mesma forma que é feito com recurso.
+
+
 x Buildings poderem ser desativadas sem precisar mexer na Quantity
 x Status de recursos: (BAD, que fica com o background vermelho) ou (GOOD, que fica com o background verde)
 
