@@ -83,6 +83,7 @@ async function loadHandleBarTemplates() {
 	// register templates parts
 	const templatePaths = [
 		"modules/simple-settlements/templates/parts/settlement-events-manager.html",
+		"modules/simple-settlements/templates/parts/building-requirements-manager.html",
 		"modules/simple-settlements/templates/parts/building-resources-manager.html",
 		"modules/simple-settlements/templates/parts/building-features-manager.html",
 		"modules/simple-settlements/templates/parts/building-config-manager.html",

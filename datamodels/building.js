@@ -1,9 +1,22 @@
+import BuildingApi from "../helpers/buildingHelpers/api.js";
+
 class BuildingData extends foundry.abstract.TypeDataModel {
+    api = new BuildingApi(this)
+
     static defineSchema() {
         const fields = foundry.data.fields;
         return {
           description: new fields.HTMLField({required: false, blank: false, initial: "<p></p>"}),
           category: new fields.StringField({required: false, initial: ""}),
+          requirements: new fields.SchemaField({
+            resources: new fields.ArrayField(new fields.SchemaField({
+              id: new fields.StringField({required: false}),
+              quantity: new fields.NumberField({required: false, initial: 0}),
+              name: new fields.StringField({required: false}),
+              type: new fields.StringField({required: false, initial: "item.resource"}),
+              breaks: new fields.BooleanField({required: false, initial: false})
+          })),
+          })
         };
       }
       prepareDerivedData() {
@@ -66,7 +79,6 @@ class BuildingData extends foundry.abstract.TypeDataModel {
           feature.system.description	= description;
         }
       }
-
 }
 
 export default BuildingData

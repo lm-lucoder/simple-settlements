@@ -51,7 +51,6 @@
     {{#if isObserverOrHigher}}
 
       {{!-- Features Tab --}}
-      {{console actor.system.options.conventions.features}}
       {{#if (unlessOrGm actor.system.options.conventions.features.onlyGm)}}
         {{#if actor.system.options.conventions.features.isRevealed}}
           <div class="tab features" data-group="primary" data-tab="features">
@@ -65,13 +64,13 @@
         {{#if actor.system.options.conventions.buildings.isRevealed}}
           <div class="tab buildings" data-group="primary" data-tab="buildings">
             <nav class="buildings-tabs tabs" data-group="buildings">
-              <a class="item" data-tab="board">Board</a>
+              <!-- <a class="item" data-tab="board">Board</a> -->
               <a class="item" data-tab="resumed">Resumed</a>
             </nav>
             <nav class="buildings-container">
-              <div class="tab resources-income-log" data-group="buildings" data-tab="board">
+              <!-- <div class="tab resources-income-log" data-group="buildings" data-tab="board">
                 {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager.html"}}
-              </div>
+              </div> -->
               <div class="tab resources-storage" data-group="buildings" data-tab="resumed">
                 {{> "modules/simple-settlements/templates/parts/settlement-buildings-manager-resumed.html"}}
               </div>

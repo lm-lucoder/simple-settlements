@@ -72,11 +72,11 @@ class SettlementAPI {
             }
         })
     }
-    static setBuildingActivation(buildingId, settlement, activation) {
+    static setBuildingActivation(buildingId, settlement, willBeInactive) {
         const system = settlement.system
         const rawBuildings = system.raw.buildings
         const rawBuilding = rawBuildings.find(el => el.id === buildingId)
-        rawBuilding.isRawInactive = activation
+        rawBuilding.isRawInactive = willBeInactive
         settlement.update({
             system: {
                 raw: {

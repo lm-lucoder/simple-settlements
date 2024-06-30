@@ -1,0 +1,24 @@
+<div class="project-requirements-container" data-tab="requirements" data-group="secondary">
+    <h3>Building requirements</h3>
+    <p><i>Drop entities in the fields bellow.</i></p>
+    <div class="projects-requirements-resources">
+        <i>A required resource that is missing will cause the building to shutdown in the owner settlement.</i>
+        <ul class="project-card-list requirements-resources-list">
+            {{#each actor.system.requirements.resources as |resource|}}
+            <li class="project-card-resource-requirement project-card" elementId="{{resource.id}}"
+                elementType="requirements-resources">
+                <div class="top">
+                    <span>{{resource.name}}</span>
+                    <input class="project-input-change building-requirement-quantity-change" type="text" value="{{resource.quantity}}">
+                    <i class="fas fa-trash delete-config-btn"></i>
+                </div>
+                <!-- <div class="bottom">
+                    <span>Breaks:</span>
+                    <input class="resource-checkbox-breaks" name="resource.breaks" type="checkbox" {{checked
+                        resource.breaks}}>
+                </div> -->
+            </li>
+            {{/each}}
+        </ul>
+    </div>
+</div>

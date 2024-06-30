@@ -1,3 +1,5 @@
+import BuildingDrop from "../helpers/buildingHelpers/drop.js";
+
 class BuildingSheet extends ActorSheet {
     static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
@@ -66,7 +68,49 @@ class BuildingSheet extends ActorSheet {
 			item.delete();
 			li.slideUp(200, () => this.render(false));
 		});
+		/* html.find(".resource-checkbox-consumes").change(e => {
+			const checkboxConsumesChecked = e.target.checked
+			const card = e.target.closest(".project-card-resource-requirement")
+			const resourceId = card.getAttribute("elementId")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const resources = this.object.system[section].resources
+			const resourceIndex = resources.findIndex(resource => resource.id === resourceId)
+			resources[resourceIndex].consumes = checkboxConsumesChecked
 
+			this.object.update({ system: {[section]: {resources: [...resources]}} })
+			// console.log(this.object.system.requirements.resources)
+		}) */
+		html.find(".building-requirement-quantity-change").change(e => {
+			const card = e.target.closest(".project-card")
+			const elementId = card.getAttribute("elementId")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const elements = this.object.system[section][type]
+			const elementIndex = elements.findIndex(el => el.id === elementId)
+			elements[elementIndex].quantity = e.target.value
+			this.object.update({ system: {[section]: {[type]: [...elements]}} })
+		})
+
+		html.find(".resource-checkbox-breaks").change(e => {
+			const checkboxConsumesChecked = e.target.checked
+			const card = e.target.closest(".project-card-resource-requirement")
+			const resourceId = card.getAttribute("elementId")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const resources = this.object.system[section].resources
+			const resourceIndex = resources.findIndex(resource => resource.id === resourceId)
+			resources[resourceIndex].breaks = checkboxConsumesChecked
+
+			this.object.update({ system: {[section]: {resources: [...resources]}} })
+			// console.log(this.object.system.requirements.resources)
+		})
+		html.find(".delete-config-btn").click(e => {
+			const card = e.target.closest(".project-card")
+			const [section, type] = card.getAttribute("elementType").split("-")
+			const id = card.getAttribute("elementId")
+			const types = this.object.system[section][type]
+			const toRemoveIndex = types.findIndex(element => element.id === id)
+			types.splice(toRemoveIndex, 1)
+			this.object.update({ system: { [section]: { [type]: [...types] } } })
+		})
 		
 	}
 
@@ -128,6 +172,12 @@ class BuildingSheet extends ActorSheet {
 				relativeTo: this.object,
 			}
 		);
+	}
+	async _onDropItem(e, data) {
+		const hasBeenCreated = await BuildingDrop.itemDrop(e, data, this)
+		if(!hasBeenCreated){
+			super._onDropItem(e, data)
+		}
 	}
 
 	/* prepareFeaturesData(){

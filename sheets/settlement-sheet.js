@@ -44,14 +44,19 @@ class SettlementSheet extends ActorSheet {
 		const resources = this.object.system.resources
 		const features = this.object.system.features
 		const log = this.object.system.log.reverse()
+		
+		await this._verifyBuildingsRequirements(buildings, context)
+
+		const income = Income.init(context);
+		const importantIncome = this._buildImportantIncome(income)
+
 		const categorizedResources = this._arrangeResourcesByCategories(context.items.filter(item => item.type == "simple-settlements.resource"))
 		const categorizedBuildings = this._arrangeBuildingsByCategories(buildings)
 		const buildingsFeatures = this._getActorsFeatures(buildings)
 		const eventsFeatures = this._getEventFeatures(events)
 
-		const income = Income.init(context);
-		const importantIncome = this._buildImportantIncome(income)
 		this.income = income;
+		
 
 		context.categorizedResources = categorizedResources
 		context.categorizedBuildings = categorizedBuildings
@@ -387,6 +392,20 @@ class SettlementSheet extends ActorSheet {
 			})
 		})
 		return features
+	}
+
+	async _verifyBuildingsRequirements(buildings, context){
+		const atemporalIncome = Income.init(context)
+		for(let building of buildings){
+			if(building.system.requirements.resources.length == 0) return;
+			const requirementPassed = await building.system.api.verifyRequirements(this.object, atemporalIncome)
+			if(!requirementPassed){
+				this.object.system.api.setBuildingActivation(building.id, this.object, true)
+				const message = `Building ${building.name} is requiring missing resources. The building will be deactivated.`
+				ui.notifications.info(message)
+				//SettlementAPI.addToLog(message,this.object)
+			}
+		}
 	}
 
 	_onDropActor(e, data) {
