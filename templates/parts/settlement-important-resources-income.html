@@ -21,7 +21,8 @@
                     </div>
                     <span> : </span>
                 </div>
-                <span>{{resource.stored}} + {{resource.income}}</span>
+                <!-- <span>{{resource.stored}} + {{resource.income}}</span> -->
+                <span>{{resource.stored}} {{#if (higherThan resource.income -1)}}+{{/if}} {{resource.income}}</span>
             </li>
         {{/each}}
     </ol>

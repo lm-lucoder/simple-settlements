@@ -2,6 +2,7 @@ import SettlementAPI from "../helpers/settlementHelpers/api.js";
 import Income from "../helpers/settlementHelpers/income.js";
 import TimePasser from "../helpers/settlementHelpers/time-passer.js";
 import SimpleSettlementSettings from "../settings/world-settings.js";
+import formatNumber from "../utils/format-number.js";
 
 class SettlementSheet extends ActorSheet {
 	static get defaultOptions() {
@@ -44,7 +45,7 @@ class SettlementSheet extends ActorSheet {
 		const resources = this.object.system.resources
 		const features = this.object.system.features
 		const log = this.object.system.log.reverse()
-		
+
 		await this._verifyBuildingsRequirements(buildings, context)
 
 		const income = Income.init(context);
@@ -56,7 +57,7 @@ class SettlementSheet extends ActorSheet {
 		const eventsFeatures = this._getEventFeatures(events)
 
 		this.income = income;
-		
+
 
 		context.categorizedResources = categorizedResources
 		context.categorizedBuildings = categorizedBuildings
@@ -94,10 +95,10 @@ class SettlementSheet extends ActorSheet {
 			const itemId = ev.target.closest(".item-resource-card").getAttribute("data-item-id")
 			const resource = this.object.system.resources.find(item => item.id == itemId)
 			const oldValue = resource.system.quantity
-			resource.update({['system.quantity']: newValue})
+			resource.update({ ['system.quantity']: newValue })
 			SettlementAPI.addToLog(`Resource ${resource.name} value changed from ${oldValue} to ${newValue}`, this.object)
 		})
-		
+
 		$(".buildings-list").on('drop', (ev) => {
 			ev.preventDefault();
 			var draggedItemId = ev.originalEvent.dataTransfer.getData("text/plain");
@@ -105,20 +106,20 @@ class SettlementSheet extends ActorSheet {
 			if (!droppedItemId) return
 			const rawBuildings = this.object.system.raw.buildings
 			const draggedIndex = rawBuildings.findIndex(obj => obj.id === draggedItemId);
-    		const droppedIndex = rawBuildings.findIndex(obj => obj.id === droppedItemId);
+			const droppedIndex = rawBuildings.findIndex(obj => obj.id === droppedItemId);
 			if (draggedIndex === -1 || droppedIndex === -1) return
 			const temp = rawBuildings[draggedIndex];
 			rawBuildings[draggedIndex] = rawBuildings[droppedIndex];
 			rawBuildings[droppedIndex] = temp;
-			this.object.update({system: {raw: {buildings: [...rawBuildings]}}})
-			
+			this.object.update({ system: { raw: { buildings: [...rawBuildings] } } })
+
 		});
 
 		// Adiciona eventos de arrastar para os itens da lista
 		$(".buildings-list li").on('dragstart', (ev) => {
 			// Define o ID do elemento arrastado
 			ev.originalEvent.dataTransfer.setData("text/plain", ev.target.attributes["data-building-id"].value);
-			
+
 		});
 
 		html.find(".time-passage").click((ev) => {
@@ -178,7 +179,7 @@ class SettlementSheet extends ActorSheet {
 			const building = Actor.get(buildingId)
 			const checkBoxValue = ev.currentTarget.checked
 			SettlementAPI.setBuildingActivation(buildingId, this.object, checkBoxValue)
-			if(checkBoxValue){
+			if (checkBoxValue) {
 				SettlementAPI.addToLog(`${building.name} has been manually deactivated`, this.object)
 			} else {
 				SettlementAPI.addToLog(`${building.name} has been manually activated`, this.object)
@@ -248,6 +249,7 @@ class SettlementSheet extends ActorSheet {
 	}
 
 	_buildImportantIncome(income) {
+
 		const staticIncome = this._getStaticIncome(income)
 		const nonStaticIncome = this._getNonStaticIncome(income)
 
@@ -261,10 +263,14 @@ class SettlementSheet extends ActorSheet {
 		return importantIncome
 	}
 	_getStaticIncome(income) {
-		return Object.values(income.all).filter(resource => resource.data.system.isStatic)
+		const resources = Object.values(income.all).filter(resource => resource.data.system.isStatic)
+		resources.forEach(resource => { resource.income = formatNumber(resource.income) })
+		return resources
 	}
 	_getNonStaticIncome(income) {
-		return Object.values(income.all).filter(resource => !resource.data.system.isStatic)
+		const resources = Object.values(income.all).filter(resource => !resource.data.system.isStatic)
+		resources.forEach(resource => { resource.income = formatNumber(resource.income) })
+		return resources
 	}
 
 	async _onItemCreate(event) {
@@ -357,7 +363,7 @@ class SettlementSheet extends ActorSheet {
 	_arrangeBuildingsByCategories(buildings) {
 		const buildingsByCategories = {}
 		buildings.forEach(building => {
-			
+
 			if (buildingsByCategories[building.system.category]) {
 				buildingsByCategories[building.system.category].buildings.push(building)
 			} else {
@@ -372,10 +378,10 @@ class SettlementSheet extends ActorSheet {
 
 	_getActorsFeatures(actors) {
 		const features = []
-		
+
 
 		actors.forEach(actor => {
-			if(actor.isInactive) return
+			if (actor.isInactive) return
 			actor.system.features.forEach(feature => {
 				features.push(feature)
 			})
@@ -394,12 +400,12 @@ class SettlementSheet extends ActorSheet {
 		return features
 	}
 
-	async _verifyBuildingsRequirements(buildings, context){
+	async _verifyBuildingsRequirements(buildings, context) {
 		const atemporalIncome = Income.init(context)
-		for(let building of buildings){
-			if(building.system.requirements.resources.length == 0) return;
+		for (let building of buildings) {
+			if (building.system.requirements.resources.length == 0) return;
 			const requirementPassed = await building.system.api.verifyRequirements(this.object, atemporalIncome)
-			if(!requirementPassed){
+			if (!requirementPassed) {
 				this.object.system.api.setBuildingActivation(building.id, this.object, true)
 				const message = `Building ${building.name} is requiring missing resources. The building will be deactivated.`
 				ui.notifications.info(message)
@@ -416,14 +422,14 @@ class SettlementSheet extends ActorSheet {
 		}
 	}
 
-	_onDropItem(e, data){
+	_onDropItem(e, data) {
 		const itemId = data?.uuid.split(".")[1]
-		if(!itemId) return super._onDropItem(e, data);
+		if (!itemId) return super._onDropItem(e, data);
 		const item = Item.get(itemId)
-		if(!item) return super._onDropItem(e, data)
+		if (!item) return super._onDropItem(e, data)
 		if (
-			item.type == 'simple-settlements.resource' 
-			&& !item.isOwned 
+			item.type == 'simple-settlements.resource'
+			&& !item.isOwned
 			&& SimpleSettlementSettings.verify("gmOnlyAddResources")
 		) {
 			return e.preventDefault()
