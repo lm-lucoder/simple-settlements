@@ -4,86 +4,86 @@ import ProjectsManager from "../helpers/settlementHelpers/projects-manager.js";
 import SettlementBuildingsMapper from "../helpers/settlementHelpers/settlement-buildings-mapper.js";
 
 class SettlementData extends foundry.abstract.TypeDataModel {
-	static defineSchema() {
-		const fields = foundry.data.fields;
-		return {
-			description: new fields.HTMLField({required: false, blank: false, initial: "<p></p>"}),
+  static defineSchema() {
+    const fields = foundry.data.fields;
+    return {
+      description: new fields.HTMLField({ required: false, blank: false, initial: "<p></p>" }),
       options: new fields.SchemaField({
         macros: new fields.SchemaField({
-          incomeMacros: new fields.StringField({required: false, initial: ""}),
-          turnMacros: new fields.StringField({required: false, initial: ""})
+          incomeMacros: new fields.StringField({ required: false, initial: "" }),
+          turnMacros: new fields.StringField({ required: false, initial: "" })
         }),
         permissions: new fields.SchemaField({
           buildings: new fields.SchemaField({
-            onlyGmCanAddBuildings: new fields.BooleanField({initial: false}),
-            onlyGmCanRemoveBuildings: new fields.BooleanField({initial: false}),
-            onlyGmCanChangeBuildingsQuantity: new fields.BooleanField({initial: false}),
+            onlyGmCanAddBuildings: new fields.BooleanField({ initial: false }),
+            onlyGmCanRemoveBuildings: new fields.BooleanField({ initial: false }),
+            onlyGmCanChangeBuildingsQuantity: new fields.BooleanField({ initial: false }),
           })
         }),
         conventions: new fields.SchemaField({
           buildings: new fields.SchemaField({
-            name: new fields.StringField({required: false, initial: "Buildings"}),
-            isRevealed: new fields.BooleanField({initial: true}),
-            onlyGm: new fields.BooleanField({initial: false}),
+            name: new fields.StringField({ required: false, initial: "Buildings" }),
+            isRevealed: new fields.BooleanField({ initial: true }),
+            onlyGm: new fields.BooleanField({ initial: false }),
           }),
           events: new fields.SchemaField({
-            name: new fields.StringField({required: false, initial: "Events"}),
-            isRevealed: new fields.BooleanField({initial: true}),
-            onlyGm: new fields.BooleanField({initial: false}),
+            name: new fields.StringField({ required: false, initial: "Events" }),
+            isRevealed: new fields.BooleanField({ initial: true }),
+            onlyGm: new fields.BooleanField({ initial: false }),
           }),
           projects: new fields.SchemaField({
-            name: new fields.StringField({required: false, initial: "Projects"}),
-            isRevealed: new fields.BooleanField({initial: true}),
-            onlyGm: new fields.BooleanField({initial: false}),
+            name: new fields.StringField({ required: false, initial: "Projects" }),
+            isRevealed: new fields.BooleanField({ initial: true }),
+            onlyGm: new fields.BooleanField({ initial: false }),
           }),
           features: new fields.SchemaField({
-            name: new fields.StringField({required: false, initial: "Features"}),
-            isRevealed: new fields.BooleanField({initial: true}),
-            onlyGm: new fields.BooleanField({initial: false}),
+            name: new fields.StringField({ required: false, initial: "Features" }),
+            isRevealed: new fields.BooleanField({ initial: true }),
+            onlyGm: new fields.BooleanField({ initial: false }),
           }),
           resources: new fields.SchemaField({
-            name: new fields.StringField({required: false, initial: "Resources"}),
-            isRevealed: new fields.BooleanField({initial: true}),
-            onlyGm: new fields.BooleanField({initial: false}),
+            name: new fields.StringField({ required: false, initial: "Resources" }),
+            isRevealed: new fields.BooleanField({ initial: true }),
+            onlyGm: new fields.BooleanField({ initial: false }),
           }),
           log: new fields.SchemaField({
-            isRevealed: new fields.BooleanField({initial: true}),
-            onlyGm: new fields.BooleanField({initial: true}),
+            isRevealed: new fields.BooleanField({ initial: true }),
+            onlyGm: new fields.BooleanField({ initial: true }),
           })
         })
       }),
       raw: new fields.SchemaField({
         buildings: new fields.ArrayField(
           new fields.SchemaField({
-            id: new fields.StringField({required: false}),
-            count: new fields.NumberField({required: true, nullable: false, initial: 1}),
-            isRawInactive: new fields.BooleanField({initial: false}),
+            id: new fields.StringField({ required: false }),
+            count: new fields.NumberField({ required: true, nullable: false, initial: 1 }),
+            isRawInactive: new fields.BooleanField({ initial: false }),
           })
         ),
         events: new fields.ArrayField(
           new fields.SchemaField({
-            id: new fields.StringField({required: false}),
-            turn: new fields.NumberField({required: true, nullable: false, initial: 1})
+            id: new fields.StringField({ required: false }),
+            turn: new fields.NumberField({ required: true, nullable: false, initial: 1 })
           })
         ),
         projects: new fields.ArrayField(
           new fields.SchemaField({
-            id: new fields.StringField({required: false}),
-            turn: new fields.NumberField({required: true, nullable: false, initial: 1})
+            id: new fields.StringField({ required: false }),
+            turn: new fields.NumberField({ required: true, nullable: false, initial: 1 })
           })
         ),
       }),
       log: new fields.ArrayField(
-        new fields.StringField({required: false})
+        new fields.StringField({ required: false })
       )
-		};
-	}
-	async prepareDerivedData() {
+    };
+  }
+  async prepareDerivedData() {
     const items = this.parent.items.contents
-    
+
     const flags = this.parent.flags
-    const {resources, features} = this._filterItems(items)
-    
+    const { resources, features } = this._filterItems(items)
+
     const buildings = SettlementBuildingsMapper._init(this.raw.buildings)
     const events = EventsManager._init(this.raw.events)
     const projects = ProjectsManager._init(this.raw.projects)
@@ -92,11 +92,13 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     this.buildings = buildings
     this.events = events
     this.projects = projects
-    this.resources = resources
+    this.resources = resources.toSorted((a, b) => {
+      return (a.sort ?? 0) - (b.sort ?? 0);
+    });
     // this.income = income
     this.features = features
   }
-	_deleteBuildingRegister(id) {
+  _deleteBuildingRegister(id) {
     this.parent.unsetFlag("simple-settlements", `buildings.${id}`)
   }
 
@@ -104,7 +106,7 @@ class SettlementData extends foundry.abstract.TypeDataModel {
     game.actors.get(id).render(true)
   }
 
-  _filterItems(items){
+  _filterItems(items) {
     const resources = []
     const features = []
 
@@ -120,15 +122,15 @@ class SettlementData extends foundry.abstract.TypeDataModel {
       // resources.push(i);
     }
 
-    return {resources, features}
+    return { resources, features }
   }
 
 
-  getStaticIncome(){
+  getStaticIncome() {
     const income = this.income;
     return Object.values(income.all).filter(resource => resource.data.system.isStatic)
   }
-  getNonStaticIncome(){
+  getNonStaticIncome() {
     const income = this.income;
     return Object.values(income.all).filter(resource => !resource.data.system.isStatic)
   }

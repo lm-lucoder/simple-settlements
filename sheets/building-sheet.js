@@ -1,7 +1,7 @@
 import BuildingDrop from "../helpers/buildingHelpers/drop.js";
 
 class BuildingSheet extends ActorSheet {
-    static get defaultOptions() {
+	static get defaultOptions() {
 		return mergeObject(super.defaultOptions, {
 			classes: ["sheet", "actor", "simple-settlements-building"],
 			width: 520,
@@ -13,13 +13,16 @@ class BuildingSheet extends ActorSheet {
 					initial: "features",
 				},
 			],
+			dragDrop: [
+				{ dragSelector: ".item-list .item", dropSelector: null }
+			],
 		});
 	}
-    get template(){
-        const path = "modules/simple-settlements/templates"
-        return `${path}/building-sheet.html`
-    }
-	async getData(){
+	get template() {
+		const path = "modules/simple-settlements/templates"
+		return `${path}/building-sheet.html`
+	}
+	async getData() {
 		const context = super.getData()
 		console.log(context);
 
@@ -30,12 +33,13 @@ class BuildingSheet extends ActorSheet {
 		this.checkAndReRenderOpenedSettlements()
 
 		context.system = this.actor.system
-		context.resources = this.actor.system.resources
-		context.categories = this.actor.system.categories
+		//context.resources = this.actor.system.resources
+		context.resources = context.items.filter(item => item.type == "simple-settlements.resource")
+		context.categories = this.actor.system._prepareResourcesCategories(context.resources)
 		context.description = description
 		context.features = features
 		context.isObserverOrHigher = this.object.permission > 1
-		
+
 		// console.log(context)
 		return context
 	}
@@ -44,12 +48,12 @@ class BuildingSheet extends ActorSheet {
 		super.activateListeners(html);
 
 		// Render the item sheet for viewing/editing prior to the editable check.
-		
+
 
 		// -------------------------------------------------------------
 		// Everything below here is only needed if the sheet is editable
 		if (!this.isEditable) return;
-		
+
 		html.find(".item-edit").click((ev) => {
 			const li = $(ev.currentTarget).parents(".item");
 			const item = this.actor.items.get(li.data("itemId"));
@@ -87,7 +91,7 @@ class BuildingSheet extends ActorSheet {
 			const elements = this.object.system[section][type]
 			const elementIndex = elements.findIndex(el => el.id === elementId)
 			elements[elementIndex].quantity = e.target.value
-			this.object.update({ system: {[section]: {[type]: [...elements]}} })
+			this.object.update({ system: { [section]: { [type]: [...elements] } } })
 		})
 
 		html.find(".resource-checkbox-breaks").change(e => {
@@ -99,7 +103,7 @@ class BuildingSheet extends ActorSheet {
 			const resourceIndex = resources.findIndex(resource => resource.id === resourceId)
 			resources[resourceIndex].breaks = checkboxConsumesChecked
 
-			this.object.update({ system: {[section]: {resources: [...resources]}} })
+			this.object.update({ system: { [section]: { resources: [...resources] } } })
 			// console.log(this.object.system.requirements.resources)
 		})
 		html.find(".delete-config-btn").click(e => {
@@ -111,19 +115,19 @@ class BuildingSheet extends ActorSheet {
 			types.splice(toRemoveIndex, 1)
 			this.object.update({ system: { [section]: { [type]: [...types] } } })
 		})
-		
+
 	}
 
-	_onFeatureSend(event){
+	_onFeatureSend(event) {
 		event.preventDefault();
 		const li = $(event.currentTarget).parents(".feature-card")
 		const feature = this.actor.items.get(li.data("itemId"));
 
 		console.log(feature)
-		
+
 		ChatMessage.create({
 			user: this.object.id,
-			speaker: ChatMessage.getSpeaker({actor: game.user}),
+			speaker: ChatMessage.getSpeaker({ actor: game.user }),
 			content: `
 			<div class="feature-chat-card">
 				<div class="card-info">
@@ -163,7 +167,7 @@ class BuildingSheet extends ActorSheet {
 		return await Item.create(itemData, { parent: this.actor });
 	}
 
-	async _prepareDescriptionData(){
+	async _prepareDescriptionData() {
 		return await TextEditor.enrichHTML(
 			this.object.system.description,
 			{
@@ -174,8 +178,13 @@ class BuildingSheet extends ActorSheet {
 		);
 	}
 	async _onDropItem(e, data) {
+		// If is owned item
+		if (data.uuid.includes("Actor")) {
+			return super._onDropItem(e, data)
+		}
+
 		const hasBeenCreated = await BuildingDrop.itemDrop(e, data, this)
-		if(!hasBeenCreated){
+		if (!hasBeenCreated) {
 			super._onDropItem(e, data)
 		}
 	}
@@ -184,28 +193,28 @@ class BuildingSheet extends ActorSheet {
 		const features = this.actor.system.features
 	} */
 	/* async _enrichFeatures(features){
-        for (let i = 0; i < features.length; i++) {
-          const feature = features[i];
-          const description = await TextEditor.enrichHTML(
-            feature.system.description,
-            {
-              async: true,
-              secrets: this.parent.isOwner,
-              relativeTo: this.parent,
-            }
-          );
-          feature.system.description	= description;
-        }
-      } */
+				for (let i = 0; i < features.length; i++) {
+					const feature = features[i];
+					const description = await TextEditor.enrichHTML(
+						feature.system.description,
+						{
+							async: true,
+							secrets: this.parent.isOwner,
+							relativeTo: this.parent,
+						}
+					);
+					feature.system.description	= description;
+				}
+			} */
 
-	checkAndReRenderOpenedSettlements(){
-        const settlements = game.actors.contents.filter(actor => actor.type === "simple-settlements.settlement")
-        settlements.forEach(settlement => {
-          if (settlement.sheet.rendered) {
-            settlement.sheet.render()
-          }
-        })
-      }
+	checkAndReRenderOpenedSettlements() {
+		const settlements = game.actors.contents.filter(actor => actor.type === "simple-settlements.settlement")
+		settlements.forEach(settlement => {
+			if (settlement.sheet.rendered) {
+				settlement.sheet.render()
+			}
+		})
+	}
 }
 
 export default BuildingSheet
