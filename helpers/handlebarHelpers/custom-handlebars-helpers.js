@@ -1,4 +1,4 @@
-function addHandlebarsCustomHelpers(){
+function addHandlebarsCustomHelpers() {
 	Handlebars.registerHelper('ifOrGm', function (condition) {
 		if (condition || game.user.isGM) {
 			return true
@@ -37,6 +37,9 @@ function addHandlebarsCustomHelpers(){
 	Handlebars.registerHelper('multiply', function (number, multiplier) {
 		return number * multiplier;
 	});
+	Handlebars.registerHelper('formatNumberToFixed', function (number, toFixedValue) {
+		return _formatNumberToFixed(number, toFixedValue);
+	});
 	Handlebars.registerHelper('multiplyToString', function (number, multiplier, isNotReturningString) {
 		const result = number * multiplier;
 		if (isNotReturningString) {
@@ -67,5 +70,26 @@ function addHandlebarsCustomHelpers(){
 	});
 
 }
+function _formatNumberToFixed(value, toFixedValue) {
+	// Se for string, tenta converter para número
+	if (typeof value === 'string') {
+		const num = Number(value);
+		if (isNaN(num)) return value; // retorna original se não for um número válido
+		return _formatNumberToFixed(num).toString();
+	}
+
+	// Se for número, formata
+	if (typeof value === 'number') {
+		if (Number.isInteger(value)) {
+			return value;
+		} else {
+			return Number(value.toFixed(toFixedValue || 3));
+		}
+	}
+
+	// Se não for número nem string, retorna como está
+	return value;
+}
+
 
 export default addHandlebarsCustomHelpers

@@ -9,7 +9,7 @@
                     </div>
                     <span> : </span>
                 </div>
-                <span>{{sum resource.income resource.stored}}</span>
+                <span>{{formatNumberToFixed (sum resource.income resource.stored) 3}}</span>
             </li>
         {{/each}}
         {{#each importantIncome.nonStatic as |resource|}}
@@ -22,7 +22,11 @@
                     <span> : </span>
                 </div>
                 <!-- <span>{{resource.stored}} + {{resource.income}}</span> -->
-                <span>{{resource.stored}} {{#if (higherThan resource.income -1)}}+{{/if}} {{resource.income}}</span>
+                <span>
+                    {{formatNumberToFixed resource.stored 3}} 
+                    {{#if (higherThan resource.income -0.0001)}}+{{/if}} 
+                    {{formatNumberToFixed resource.income 3}}
+                </span>
             </li>
         {{/each}}
     </ol>

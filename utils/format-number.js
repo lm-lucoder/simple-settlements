@@ -1,4 +1,4 @@
-export default function formatNumber(value) {
+export default function formatNumber(value, toFixedValue) {
   // Se for string, tenta converter para número
   if (typeof value === 'string') {
     const num = Number(value);
@@ -11,7 +11,7 @@ export default function formatNumber(value) {
     if (Number.isInteger(value)) {
       return value;
     } else {
-      return Number(value.toFixed(3));
+      return Number(value.toFixed(toFixedValue || 3));
     }
   }
 
