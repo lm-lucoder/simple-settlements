@@ -249,16 +249,18 @@ class SettlementSheet extends ActorSheet {
 	}
 
 	_buildImportantIncome(income) {
-
 		const staticIncome = this._getStaticIncome(income)
 		const nonStaticIncome = this._getNonStaticIncome(income)
+		const allIncome = this._getAllIncome(income)
 
 		const importantStaticIncome = staticIncome.filter(resource => resource.data.system.isImportant)
 		const importantNonStaticIncome = nonStaticIncome.filter(resource => resource.data.system.isImportant)
+		const allImportantIncome = allIncome.filter(resource => resource.data.system.isImportant)
 
 		const importantIncome = {
 			static: importantStaticIncome,
-			nonStatic: importantNonStaticIncome
+			nonStatic: importantNonStaticIncome,
+			all: allImportantIncome
 		}
 		return importantIncome
 	}
@@ -269,6 +271,11 @@ class SettlementSheet extends ActorSheet {
 	}
 	_getNonStaticIncome(income) {
 		const resources = Object.values(income.all).filter(resource => !resource.data.system.isStatic)
+		resources.forEach(resource => { resource.income = formatNumber(resource.income) })
+		return resources
+	}
+	_getAllIncome(income) {
+		const resources = Object.values(income.all)
 		resources.forEach(resource => { resource.income = formatNumber(resource.income) })
 		return resources
 	}

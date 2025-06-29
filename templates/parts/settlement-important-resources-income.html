@@ -1,18 +1,6 @@
 <div class="important-resources-log-container">
     <ol class="important-resources-log-list item-list">
-        {{#each importantIncome.static as |resource|}}
-            <!-- resource custom class field for macro support (resource.data.customClass) -->
-            <li class="item important-log-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}" {{#if (higherThan resource.log.length 0)}} data-tooltip='{{> "modules/simple-settlements/templates/parts/settlement-resources-income-tooltip.html"}}' data-tooltip-direction="LEFT" {{/if}} data-item-id="{{resource.data._id}}">
-                <div class="card-info">
-                    <div class="card-image">
-                        <img src="{{resource.data.img}}" title="{{resource.data.name}}"/>
-                    </div>
-                    <span> : </span>
-                </div>
-                <span>{{formatNumberToFixed (sum resource.income resource.stored) 3}}</span>
-            </li>
-        {{/each}}
-        {{#each importantIncome.nonStatic as |resource|}}
+        {{#each importantIncome.all as |resource|}}
             <!-- resource custom class field for macro support (resource.data.customClass) -->
             <li class="item important-log-card {{#if resource.data.customClass}}{{resource.data.customClass}}{{/if}}" {{#if (higherThan resource.log.length 0)}} data-tooltip='{{> "modules/simple-settlements/templates/parts/settlement-resources-income-tooltip.html"}}' data-tooltip-direction="LEFT" {{/if}} data-item-id="{{resource.data._id}}">
                 <div class="card-info">
@@ -22,11 +10,15 @@
                     <span> : </span>
                 </div>
                 <!-- <span>{{resource.stored}} + {{resource.income}}</span> -->
-                <span>
-                    {{formatNumberToFixed resource.stored 3}} 
-                    {{#if (higherThan resource.income -0.0001)}}+{{/if}} 
-                    {{formatNumberToFixed resource.income 3}}
-                </span>
+                 {{#if resource.data.system.isStatic}}
+                    <span>{{formatNumberToFixed (sum resource.income resource.stored) 3}}</span>
+                 {{else}}
+                    <span>
+                        {{formatNumberToFixed resource.stored 3}} 
+                        {{#if (higherThan resource.income -0.0001)}}+{{/if}} 
+                        {{formatNumberToFixed resource.income 3}}
+                    </span>
+                 {{/if }}
             </li>
         {{/each}}
     </ol>
